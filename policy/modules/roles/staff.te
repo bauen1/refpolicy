@@ -20,6 +20,10 @@ optional_policy(`
 ')
 
 optional_policy(`
+    pkexec_role_template(staff, staff_r, staff_t)
+')
+
+optional_policy(`
 	auditadm_role_change(staff_r)
 ')
 

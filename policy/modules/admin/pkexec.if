@@ -1,0 +1,34 @@
+## <summary></summary>
+
+## <summary></summary>
+## <param name="role_prefix">
+##  <summary></summary>
+## </param>
+## <param name="user_role">
+##  <summary></summary>
+## </param>
+## <param name="user_domain">
+##  <summary></summary>
+## </param>
+template(`pkexec_role_template', `
+    gen_require(`
+        attribute pkexec_domain;
+        attribute_role pkexec_roles;
+        type pkexec_exec_t;
+    ')
+
+    type $1_pkexec_t, pkexec_domain;
+    role pkexec_roles types $1_pkexec_t;
+    roleattribute $2 pkexec_roles;
+
+    userdom_user_application_domain($1_pkexec_t, pkexec_exec_t)
+    domtrans_pattern($3, pkexec_exec_t, $1_pkexec_t)
+
+    dbus_system_bus_client($1_pkexec_t)
+
+    corecmd_bin_domtrans($1_pkexec_t, $3)
+    allow $3 $1_pkexec_t:fd use;
+
+    allow $1_pkexec_t $3:dir search;
+    allow $1_pkexec_t $3:file { getattr open read };
+')

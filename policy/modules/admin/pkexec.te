@@ -1,0 +1,53 @@
+policy_module(pkexec, 1.0)
+
+########################################
+#
+# Declarations
+#
+
+attribute pkexec_domain;
+attribute_role pkexec_roles;
+
+type pkexec_exec_t;
+application_executable_file(pkexec_exec_t)
+
+########################################
+#
+# Local Policy
+#
+
+allow pkexec_domain self:process { signal getsched setsched };
+allow pkexec_domain self:unix_stream_socket { create connect read write getattr getopt setopt };
+allow pkexec_domain self:unix_dgram_socket { create connect };
+allow pkexec_domain self:capability { audit_write setgid dac_read_search sys_nice };
+allow pkexec_domain self:netlink_audit_socket { create write nlmsg_relay read };
+
+policykit_dbus_chat(pkexec_domain)
+
+corecmd_search_bin(pkexec_domain)
+
+files_read_etc_files(pkexec_domain)
+
+fs_getattr_tmpfs(pkexec_domain)
+fs_read_cgroup_files(pkexec_domain)
+fs_write_cgroup_files(pkexec_domain)
+
+kernel_read_kernel_sysctls(pkexec_domain)
+kernel_read_system_state(pkexec_domain)
+
+logging_send_syslog_msg(pkexec_domain)
+
+miscfiles_read_localization(pkexec_domain)
+
+#
+init_dbus_chat(pkexec_domain)
+init_read_state(pkexec_domain)
+
+userdom_search_user_home_content(pkexec_domain)
+userdom_use_user_ptys(pkexec_domain)
+
+# probably not required
+gen_require(`
+    type initrc_var_run_t;
+')
+allow pkexec_domain initrc_var_run_t:file { open read lock };

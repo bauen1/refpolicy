@@ -1,0 +1,1 @@
+/usr/bin/pkexec -- gen_context(system_u:object_r:pkexec_exec_t,s0)
