@@ -1,0 +1,10 @@
+# see refpolicy/policy/modules/kernel/corecommands.fc
+
+# might be right or wrong
+/usr/bin/dbus-update-activation-environment       gen_context(system_u:object_r:dbusd_exec_t,s0)
+
+# FIXME:
+/usr/lib/gcr/gcr-prompter                         gen_context(system_u:object_r:bin_t,s0)
+/usr/lib/gcr/gcr-ssh-askpass                      gen_context(system_u:object_r:bin_t,s0)
+
+/usr/lib/[^/]*/glib-2\.0/gio-launch-desktop       gen_context(system_u:object_r:bin_t,s0)
