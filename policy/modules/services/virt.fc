@@ -65,3 +65,5 @@ HOME_DIR/VirtualMachines/isos(/.*)?	gen_context(system_u:object_r:virt_content_t
 /run/user/[^/]*/libguestfs(/.*)?	gen_context(system_u:object_r:virt_home_t,s0)
 /run/vdsm(/.*)?	gen_context(system_u:object_r:virt_runtime_t,s0)
 /run/virtlockd\.pid	--	gen_context(system_u:object_r:virtlockd_run_t,s0)
+
+/usr/share/virt-manager/virt-manager -- gen_context(system_u:object_r:bin_t,s0)

@@ -384,6 +384,11 @@ tunable_policy(`virt_use_usb',`
 	fs_getattr_dos_fs(virt_domain)
 	fs_manage_dos_dirs(virt_domain)
 	fs_manage_dos_files(virt_domain)
+    gen_require(`
+        type usb_device_t;
+        class chr_file { open read write lock };
+    ')
+    allow virt_domain usb_device_t:chr_file { open read write lock };
 ')
 
 optional_policy(`
