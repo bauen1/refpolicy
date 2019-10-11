@@ -64,11 +64,13 @@ require {
     type var_lib_t;
     type xdm_var_lib_t;
     type gpg_agent_t;
+    type pulseaudio_t;
 }
 allow user_systemd_t xdm_var_lib_t:dir { getattr search };
 allow user_dbusd_t xdm_var_lib_t:dir { search };
 allow mpd_t xdm_var_lib_t:dir { search };
 allow gpg_agent_t xdm_var_lib_t:dir { getattr search setattr };
+allow pulseaudio_t xdm_var_lib_t:dir { search };
 
 #============ lvm_t ============
 # lvm2 fix boot
