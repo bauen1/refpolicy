@@ -1,0 +1,29 @@
+policy_module(local_minecraft, 1.0)
+
+gen_require(`
+    type java_t;
+')
+
+corecmd_exec_bin(java_t)
+corecmd_read_bin_files(java_t)
+dev_rw_dri(java_t)
+fs_read_cgroup_files(java_t)
+userdom_map_user_home_content_files(java_t)
+
+# hosting minecraft games to lan
+allow java_t self:tcp_socket create_stream_socket_perms;
+corenet_udp_bind_generic_node(java_t)
+corenet_tcp_bind_generic_node(java_t)
+corenet_udp_bind_all_unreserved_ports(java_t)
+
+# sound
+allow java_t self:sem create_sem_perms;
+
+gen_require(`
+    type java_tmpfs_t;
+')
+pulseaudio_tmpfs_content(java_tmpfs_t)
+
+alsa_read_config(java_t)
+alsa_read_home_files(java_t)
+pulseaudio_domtrans(java_t)
