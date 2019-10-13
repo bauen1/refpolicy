@@ -163,12 +163,16 @@ allow gconfd_t gnome_xdg_config_t:file map;
 
 # FIXME: should not be required (map => pulseaudio gsettings-helper )
 allow gconfd_t user_tmp_t:file { read write open map };
+auditallow gconfd_t user_tmp_t:file { read write open map };
+
 # might not be required
 allow staff_t gconf_tmp_t:file map;
 
 allow systemd_user_session_type gconfd_t:process signal;
 allow staff_systemd_t user_tmp_t:dir { add_name getattr remove_name write };
 allow staff_systemd_t user_tmp_t:sock_file { create unlink write };
+auditallow staff_systemd_t user_tmp_t:dir { add_name getattr remove_name write };
+auditallow staff_systemd_t user_tmp_t:sock_file { create unlink write };
 
 allow staff_systemd_t xdg_data_t:dir search;
 
@@ -529,6 +533,7 @@ allow thunderbird_t tmp_t:dir { write add_name };
 allow thunderbird_t tmp_t:file { create open write };
 allow thunderbird_t self:process ptrace;
 allow thunderbird_t user_tmp_t:file map;
+auditallow thunderbird_t user_tmp_t:file map;
 
 require {
     type dpkg_t;
