@@ -34,7 +34,7 @@ gen_require(`
     class netlink_selinux_socket { read };
     class process { noatsecure rlimitinh siginh sigkill signal signull getcap getsched execmem execstack ptrace };
     class process2 { nnp_transition };
-    class unix_stream_socket { getattr read write };
+    class unix_stream_socket { getattr read write ioctl connectto };
 ')
 
 # xfce4-screensaver probably
@@ -52,12 +52,6 @@ require {
 }
 allow staff_t session_dbusd_runtime_t:sock_file write;
 allow user_t session_dbusd_runtime_t:sock_file write;
-
-# FIXME: ???
-require {
-    type var_lib_t;
-}
-allow user_systemd_t var_lib_t:dir { getattr search };
 
 # XXX: only required by systemd for lightdm
 require {
@@ -141,19 +135,11 @@ require {
 }
 allow staff_dbusd_t self:process { getcap };
 allow user_dbusd_t self:process { getcap };
-
-# staff_dbusd_t: this is probably necessary
-require {
-    type staff_dbusd_t;
-    type user_dbusd_t;
-    class unix_stream_socket { read write getattr ioctl};
-}
 allow staff_t staff_dbusd_t:unix_stream_socket { read write getattr ioctl };
-allow user_t staff_dbusd_t:unix_stream_socket { read write };
+allow user_t user_dbusd_t:unix_stream_socket { read write getattr };
 
 # staff_dbusd_t: might be necessary, not sure
 require {
-    type staff_dbusd_t;
     type xdg_data_t;
 }
 allow session_bus_type system_dbusd_runtime_t:dir search;
@@ -225,9 +211,6 @@ userdom_user_runtime_filetrans(staff_systemd_t, gconf_tmp_t, dir, "dconf")
 # FIXME: this shouldn't be necessary
 userdom_user_runtime_filetrans(staff_dbusd_t, gconf_tmp_t, dir, "dconf")
 
-# ???
-allow staff_systemd_t systemd_user_runtime_t:sock_file unlink;
-
 # gsettings-helper
 allow gconfd_t session_dbusd_runtime_t:sock_file write;
 allow gconfd_t sysfs_t:dir read;
@@ -291,12 +274,6 @@ require {
     type selinux_config_t;
 }
 allow sysadm_t selinux_config_t:file { execute execute_no_trans };
-
-# FIXME: really required ?
-require
-    class unix_stream_socket { connectto };
-}
-allow staff_systemd_t self:unix_stream_socket connectto;
 
 # maybe required for ssh-agent launch script
 allow staff_t system_dbusd_t:dir { open read getattr search };
@@ -420,13 +397,6 @@ allow user_t init_t:unix_stream_socket { getattr ioctl read write append };
 # FIXME: ???
 allow staff_t initrc_t:unix_stream_socket { connectto };
 allow staff_t var_run_t:sock_file { write };
-
-#============= staff_systemd_t ==============
-# sensible, but might not be necessary
-require {
-    type adjtime_t;
-}
-allow staff_systemd_t adjtime_t:file read;
 
 #============ staff_screen_t ============
 # sensible, but might not be necessary
@@ -766,7 +736,6 @@ require {
     class tcp_socket { name_connect };
 }
 allow staff_systemd_t unreserved_port_t:tcp_socket name_connect;
-allow staff_systemd_t net_conf_t:file { getattr open read };
 allow staff_systemd_t node_t:udp_socket node_bind;
 
 require {
