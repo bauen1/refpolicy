@@ -652,3 +652,7 @@ allow staff_t user_tmp_t:dir mounton;
 fs_read_tmpfs_symlinks(staff_t)
 fs_rw_tmpfs_files(staff_t)
 allow staff_t tmpfs_t:file map;
+
+# docker without sudo
+allow staff_t var_run_t:sock_file write;
+init_stream_connect_script(staff_t)
