@@ -43,8 +43,6 @@ gen_require(`
     class cap_userns { sys_admin sys_ptrace kill };
     class tcp_socket { name_bind };
     type devicekit_power_t;
-    type gconfd_t;
-    type gconf_tmp_t;
     type gnome_xdg_config_t;
     type gpg_agent_t;
     type initrc_t;
@@ -144,34 +142,6 @@ allow user_t tmpfs_t:file { read write };
 
 # maybe required
 allow systemd_user_session_type system_dbusd_runtime_t:dir search;
-
-## staff_systemd_t: misc.
-# a lot of systemd --user socket activation bullshit
-# this really depends, because of these rules /run/user/$uid/dbus + etc end up being mislabeled
-
-userdom_user_runtime_filetrans(staff_systemd_t, gconf_tmp_t, dir, "dconf")
-
-# FIXME: this shouldn't be necessary
-userdom_user_runtime_filetrans(staff_dbusd_t, gconf_tmp_t, dir, "dconf")
-
-# gsettings-helper
-allow gconfd_t session_dbusd_runtime_t:sock_file write;
-allow gconfd_t sysfs_t:dir read;
-allow gconfd_t usr_t:file { getattr map };
-allow gconfd_t gnome_xdg_config_t:file map;
-
-# FIXME: should not be required (map => pulseaudio gsettings-helper )
-allow gconfd_t user_tmp_t:file { read write open map };
-auditallow gconfd_t user_tmp_t:file { read write open map };
-
-# might not be required
-allow staff_t gconf_tmp_t:file map;
-
-allow systemd_user_session_type gconfd_t:process signal;
-allow staff_systemd_t user_tmp_t:dir { add_name getattr remove_name write };
-allow staff_systemd_t user_tmp_t:sock_file { create unlink write };
-auditallow staff_systemd_t user_tmp_t:dir { add_name getattr remove_name write };
-auditallow staff_systemd_t user_tmp_t:sock_file { create unlink write };
 
 allow staff_systemd_t xdg_data_t:dir search;
 
@@ -277,7 +247,6 @@ allow devicekit_disk_t tmpfs_t:file { create lock open read unlink write };
 # probably not required
 require {
     type mozilla_t;
-    type gconf_tmp_t;
     type gnome_xdg_config_t;
     type staff_screen_t;
     class unix_stream_socket { ioctl read write };
@@ -291,8 +260,6 @@ devicekit_dbus_chat(devicekit_power_t)
 allow mozilla_t session_dbusd_runtime_t:sock_file { getattr write };
 allow mozilla_t staff_systemd_t:unix_stream_socket connectto;
 allow mozilla_t var_lib_t:file map;
-allow mozilla_t gconf_tmp_t:dir { write };
-allow mozilla_t gconf_tmp_t:file { open read write map };
 gnome_stream_connect_gconf(mozilla_t)
 allow mozilla_t gconf_tmp_t:file { open read write map };
 allow mozilla_t gnome_xdg_config_t:file map;
@@ -540,8 +507,6 @@ allow thunderbird_t thunderbird_home_t:file map;
 allow thunderbird_t tmp_t:dir { create write add_name };
 allow thunderbird_t tmp_t:file { create open write };
 allow thunderbird_t self:process ptrace;
-allow thunderbird_t user_tmp_t:file map;
-auditallow thunderbird_t user_tmp_t:file map;
 
 require {
     type dpkg_t;
@@ -616,12 +581,6 @@ require {
 }
 allow colord_t colord_exec_t:file execute_no_trans;
 
-# fix gconfd (and a lot of stuff)
-require {
-    type gconf_tmp_t;
-}
-userdom_user_runtime_filetrans(gconfd_t, gconf_tmp_t, dir, "dconf")
-
 # pip3
 allow staff_t user_tmp_t:file { relabelfrom relabelto };
 allow staff_t user_tmp_t:dir { relabelfrom relabelto };
@@ -670,3 +629,9 @@ gen_require(`
     type sysfs_t;
 ')
 allow staff_t sysfs_t:file write;
+
+# nm-applet
+gen_require(`
+    type gconf_tmp_t;
+')
+allow staff_t gconf_tmp_t:file map;
