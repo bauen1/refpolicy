@@ -229,7 +229,7 @@ dontaudit session_bus_type self:process { ptrace setrlimit };
 allow session_bus_type self:file { getattr read write };
 allow session_bus_type self:fifo_file rw_fifo_file_perms;
 allow session_bus_type self:dbus { send_msg acquire_svc };
-allow session_bus_type self:unix_stream_socket { accept listen };
+allow session_bus_type self:unix_stream_socket { accept listen connectto };
 allow session_bus_type self:tcp_socket { accept listen };
 allow session_bus_type self:netlink_selinux_socket create_socket_perms;
 

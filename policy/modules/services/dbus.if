@@ -84,6 +84,7 @@ template(`dbus_role_template',`
 
 	allow $3 $1_dbusd_t:unix_stream_socket connectto;
 	allow $3 $1_dbusd_t:dbus { send_msg acquire_svc };
+    allow $1_dbusd_t $3:dbus send_msg;
 	allow $3 $1_dbusd_t:fd use;
 
 	allow $3 system_dbusd_t:dbus { send_msg acquire_svc };
@@ -98,6 +99,8 @@ template(`dbus_role_template',`
 	allow $3 $1_dbusd_t:process { ptrace signal_perms };
 
 	allow $1_dbusd_t $3:process sigkill;
+
+    allow $1_dbusd_t self:process getcap;
 
 	corecmd_bin_domtrans($1_dbusd_t, $3)
 	corecmd_shell_domtrans($1_dbusd_t, $3)
