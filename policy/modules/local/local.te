@@ -656,3 +656,9 @@ allow staff_t tmpfs_t:file map;
 # docker without sudo
 allow staff_t var_run_t:sock_file write;
 init_stream_connect_script(staff_t)
+
+# xfpm-backlight-helper (why is this even in the staff_t domain ....) missing type transition from pkexec_t ?
+gen_require(`
+    type sysfs_t;
+')
+allow staff_t sysfs_t:file write;
