@@ -66,7 +66,6 @@ gen_require(`
     type var_lib_t;
     type var_lock_t;
     type xdg_config_t;
-    type xdg_data_t;
     type xdm_var_lib_t;
 ')
 
@@ -191,6 +190,11 @@ allow staff_t xdg_data_t:file execute;
 allow staff_t xdg_data_t:file execute_no_trans;
 #auditallow staff_t xdg_data_t:file execute;
 #auditallow staff_t xdg_data_t:file execute_no_trans;
+# FIXME: why ?
+gen_require(`
+    type irc_t;
+')
+allow irc_t xdg_data_t:dir search;
 
 # fix ansible (should probably be fixed by changing the label of the directory with the master sockets)
 require {
@@ -290,8 +294,12 @@ allow mozilla_t var_lib_t:file map;
 allow mozilla_t gconf_tmp_t:dir { write };
 allow mozilla_t gconf_tmp_t:file { open read write map };
 gnome_stream_connect_gconf(mozilla_t)
+allow mozilla_t gconf_tmp_t:file { open read write map };
 allow mozilla_t gnome_xdg_config_t:file map;
+allow thunderbird_t gnome_xdg_config_t:file map;
+allow thunderbird_t gconf_tmp_t:file { open read write map };
 allow mozilla_t self:process ptrace;
+allow mozilla_t sysctl_crypto_t:dir getattr;
 
 # probably not required
 allow staff_t init_t:unix_stream_socket { getattr ioctl read write append };
@@ -529,7 +537,7 @@ allow thunderbird_t sysfs_t:lnk_file { getattr read };
 allow thunderbird_t staff_systemd_t:unix_stream_socket connectto;
 allow thunderbird_t var_lib_t:file { getattr open read map };
 allow thunderbird_t thunderbird_home_t:file map;
-allow thunderbird_t tmp_t:dir { write add_name };
+allow thunderbird_t tmp_t:dir { create write add_name };
 allow thunderbird_t tmp_t:file { create open write };
 allow thunderbird_t self:process ptrace;
 allow thunderbird_t user_tmp_t:file map;
