@@ -247,6 +247,10 @@ optional_policy(`
 ')
 
 optional_policy(`
+	resolvconf_domtrans(dhcpc_t);
+')
+
+optional_policy(`
 	samba_manage_config(dhcpc_t)
 ')
 

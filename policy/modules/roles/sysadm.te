@@ -934,6 +934,10 @@ optional_policy(`
 ')
 
 optional_policy(`
+	resolvconf_run(sysadm_t, sysadm_r)
+')
+
+optional_policy(`
 	rgmanager_admin(sysadm_t, sysadm_r)
 ')
 
