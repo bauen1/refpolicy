@@ -58,6 +58,22 @@ template(`mta_base_mail_template',`
 		postfix_domtrans_user_mail_handler($1_mail_t)
 	')
 ')
+########################################
+## <summary>
+##	Admin role access for mta.
+## </summary>
+## <param name="role">
+##	<summary>
+##	Role allowed access.
+##	</summary>
+## </param>
+#
+interface(`mta_admin_role',`
+    gen_require(`
+        type system_mail_t;
+    ')
+    role $1 types system_mail_t;
+')
 
 ########################################
 ## <summary>
