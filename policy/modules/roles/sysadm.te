@@ -696,6 +696,7 @@ optional_policy(`
 
 optional_policy(`
 	mta_role(sysadm_r, sysadm_t)
+	mta_admin_role(sysadm_r)
 ')
 
 optional_policy(`
