@@ -8,6 +8,8 @@ gen_require(`
     class netlink_netfilter_socket { create write };
     class bluetooth_socket { create ioctl };
     type proc_net_t;
+    class packet_socket { map };
+    class process { setcap setsched };
 ')
 
 allow wireshark_t dri_device_t:chr_file { getattr ioctl open read write };
@@ -16,22 +18,17 @@ allow wireshark_t self:netlink_generic_socket { create setopt bind getattr write
 allow wireshark_t self:netlink_netfilter_socket { create write read };
 allow wireshark_t self:bluetooth_socket { create ioctl bind setopt };
 allow wireshark_t proc_net_t:file { getattr open read };
-
-require {
-    class packet_socket { map };
-    class process { setcap setsched };
-}
 allow wireshark_t self:packet_socket map;
 allow wireshark_t self:process { setcap setsched };
 
 # FIXME: maybe not all necessary
-require {
+gen_require(`
     type session_dbusd_runtime_t;
     type staff_t;
     type staff_systemd_t;
     type sysctl_crypto_t;
     type user_runtime_t;
-}
+')
 
 allow wireshark_t session_dbusd_runtime_t:sock_file write;
 
@@ -42,11 +39,10 @@ allow wireshark_t sysctl_crypto_t:dir search;
 allow wireshark_t sysctl_crypto_t:file { getattr open read };
 allow wireshark_t user_runtime_t:dir { setattr write };
 
-
 #!!!! This avc can be allowed using the boolean 'allow_write_xshm'
-require {
+gen_require(`
     type xserver_tmpfs_t;
-}
+')
 allow wireshark_t xserver_tmpfs_t:file { write map };
 
 
