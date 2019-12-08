@@ -1,1 +1,8 @@
 policy_module(local, 1.0)
+
+# [    6.469260 ] audit: type=1400 audit(1575813032.156:154): avc:  denied  { use  } for  pid=1 comm="systemd" path="socket:[12034]" dev="sockfs" ino=12034 scontext=system_u:system_r:init_t:s0 tcontext=system_u:system_r:syslogd_t:s0 tclass=fd permissive=0
+gen_require(`
+    type init_t;
+    type syslogd_t;
+')
+allow init_t syslogd_t:fd use;
