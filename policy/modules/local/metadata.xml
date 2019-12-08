@@ -1,0 +1,3 @@
+<summary>
+    Everything necessary to boot a minimal debian 10 install without the unconfined module and with enforcing=1
+</summary>
