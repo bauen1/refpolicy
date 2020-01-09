@@ -1,0 +1,40 @@
+# Role Based Access Control
+# only allow a role to create objects of its own role
+
+ifdef(`enable_rbac', `
+    define(`rbac_object_constrain', `
+        constrain $1 $2
+        (
+            r1 == r2
+            or t1 == rbac_obj_role_change_exempt_uncond_type_attribute
+            or (
+                t1 == rbac_change_role_user_source_type_attribute
+                and r2 == rbac_change_role_user_target_role_attribute
+                and t2 == rbac_change_role_user_target_object_type_attribute
+            )
+        );
+    ')
+
+    rbac_object_constrain(dir_file_class_set, { create relabelfrom relabelto })
+    rbac_object_constrain(socket_class_set, { create relabelfrom relabelto })
+
+    undefine(`rbac_object_constrain')
+
+    define(`rbac_transition_constrain', `
+        constrain $1 $2
+        (
+            r1 == r2
+            or t1 == rbac_proc_role_change_exempt_uncond_type_attribute
+            or (
+                t1 == rbac_change_role_user_source_type_attribute
+                and r2 == rbac_change_role_user_target_role_attribute
+                and t2 == rbac_change_role_user_target_type_attribute
+            )
+        );
+    ')
+
+    rbac_transition_constrain(process, { dyntransition noatsecure rlimitinh siginh transition })
+    rbac_transition_constrain(process2, { nnp_transition nosuid_transition })
+
+    undefine(`rbac_transition_constrain')
+')

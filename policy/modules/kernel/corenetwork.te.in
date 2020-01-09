@@ -23,6 +23,8 @@ attribute unreserved_port_type;
 
 attribute corenet_unconfined_type;
 
+role system_r types port_type;
+
 type ppp_device_t;
 dev_node(ppp_device_t)
 
@@ -53,6 +55,7 @@ network_packet_simple(icmp)
 #
 type netlabel_peer_t;
 sid netmsg gen_context(system_u:system_r:netlabel_peer_t,mls_systemhigh)
+role system_r types netlabel_peer_t;
 
 #
 # port_t is the default type of INET port numbers.
@@ -332,6 +335,7 @@ portcon sctp 1-511 gen_context(system_u:system_r:reserved_port_t, s0)
 #
 type node_t, node_type;
 sid node gen_context(system_u:system_r:node_t,s0 - mls_systemhigh)
+role system_r types node_t;
 
 # network_node examples:
 #network_node(lo, s0 - mls_systemhigh, 127.0.0.1, 255.255.255.255)
@@ -347,6 +351,7 @@ sid node gen_context(system_u:system_r:node_t,s0 - mls_systemhigh)
 #
 type netif_t, netif_type;
 sid netif gen_context(system_u:system_r:netif_t,s0 - mls_systemhigh)
+role system_r types netif_t;
 
 build_option(`enable_mls',`
 network_interface(lo, lo, s0 - mls_systemhigh)

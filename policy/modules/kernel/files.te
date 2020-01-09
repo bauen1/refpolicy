@@ -205,6 +205,17 @@ fs_associate_tmpfs(file_type)
 fs_associate_ramfs(file_type)
 fs_associate_hugetlbfs(file_type)
 
+role system_r types file_type;
+role sysadm_r types file_type;
+role staff_r types file_type;
+
+optional_policy(`
+    gen_require(`
+        role unconfined_r;
+    ')
+    role unconfined_r types file_type;
+')
+
 ########################################
 #
 # Rules for all tmp file types

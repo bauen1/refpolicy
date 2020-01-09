@@ -348,6 +348,7 @@ ifdef(`init_systemd',`
 	# for starting systemd --user in the right domain:
 	domain_subj_id_change_exemption(init_t)
 	domain_role_change_exemption(init_t)
+    rbac_change_role_user_source_type(init_t)
 
 	files_getattr_all_dirs(init_t)
 	files_getattr_all_files(init_t)

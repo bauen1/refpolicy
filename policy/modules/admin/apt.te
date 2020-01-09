@@ -15,6 +15,7 @@ role apt_roles types apt_t;
 
 type apt_devpts_t;
 term_pty(apt_devpts_t)
+role apt_roles types apt_devpts_t;
 
 type apt_lock_t;
 files_lock_file(apt_lock_t)

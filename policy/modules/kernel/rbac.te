@@ -1,0 +1,32 @@
+policy_module(rbac, 1.0.0)
+
+###########################################################
+#
+# Role Based Access Control
+#
+
+
+# this domain can transition any object to any role / type
+# ignoring the source role
+# very dangerous.
+attribute rbac_obj_role_change_exempt_uncond_type_attribute;
+
+# this domain can transition any process to any role / type
+# ignoring the source role
+# very dangerous.
+attribute rbac_proc_role_change_exempt_uncond_type_attribute;
+
+# this domain can change the role/type of an object/process as long as the
+# target role is a part of rbac_change_role_user_target_role_attribute
+# and the target type is a part of rbac_change_role_user_target_object_type_attribute
+# or for processes rbac_change_role_user_target_type_attribute
+attribute rbac_change_role_user_source_type_attribute;
+
+attribute_role rbac_change_role_user_target_role_attribute;
+attribute rbac_change_role_user_target_type_attribute;
+attribute rbac_change_role_user_target_object_type_attribute;
+
+###########################################################
+#
+# Role Based Access Control Seperation
+#

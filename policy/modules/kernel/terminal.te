@@ -9,6 +9,9 @@ attribute ptynode;
 attribute server_ptynode;
 attribute serial_device;
 
+role system_r types ttynode;
+role system_r types ptynode;
+
 #
 # bsdpty_device_t is the type of /dev/[tp]ty[abcdepqrstuvwxyz][0-9a-f]
 type bsdpty_device_t;

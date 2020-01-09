@@ -251,6 +251,7 @@ files_tmp_filetrans(sshd_t, sshd_tmp_t, { dir file sock_file })
 
 kernel_search_key(sshd_t)
 kernel_link_key(sshd_t)
+rbac_change_role_user_source_type(sshd_t)
 
 term_use_all_ptys(sshd_t)
 term_setattr_all_ptys(sshd_t)

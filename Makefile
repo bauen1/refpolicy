@@ -222,6 +222,14 @@ ifeq "$(UBAC)" "y"
 	M4PARAM += -D enable_ubac
 endif
 
+ifeq "$(RBAC)" "y"
+	M4PARAM += -D enable_rbac
+endif
+
+ifeq "$(RBACSEP)" "y"
+	M4PARAM += -D enable_rbacsep
+endif
+
 # default MLS/MCS sensitivity and category settings.
 MLS_SENS ?= 16
 MLS_CATS ?= 1024
@@ -552,6 +560,8 @@ endif
 	$(verbose) echo "SYSTEMD ?= $(SYSTEMD)" >> $(headerdir)/build.conf
 	$(verbose) echo "CUSTOM_BUILDOPT ?= $(CUSTOM_BUILDOPT)" >> $(headerdir)/build.conf
 	$(verbose) echo "override UBAC := $(UBAC)" >> $(headerdir)/build.conf
+	$(verbose) echo "override RBAC := $(RBAC)" >> $(headerdir)/build.conf
+	$(verbose) echo "override RBACSEP := $(RBACSEP)" >> $(headerdir)/build.conf
 	$(verbose) echo "override MLS_SENS := $(MLS_SENS)" >> $(headerdir)/build.conf
 	$(verbose) echo "override MLS_CATS := $(MLS_CATS)" >> $(headerdir)/build.conf
 	$(verbose) echo "override MCS_CATS := $(MCS_CATS)" >> $(headerdir)/build.conf

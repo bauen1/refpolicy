@@ -11,6 +11,8 @@ attribute memory_raw_write;
 attribute devices_unconfined_type;
 attribute sysfs_types;
 
+role system_r types device_node;
+
 #
 # device_t is the type of /dev.
 #

@@ -194,6 +194,8 @@ policy/constraints	This file defines additional constraints on permissions
 			Typically, these constraints are used to restrict
 			changes in user identity or role to certain domains.
 
+policy/rbac
+
 policy/global_booleans	This file defines all booleans that have a global scope,
 			their default value, and documentation.
 

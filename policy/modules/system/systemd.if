@@ -38,7 +38,7 @@ template(`systemd_role_template',`
 	init_pgm_spec_user_daemon_domain($1_systemd_t)
 	domain_user_exemption_target($1_systemd_t)
 	ubac_constrained($1_systemd_t)
-	role $2 types $1_systemd_t;
+	role $2 types { $1_systemd_t systemd_user_runtime_t systemd_user_runtime_notify_t };
 
 	#################################
 	#

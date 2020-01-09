@@ -10,6 +10,8 @@ attribute filesystem_unconfined_type;
 attribute noxattrfs;
 attribute xattrfs;
 
+role system_r types filesystem_type;
+
 ##############################
 #
 # fs_t is the default type for persistent
@@ -18,6 +20,7 @@ attribute xattrfs;
 type fs_t;
 fs_xattr_type(fs_t)
 sid fs gen_context(system_u:system_r:fs_t,s0)
+role system_r types fs_t;
 
 # Use xattrs for the following filesystem types.
 # Requires that a security xattr handler exist for the filesystem.

@@ -102,6 +102,7 @@ type user_devpts_t;
 dev_node(user_devpts_t)
 files_type(user_devpts_t)
 ubac_constrained(user_devpts_t)
+rbac_change_role_user_target_object_type(user_devpts_t)
 
 type user_tmp_t;
 files_tmp_file(user_tmp_t)

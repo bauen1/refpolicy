@@ -9,3 +9,12 @@
 #default_role process source;
 #default_type process source;
 #default_range process source low;
+
+# rbac
+default_role blk_file source;
+default_role chr_file source;
+default_role dir source;
+default_role fifo_file source;
+default_role file source;
+default_role lnk_file source;
+default_role sock_file source;

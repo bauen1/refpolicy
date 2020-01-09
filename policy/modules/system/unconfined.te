@@ -44,6 +44,7 @@ seutil_run_setfiles(unconfined_t, unconfined_r)
 seutil_run_semanage(unconfined_t, unconfined_r)
 
 unconfined_domain(unconfined_t)
+rbac_exemption_uncond(unconfined_t)
 
 userdom_user_home_dir_filetrans_user_home_content(unconfined_t, { dir file lnk_file fifo_file sock_file })
 

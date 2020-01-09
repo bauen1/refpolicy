@@ -33,7 +33,7 @@ all_te_files := $(all_modules)
 all_fc_files := $(all_modules:.te=.fc)
 
 pre_te_files := $(secclass) $(isids) $(avs) $(m4support) $(ctx_defaults) $(poldir)/mls $(poldir)/mcs $(policycaps)
-post_te_files := $(user_files) $(poldir)/constraints
+post_te_files := $(user_files) $(poldir)/constraints $(poldir)/rbac $(poldir)/rbacsep
 
 policy_sections := $(tmpdir)/pre_te_files.conf $(tmpdir)/all_attrs_types.conf $(tmpdir)/global_bools.conf $(tmpdir)/only_te_rules.conf $(tmpdir)/all_post.conf
 

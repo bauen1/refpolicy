@@ -1,0 +1,128 @@
+## <summary>Role-based access control policy</summary>
+## <required val="true">
+##  Contains attributes used in RBAC policy
+## </required>
+
+###########################################################
+## <summary>
+##  relabel and create objects bypassing rbac
+##  unconditionally.
+## </summary>
+## <param name="domain">
+##  <summary>
+##  Domain allowed access.
+##  </summary>
+## </param>
+#
+interface(`rbac_obj_role_change_exemption_uncond', `
+    gen_require(`
+        attribute rbac_obj_role_change_exempt_uncond_type_attribute;
+    ')
+
+    typeattribute $1 rbac_obj_role_change_exempt_uncond_type_attribute;
+')
+
+###########################################################
+## <summary>
+##  transition to new processes bypassing rbac
+##  unconditionally.
+## </summary>
+## <param name="domain">
+##  <summary>
+##  Domain allowed access.
+##  </summary>
+## </param>
+#
+interface(`rbac_proc_role_change_exemption_uncond', `
+    gen_require(`
+        attribute rbac_proc_role_change_exempt_uncond_type_attribute;
+    ')
+
+    typeattribute $1 rbac_proc_role_change_exempt_uncond_type_attribute;
+')
+
+###########################################################
+## <summary>
+##  fully exmept this domain from rbac constrains.
+## </summary>
+## <param name="domain">
+##  <summary>
+##  Domain allowed access.
+##  </summary>
+## </param>
+#
+interface(`rbac_exemption_uncond', `
+	rbac_obj_role_change_exemption_uncond($1)
+    rbac_proc_role_change_exemption_uncond($1)
+')
+
+###########################################################
+## <summary>
+##  Mark a role as user role
+## </summary>
+## <param name="role">
+##  <summary>
+##   Role allowed access.
+##  </summary>
+## </param>
+#
+interface(`rbac_change_role_user_target_role', `
+    gen_require(`
+        attribute_role rbac_change_role_user_target_role_attribute;
+    ')
+
+    roleattribute $1 rbac_change_role_user_target_role_attribute;
+')
+
+## <summary>
+##  Mark a type as user type
+## </summary>
+## <param name="domain">
+##  <summary>
+##   Domain allowed access.
+##  </summary>
+## </param>
+#
+interface(`rbac_change_role_user_target_type', `
+    gen_require(`
+        attribute rbac_change_role_user_target_type_attribute;
+    ')
+
+    typeattribute $1 rbac_change_role_user_target_type_attribute;
+')
+
+###########################################################
+## <summary>
+##  Allow a domain to change the role to a user role and user type
+## </summary>
+## <param name="domain">
+##  <summary>
+##   Domain allowed access.
+##  </summary>
+## </param>
+#
+interface(`rbac_change_role_user_source_type', `
+    gen_require(`
+        attribute rbac_change_role_user_source_type_attribute;
+    ')
+
+    typeattribute $1 rbac_change_role_user_source_type_attribute;
+')
+
+###########################################################
+## <summary>
+##  Domain object allowed to be relabled or created
+## </summary>
+## <param name="domain">
+##  <summary>
+##   Domain allowed access.
+##  </summary>
+## </param>
+#
+interface(`rbac_change_role_user_target_object_type', `
+    gen_require(`
+        attribute rbac_change_role_user_target_object_type_attribute;
+    ')
+
+    typeattribute $1 rbac_change_role_user_target_object_type_attribute;
+')
