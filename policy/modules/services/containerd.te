@@ -1,0 +1,210 @@
+policy_module(containerd, 1.0)
+
+########################################
+#
+# Declarations
+#
+
+type containerd_t;
+type containerd_exec_t;
+init_daemon_domain(containerd_t, containerd_exec_t)
+
+type containerd_etc_t;
+files_config_file(containerd_etc_t)
+
+type containerd_runtime_t;
+files_pid_file(containerd_runtime_t)
+
+type containerd_tmp_t;
+files_tmp_file(containerd_tmp_t)
+
+type containerd_var_lib_t;
+files_type(containerd_var_lib_t)
+
+ifdef(`enable_mcs', `
+    init_ranged_daemon_domain(containerd_t, containerd_exec_t, s0 - mcs_systemhigh)
+')
+
+ifdef(`enable_mls', `
+    init_ranged_daemon_domain(containerd_t, containerd_exec_t, s0 - mls_systemhigh)
+')
+
+########################################
+#
+# Local policy
+#
+
+allow containerd_t self:capability { chown dac_override dac_read_search fowner fsetid net_admin setgid setpcap setuid sys_admin sys_chroot sys_resource };
+allow containerd_t self:fifo_file manage_fifo_file_perms;
+allow containerd_t self:key { search view setattr };
+allow containerd_t self:process { getsched setsched signull signal sigkill setpgid setkeycreate getcap setcap setexec };
+allow containerd_t self:tcp_socket create_stream_socket_perms;
+allow containerd_t self:udp_socket create_socket_perms;
+allow containerd_t self:unix_dgram_socket create_socket_perms;
+allow containerd_t self:unix_stream_socket { create_stream_socket_perms connectto };
+allow containerd_t self:netlink_netfilter_socket create_socket_perms;
+allow containerd_t self:netlink_route_socket create_netlink_socket_perms;
+allow containerd_t self:netlink_xfrm_socket create_netlink_socket_perms;
+
+allow containerd_t containerd_runtime_t:{ file sock_file } mounton;
+
+allow containerd_t containerd_var_lib_t:dir mounton;
+can_exec(containerd_t, containerd_var_lib_t)
+
+can_exec(containerd_t, containerd_exec_t)
+
+manage_files_pattern(containerd_t, containerd_etc_t, containerd_etc_t)
+
+manage_dirs_pattern(containerd_t, containerd_runtime_t, containerd_runtime_t)
+manage_files_pattern(containerd_t, containerd_runtime_t, containerd_runtime_t)
+manage_sock_files_pattern(containerd_t, containerd_runtime_t, containerd_runtime_t)
+manage_fifo_files_pattern(containerd_t, containerd_runtime_t, containerd_runtime_t)
+files_pid_filetrans(containerd_t, containerd_runtime_t, dir, "containerd")
+files_pid_filetrans(containerd_t, containerd_runtime_t, dir, "docker")
+files_pid_filetrans(containerd_t, containerd_runtime_t, file, "docker.pid")
+
+manage_dirs_pattern(containerd_t, containerd_var_lib_t, containerd_var_lib_t)
+manage_files_pattern(containerd_t, containerd_var_lib_t, containerd_var_lib_t)
+manage_lnk_files_pattern(containerd_t, containerd_var_lib_t, containerd_var_lib_t)
+manage_sock_files_pattern(containerd_t, containerd_var_lib_t, containerd_var_lib_t)
+manage_fifo_files_pattern(containerd_t, containerd_var_lib_t, containerd_var_lib_t)
+manage_chr_files_pattern(containerd_t, containerd_var_lib_t, containerd_var_lib_t)
+files_var_lib_filetrans(containerd_t, containerd_var_lib_t, dir, "containerd")
+files_var_lib_filetrans(containerd_t, containerd_var_lib_t, dir, "docker")
+
+manage_dirs_pattern(containerd_t, containerd_tmp_t, containerd_tmp_t)
+manage_files_pattern(containerd_t, containerd_tmp_t, containerd_tmp_t)
+manage_sock_files_pattern(containerd_t, containerd_tmp_t, containerd_tmp_t)
+files_tmp_filetrans(containerd_t, containerd_tmp_t, { dir file })
+
+corecmd_exec_bin(containerd_t)
+
+corenet_all_recvfrom_unlabeled(containerd_t)
+corenet_all_recvfrom_netlabel(containerd_t)
+corenet_tcp_sendrecv_generic_if(containerd_t)
+corenet_udp_sendrecv_generic_if(containerd_t)
+corenet_tcp_sendrecv_generic_node(containerd_t)
+corenet_udp_sendrecv_generic_node(containerd_t)
+corenet_tcp_bind_generic_node(containerd_t)
+corenet_udp_bind_generic_node(containerd_t)
+corenet_tcp_bind_all_ports(containerd_t)
+corenet_udp_bind_all_ports(containerd_t)
+
+corenet_tcp_connect_all_ports(containerd_t)
+
+dev_read_sysfs(containerd_t)
+
+# FIXME: might not be necessary anymore (/etc/containerd, /etc/docker)
+files_read_etc_files(containerd_t)
+
+files_mounton_non_security(containerd_t)
+files_mount_all_file_type_fs(containerd_t)
+
+# FIXME: is this really necessary
+files_mounton_root(containerd_t)
+
+fs_getattr_xattr_fs(containerd_t)
+fs_mount_xattr_fs(containerd_t)
+fs_unmount_xattr_fs(containerd_t)
+
+fs_rw_cgroup_files(containerd_t)
+fs_manage_cgroup_dirs(containerd_t)
+
+fs_getattr_tmpfs(containerd_t)
+fs_manage_tmpfs_dirs(containerd_t)
+fs_manage_tmpfs_files(containerd_t)
+fs_manage_tmpfs_symlinks(containerd_t)
+fs_rw_tmpfs_chr_files(containerd_t)
+gen_require(`
+    type tmpfs_t;
+')
+allow containerd_t tmpfs_t:chr_file { create setattr mounton };
+
+fs_read_nsfs_files(containerd_t)
+
+fs_remount_all_fs(containerd_t)
+
+kernel_search_fs_sysctls(containerd_t)
+kernel_read_net_sysctls(containerd_t)
+kernel_read_kernel_sysctls(containerd_t)
+kernel_read_system_state(containerd_t)
+kernel_read_network_state(containerd_t)
+kernel_request_load_module(containerd_t)
+kernel_rw_net_sysctls(containerd_t)
+
+term_use_generic_ptys(containerd_t)
+term_setattr_generic_ptys(containerd_t)
+
+miscfiles_read_localization(containerd_t)
+miscfiles_read_generic_certs(containerd_t)
+
+# misc. stuff
+init_read_state(containerd_t)
+init_dbus_chat(containerd_t)
+sysnet_read_config(containerd_t)
+modutils_domtrans(containerd_t)
+iptables_domtrans(containerd_t)
+logging_send_syslog_msg(containerd_t)
+dbus_system_bus_client(containerd_t)
+
+# allow containerd to detect selinux is available and use it
+selinux_get_fs_mount(containerd_t)
+seutil_read_config(containerd_t)
+seutil_read_default_contexts(containerd_t)
+
+# necessary if docker is selinux enabled, but required by the overlay2 driver ??
+files_read_kernel_symbol_table(containerd_t)
+
+#
+
+# MCS support
+gen_require(`
+    type svirt_lxc_file_t;
+    type svirt_lxc_net_t;
+')
+fs_relabelfrom_xattr_fs(containerd_t)
+fs_relabelfrom_tmpfs(containerd_t)
+fs_relabelfrom_tmpfs_dirs(containerd_t)
+term_relabel_pty_fs(containerd_t)
+virt_manage_svirt_files(containerd_t)
+
+allow containerd_t svirt_lxc_file_t:filesystem { getattr mount unmount };
+allow containerd_t svirt_lxc_file_t:dir mounton;
+
+allow containerd_t containerd_var_lib_t:{ file dir } relabelfrom;
+
+allow containerd_t svirt_lxc_net_t:key { search view create setattr };
+allow containerd_t svirt_lxc_net_t:process { sigkill signull };
+
+# even if docker does not enable selinux, we want the container to run with svirt_lxc_net_t
+domtrans_pattern(containerd_t, svirt_lxc_file_t, svirt_lxc_net_t)
+allow svirt_lxc_net_t svirt_lxc_file_t:file entrypoint;
+
+allow containerd_t svirt_lxc_net_t:process signal;
+allow svirt_lxc_net_t containerd_t:fd use;
+allow svirt_lxc_net_t containerd_t:fifo_file rw_fifo_file_perms;
+term_use_generic_ptys(svirt_lxc_net_t)
+
+# read_state
+allow containerd_t svirt_lxc_net_t:dir search_dir_perms;
+allow containerd_t svirt_lxc_net_t:file read_file_perms;
+allow containerd_t svirt_lxc_net_t:lnk_file read_lnk_file_perms;
+
+# XXX: if docker is run without selinux support, it will not relabel the containers filesystems
+# so /var/lib/overlay2/.* get docker_var_lib_t instead of svirt_lxc_file_t
+# fix this
+filetrans_pattern(containerd_t, containerd_var_lib_t, svirt_lxc_file_t, dir, "overlay2")
+
+# docker / containerd mount tmpfs over these
+gen_require(`
+    type sysctl_irq_t;
+    type proc_kcore_t;
+')
+allow containerd_t sysctl_irq_t:dir mounton;
+allow containerd_t proc_kcore_t:file mounton;
+
+# allow docker to cleanup /run/docker/netns/.*
+gen_require(`
+    type nsfs_t;
+')
+allow containerd_t nsfs_t:filesystem unmount;

@@ -1,0 +1,18 @@
+## <summary>policy for containerd / docker</summary>
+
+## <summary>
+## </summary>
+## <param name="domain">
+##  <summary>
+##   Domain allowed access.
+##  </summary>
+## </param>
+#
+interface(`containerd_stream_connect', `
+    gen_require(`
+        type containerd_t, containerd_runtime_t;
+    ')
+
+    files_search_pids($1)
+    stream_connect_pattern($1, containerd_runtime_t, containerd_runtime_t, containerd_t)
+')

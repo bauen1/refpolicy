@@ -306,6 +306,10 @@ optional_policy(`
 ')
 
 optional_policy(`
+	containerd_stream_connect(sysadm_t)
+')
+
+optional_policy(`
 	couchdb_admin(sysadm_t, sysadm_r)
 ')
 

@@ -1,0 +1,13 @@
+/etc/containerd(/.*)?	gen_context(system_u:object_r:containerd_etc_t,s0)
+/etc/docker(/.*)?	gen_context(system_u:object_r:containerd_etc_t,s0)
+
+/usr/bin/containerd	--	gen_context(system_u:object_r:containerd_exec_t,s0)
+/usr/bin/dockerd	--	gen_context(system_u:object_r:containerd_exec_t,s0)
+
+/run/containerd(/.*)?	gen_context(system_u:object_r:containerd_runtime_t,s0)
+/run/docker.*	gen_context(system_u:object_r:containerd_runtime_t,s0)
+
+/var/lib/containerd(/.*)?	gen_context(system_u:object_r:containerd_var_lib_t,s0)
+/var/lib/docker(/.*)?	gen_context(system_u:object_r:containerd_var_lib_t,s0)
+/var/lib/docker/overlay2	-d	gen_context(system_u:object_r:svirt_lxc_file_t,s0)
+/var/lib/docker/overlay2/.*		<<none>>
