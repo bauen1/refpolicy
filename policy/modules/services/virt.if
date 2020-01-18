@@ -1120,6 +1120,31 @@ interface(`virt_manage_images',`
 
 ########################################
 ## <summary>
+##  Manage all files of the svirt_lxc_file_t type.
+## </summary>
+## <param name="domain">
+##	<summary>
+##	Domain allowed access.
+##	</summary>
+## </param>
+#
+interface(`virt_manage_svirt_files', `
+	gen_require(`
+		type svirt_lxc_file_t;
+	')
+
+	manage_dirs_pattern($1, svirt_lxc_file_t, svirt_lxc_file_t)
+	manage_files_pattern($1, svirt_lxc_file_t, svirt_lxc_file_t)
+	manage_chr_files_pattern($1, svirt_lxc_file_t, svirt_lxc_file_t)
+	manage_lnk_files_pattern($1, svirt_lxc_file_t, svirt_lxc_file_t)
+	manage_fifo_files_pattern($1, svirt_lxc_file_t, svirt_lxc_file_t)
+	manage_sock_files_pattern($1, svirt_lxc_file_t, svirt_lxc_file_t)
+	allow $1 svirt_lxc_file_t:dir_file_class_set { relabelto relabelfrom };
+	allow $1 svirt_lxc_file_t:filesystem { relabelto relabelfrom };
+')
+
+########################################
+## <summary>
 ##	All of the rules required to
 ##	administrate an virt environment.
 ## </summary>
