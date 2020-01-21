@@ -1,0 +1,40 @@
+## <summary>BORG backup utility</summary>
+
+## <summary>
+## </summary>
+## <param name="domain">
+##  <summary>
+##   Domain allowed to transition.
+##  </summary>
+## </param>
+#
+interface(`borg_domtrans', `
+    gen_require(`
+        type borg_t, borg_exec_t;
+    ')
+
+    corecmd_search_bin($1)
+    domtrans_pattern($1, borg_exec_t, borg_t)
+')
+
+## <summary>
+## </summary>
+## <param name="domain">
+##  <summary>
+##   Domain allowed to transition.
+##  </summary>
+## </param>
+## <param name="role">
+##  <summary>
+##  </summary>
+## </param>
+## <rolecap/>
+#
+interface(`borg_run', `
+    gen_require(`
+        attribute_role borg_roles;
+    ')
+
+    borg_domtrans($1)
+    roleattribute $2 borg_roles;
+')

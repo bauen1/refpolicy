@@ -210,6 +210,10 @@ optional_policy(`
 ')
 
 optional_policy(`
+	borg_run(sysadm_t, sysadm_r)
+')
+
+optional_policy(`
 	bugzilla_admin(sysadm_t, sysadm_r)
 ')
 

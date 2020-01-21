@@ -1,0 +1,66 @@
+policy_module(borg, 1.0)
+
+########################################
+#
+# Declarations
+#
+
+attribute_role borg_roles;
+
+type borg_t;
+type borg_exec_t;
+init_daemon_domain(borg_t, borg_exec_t)
+role borg_roles types borg_t;
+
+type borg_store_t;
+files_type(borg_store_t)
+files_mountpoint(borg_store_t)
+
+type borg_tmp_t;
+files_tmp_file(borg_tmp_t)
+
+########################################
+#
+# Local policy
+#
+
+allow borg_t self:capability { dac_override dac_read_search fowner sys_admin };
+allow borg_t self:fifo_file rw_fifo_file_perms;
+allow borg_t self:process { getsched signull };
+
+can_exec(borg_t, borg_store_t)
+can_exec(borg_t, borg_tmp_t)
+
+manage_files_pattern(borg_t, borg_store_t, borg_store_t)
+manage_lnk_files_pattern(borg_t, borg_store_t, borg_store_t)
+manage_dirs_pattern(borg_t, borg_store_t, borg_store_t)
+
+manage_files_pattern(borg_t, borg_tmp_t, borg_tmp_t)
+manage_dirs_pattern(borg_t, borg_tmp_t, borg_tmp_t)
+files_tmp_filetrans(borg_t, borg_tmp_t, { file dir })
+
+corecmd_exec_bin(borg_t)
+
+files_read_all_files(borg_t)
+files_read_all_symlinks(borg_t)
+files_getattr_all_sockets(borg_t)
+files_getattr_all_pipes(borg_t)
+
+fs_getattr_xattr_fs(borg_t)
+
+auth_read_shadow(borg_t)
+
+libs_exec_ldconfig(borg_t)
+
+miscfiles_read_localization(borg_t)
+
+# FIXME: remove this
+
+allow borg_t self:udp_socket { create ioctl };
+
+xdg_manage_config(borg_t)
+xdg_manage_cache(borg_t)
+
+# sudo borg
+domain_use_interactive_fds(borg_t)
+userdom_use_user_ptys(borg_t)
