@@ -1,0 +1,116 @@
+policy_module(ceph, 1.1.1)
+
+########################################
+#
+# Declarations
+#
+
+type ceph_t;
+type ceph_exec_t;
+init_daemon_domain(ceph_t, ceph_exec_t)
+
+type ceph_log_t;
+logging_log_file(ceph_log_t)
+
+type ceph_runtime_t;
+files_pid_file(ceph_runtime_t)
+
+type ceph_tmp_t;
+files_tmp_file(ceph_tmp_t)
+
+type ceph_tmpfs_t;
+files_tmpfs_file(ceph_tmpfs_t)
+
+type ceph_var_lib_t;
+files_type(ceph_var_lib_t)
+
+########################################
+#
+# Local policy
+#
+
+allow ceph_t self:capability { setuid setgid dac_override dac_read_search chown sys_admin fowner sys_resource };
+allow ceph_t self:fifo_file rw_fifo_file_perms;
+allow ceph_t self:netlink_route_socket create_netlink_socket_perms;
+allow ceph_t self:process { signal_perms setrlimit };
+allow ceph_t self:tcp_socket create_stream_socket_perms;
+allow ceph_t self:unix_stream_socket create_stream_socket_perms;
+
+can_exec(ceph_t, ceph_exec_t)
+can_exec(ceph_t, ceph_tmp_t)
+allow ceph_t ceph_var_lib_t:file map;
+
+manage_dirs_pattern(ceph_t, ceph_log_t, ceph_log_t)
+manage_files_pattern(ceph_t, ceph_log_t, ceph_log_t)
+manage_lnk_files_pattern(ceph_t, ceph_log_t, ceph_log_t)
+logging_log_filetrans(ceph_t, ceph_log_t, dir, "ceph")
+
+manage_dirs_pattern(ceph_t, ceph_runtime_t, ceph_runtime_t)
+manage_sock_files_pattern(ceph_t, ceph_runtime_t, ceph_runtime_t)
+files_pid_filetrans(ceph_t, ceph_runtime_t, dir, "ceph")
+
+manage_files_pattern(ceph_t, ceph_tmp_t, ceph_tmp_t)
+files_tmp_filetrans(ceph_t, ceph_tmp_t, file)
+
+manage_dirs_pattern(ceph_t, ceph_tmpfs_t, ceph_tmpfs_t)
+manage_files_pattern(ceph_t, ceph_tmpfs_t, ceph_tmpfs_t)
+manage_lnk_files_pattern(ceph_t, ceph_tmpfs_t, ceph_tmpfs_t)
+fs_tmpfs_filetrans(ceph_t, ceph_tmpfs_t, { dir })
+
+allow ceph_t ceph_var_lib_t:dir mounton;
+manage_dirs_pattern(ceph_t, ceph_var_lib_t, ceph_var_lib_t)
+manage_files_pattern(ceph_t, ceph_var_lib_t, ceph_var_lib_t)
+manage_lnk_files_pattern(ceph_t, ceph_var_lib_t, ceph_var_lib_t)
+files_var_lib_filetrans(ceph_t, ceph_var_lib_t, dir, "ceph")
+
+corecmd_exec_bin(ceph_t)
+
+dev_read_urand(ceph_t)
+dev_read_sysfs(ceph_t)
+
+files_read_etc_files(ceph_t)
+files_read_usr_files(ceph_t)
+
+fs_getattr_xattr_fs(ceph_t)
+fs_read_cgroup_files(ceph_t)
+fs_mount_tmpfs(ceph_t)
+fs_unmount_tmpfs(ceph_t)
+
+kernel_read_crypto_sysctls(ceph_t)
+kernel_read_network_state(ceph_t)
+kernel_read_system_state(ceph_t)
+kernel_read_kernel_sysctls(ceph_t)
+
+lvm_domtrans(ceph_t)
+
+udevadm_domtrans(ceph_t)
+fstools_domtrans(ceph_t)
+
+storage_raw_rw_fixed_disk(ceph_t)
+storage_setattr_fixed_disk_dev(ceph_t)
+
+corenet_tcp_bind_all_unreserved_ports(ceph_t)
+corenet_tcp_bind_all_nodes(ceph_t)
+
+corenet_tcp_connect_all_unreserved_ports(ceph_t)
+
+init_read_state(ceph_t)
+# manage ceph-osd@...
+init_search_units(ceph_t)
+init_stream_connect(ceph_t)
+init_reload(ceph_t)
+init_start_generic_units(ceph_t)
+
+userdom_dontaudit_search_user_home_dirs(ceph_t)
+
+libs_exec_lib_files(ceph_t)
+
+miscfiles_read_localization(ceph_t)
+
+mount_exec(ceph_t)
+
+# FIXME: create interfaces for this
+gen_require(`
+    type device_t;
+')
+allow ceph_t device_t:lnk_file setattr;

@@ -1,0 +1,17 @@
+/run/ceph(/.*)?	gen_context(system_u:object_r:ceph_runtime_t,s0)
+
+/usr/bin/ceph-bluestore-tool	--	gen_context(system_u:object_r:ceph_exec_t,s0)
+/usr/bin/ceph-mgr		--	gen_context(system_u:object_r:ceph_exec_t,s0)
+/usr/bin/ceph-mon		--	gen_context(system_u:object_r:ceph_exec_t,s0)
+/usr/bin/ceph-mds		--	gen_context(system_u:object_r:ceph_exec_t,s0)
+/usr/bin/ceph-fuse		--	gen_context(system_u:object_r:ceph_exec_t,s0)
+/usr/bin/ceph-osd		--	gen_context(system_u:object_r:ceph_exec_t,s0)
+/usr/bin/radosgw		--	gen_context(system_u:object_r:ceph_exec_t,s0)
+/usr/bin/rbd-target-gw		--	gen_context(system_u:object_r:ceph_exec_t,s0)
+/usr/bin/rbd-target-api		--	gen_context(system_u:object_r:ceph_exec_t,s0)
+
+/usr/sbin/ceph-volume	--	gen_context(system_u:object_r:ceph_exec_t,s0)
+
+/var/lib/ceph(/.*)?	gen_context(system_u:object_r:ceph_var_lib_t,s0)
+
+/var/log/ceph(/.*)?	gen_context(system_u:object_r:ceph_log_t,s0)
