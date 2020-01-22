@@ -11,3 +11,6 @@ attribute mcssetcats;
 attribute mcswriteall;
 attribute mcsreadall;
 attribute mcs_constrained_type;
+
+attribute mcs_fifo_file_open_target_unconfined;
+attribute mcs_fifo_file_open_source_unconfined;

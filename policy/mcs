@@ -86,7 +86,8 @@ mlsconstrain dir { write setattr append unlink link rename add_name remove_name 
 
 mlsconstrain fifo_file { open }
 	(( h1 dom h2 ) or ( t1 == mcsreadall ) or
-	(( t1 != mcs_constrained_type ) and ( t2 == domain )));
+	(( t1 != mcs_constrained_type ) and ( t2 == domain )) or
+	(( t1 == mcs_fifo_file_open_source_unconfined ) and ( t2 == mcs_fifo_file_open_target_unconfined )));
 
 mlsconstrain { lnk_file chr_file blk_file sock_file } { getattr read ioctl }
 	(( h1 dom h2 ) or ( t1 == mcsreadall ) or

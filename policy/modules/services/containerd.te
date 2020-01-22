@@ -208,3 +208,10 @@ gen_require(`
     type nsfs_t;
 ')
 allow containerd_t nsfs_t:filesystem unmount;
+
+gen_require(`
+    attribute mcs_fifo_file_open_target_unconfined;
+    attribute mcs_fifo_file_open_source_unconfined;
+')
+typeattribute containerd_t mcs_fifo_file_open_target_unconfined;
+typeattribute svirt_lxc_net_t mcs_fifo_file_open_source_unconfined;
