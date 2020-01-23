@@ -6,3 +6,13 @@ gen_require(`
     type syslogd_t;
 ')
 allow init_t syslogd_t:fd use;
+
+####################
+# ansible gather_facts: set ansible_service_mgr correctly
+gen_require(`
+    type staff_t;
+    type init_t;
+')
+allow staff_t init_t:dir search_dir_perms;
+allow staff_t init_t:file read_file_perms;
+allow staff_t init_t:lnk_file read_lnk_file_perms;
