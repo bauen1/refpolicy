@@ -5,9 +5,12 @@ policy_module(ceph, 1.1.1)
 # Declarations
 #
 
+attribute_role ceph_roles;
+
 type ceph_t;
 type ceph_exec_t;
 init_daemon_domain(ceph_t, ceph_exec_t)
+role ceph_roles types ceph_t;
 
 type ceph_log_t;
 logging_log_file(ceph_log_t)

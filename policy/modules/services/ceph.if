@@ -1,1 +1,78 @@
 ## <summary>policy for ceph</summary>
+
+########################################
+## <summary>
+##  Execute ceph_exec_t in the ceph domain.
+## </summary>
+## <param name="domain">
+## <summary>
+##  Domain allowed to transition.
+## </summary>
+## </param>
+#
+interface(`ceph_domtrans',`
+    gen_require(`
+        type ceph_t, ceph_exec_t;
+    ')
+
+    corecmd_search_bin($1)
+    domtrans_pattern($1, ceph_exec_t, ceph_t)
+')
+
+######################################
+## <summary>
+##  Execute ceph in the caller domain.
+## </summary>
+## <param name="domain">
+##  <summary>
+##  Domain allowed access.
+##  </summary>
+## </param>
+#
+interface(`ceph_exec',`
+    gen_require(`
+        type ceph_exec_t;
+    ')
+
+    corecmd_search_bin($1)
+    can_exec($1, ceph_exec_t)
+')
+
+######################################
+## <summary>
+##  Connect to any ceph daemon.
+## </summary>
+## <param name="domain">
+##  <summary>
+##   Domain allowed access.
+##  </summary>
+## </param>
+#
+interface(`ceph_stream_connect', `
+    gen_require(`
+        type ceph_t, ceph_runtime_t;
+    ')
+
+    files_search_pids($1)
+    stream_connect_pattern($1, ceph_runtime_t, ceph_runtime_t, ceph_t)
+')
+
+######################################
+## <summary>
+##  Admin ceph.
+## </summary>
+## <param name="domain">
+##  <summary>
+##  Domain allowed access.
+##  </summary>
+## </param>
+## <rolecap/>
+#
+interface(`ceph_admin', `
+    gen_require(`
+        attribute_role ceph_roles;
+    ')
+
+    ceph_domtrans($1)
+    roleattribute $2 ceph_roles;
+')

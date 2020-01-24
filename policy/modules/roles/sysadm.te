@@ -238,6 +238,11 @@ optional_policy(`
 ')
 
 optional_policy(`
+	ceph_admin(sysadm_t, sysadm_r)
+    ceph_stream_connect(sysadm_t)
+')
+
+optional_policy(`
 	certmaster_admin(sysadm_t, sysadm_r)
 ')
 
