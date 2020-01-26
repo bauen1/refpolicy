@@ -34,3 +34,11 @@ gen_require(`
     type sshd_t;
 ')
 allow sudodomain sshd_t:fifo_file rw_inherited_fifo_file_perms;
+
+####################
+# linux 5.4
+gen_require(`
+    type policykit_t;
+    type policykit_var_lib_t;
+')
+allow policykit_t policykit_var_lib_t:dir watch;
