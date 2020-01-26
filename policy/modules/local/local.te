@@ -25,3 +25,12 @@ gen_require(`
 init_get_generic_units_status(ntpd_t)
 init_start_generic_units(ntpd_t)
 init_stop_generic_units(ntpd_t)
+
+####################
+# ansible: use sudo from an ssh session without tty
+# FIXME: why isn't this allowed by default ?
+gen_require(`
+    attribute sudodomain;
+    type sshd_t;
+')
+allow sudodomain sshd_t:fifo_file rw_inherited_fifo_file_perms;
