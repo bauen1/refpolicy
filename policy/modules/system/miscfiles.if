@@ -594,7 +594,7 @@ interface(`miscfiles_watch_localization',`
 		type locale_t;
 	')
 
-	allow $1 locale_t:file watch;
+	allow $1 locale_t:{ file dir } watch;
 ')
 
 ########################################
