@@ -42,3 +42,11 @@ gen_require(`
     type policykit_var_lib_t;
 ')
 allow policykit_t policykit_var_lib_t:dir watch;
+
+####################
+# smartctl needs to read /var/lib/smartmontools/drivedb
+gen_require(`
+    type fsadm_t;
+    type fsdaemon_var_lib_t;
+')
+allow fsadm_t fsdaemon_var_lib_t:file read_file_perms;
