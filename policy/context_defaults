@@ -9,3 +9,7 @@
 #default_role process source;
 #default_type process source;
 #default_range process source low;
+
+# docker
+# dir_file_class_set
+default_range { dir { { blk_file chr_file } { fifo_file file lnk_file sock_file } } } target low;
