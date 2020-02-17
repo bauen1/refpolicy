@@ -1,0 +1,6 @@
+HOME_DIR/documents(/.*)?	gen_context(system_u:object_r:xdg_documents_t,s0)
+HOME_DIR/downloads(/.*)?	gen_context(system_u:object_r:xdg_downloads_t,s0)
+HOME_DIR/music(/.*)?		gen_context(system_u:object_r:xdg_music_t,s0)
+HOME_DIR/pictures(/.*)?		gen_context(system_u:object_r:xdg_pictures_t,s0)
+HOME_DIR/videos(/.*)?		gen_context(system_u:object_r:xdg_videos_t,s0)
+
