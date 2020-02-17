@@ -1,0 +1,54 @@
+## <summary>mpd systemd --user compat</summary>
+
+########################################
+## <summary>
+## </summary>
+## <param name="domain">
+##   <summary>
+##     systemd --user domain
+##   </summary>
+## </param>
+## <param name="role">
+##   <summary>
+##     systemd --user role
+##   </summary>
+## </param>
+interface(`systemd_user_mpd_domain',`
+    gen_require(`
+        type mpd_t;
+        type mpd_port_t;
+        class tcp_socket { bind create listen setopt };
+        class unix_stream_socket { bind create listen setopt connectto getattr read write sendto };
+        class process { sigkill signal signull rlimitinh siginh };
+        class unix_dgram_socket sendto;
+        class process2 { nnp_transition };
+        class dir { search };
+        class file { open read getattr };
+    ')
+
+    # allow systemd --user to execute (and domain transition) into mpd
+    mpd_domtrans($1)
+    role $2 types mpd_t;
+
+    # socket activation (systemd per-user unit "mpd.socket")
+    allow $1 mpd_port_t:tcp_socket name_bind;
+    allow $1 mpd_t:tcp_socket { bind create listen setopt };
+    allow mpd_t $1:tcp_socket { read write getattr accept getopt setopt };
+    allow $1 mpd_t:unix_stream_socket { bind create listen setopt };
+    allow mpd_t $1:unix_stream_socket { connectto getattr read write sendto };
+
+    #
+    allow $1 mpd_t:process { sigkill signal signull };
+
+    # misc.
+    # allow $1 mpd_t:unix_dgram_socket sendto;
+    allow mpd_t $1:unix_dgram_socket sendto;
+    allow $1 mpd_t:process2 nnp_transition;
+
+    dontaudit $1 mpd_t:process { noatsecure rlimitinh siginh };
+
+    # FIXME: ???
+    allow $1 mpd_t:dir search;
+    allow $1 mpd_t:file { open read getattr };
+
+')

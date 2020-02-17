@@ -1,0 +1,61 @@
+policy_module(local_mpd, 1.0)
+
+gen_require(`
+    type staff_systemd_t;
+    role staff_r;
+    type user_systemd_t;
+    role user_r;
+')
+systemd_user_mpd_domain(staff_systemd_t, staff_r)
+systemd_user_mpd_domain(user_systemd_t, user_r)
+
+xdg_read_music(mpd_t)
+
+# lightdm also has an instance of mpd (for what ever reason)
+gen_require(`
+    type xdm_var_lib_t;
+    class dir { getattr };
+')
+allow mpd_t xdm_var_lib_t:dir getattr;
+
+# FIXME: is all of this necessary ?
+gen_require(`
+    type systemd_user_runtime_t;
+    type systemd_user_runtime_notify_t;
+    type mpd_tmpfs_t;
+    type sysctl_crypto_t;
+    class sock_file { manage_sock_file_perms write };
+')
+
+# FIXME: these shouldn't even be needed (systemd socket activation ???)
+allow mpd_t systemd_user_runtime_t:dir { search write };
+allow mpd_t systemd_user_runtime_t:dir { add_name remove_name };
+allow mpd_t systemd_user_runtime_t:sock_file { manage_sock_file_perms };
+allow mpd_t systemd_user_runtime_notify_t:sock_file { manage_sock_file_perms write };
+
+# ???
+allow mpd_t sysctl_crypto_t:dir search;
+allow mpd_t sysctl_crypto_t:file { getattr open read };
+
+allow mpd_t mpd_tmpfs_t:file map;
+
+gen_require(`
+    type mpd_t;
+')
+avahi_dbus_chat(mpd_t)
+
+# fifo
+gen_require(`
+    type tmp_t;
+    class fifo_file { manage_fifo_file_perms };
+')
+
+allow mpd_t tmp_t:fifo_file { manage_fifo_file_perms };
+
+gen_require(`
+    type proc_net_t;
+    type samba_etc_t;
+')
+dontaudit mpd_t proc_net_t:file read;
+dontaudit mpd_t samba_etc_t:dir search;
+
