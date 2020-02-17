@@ -221,3 +221,7 @@ ifndef(`distro_redhat',`
 		wireshark_role(staff_r, staff_t)
 	')
 ')
+
+optional_policy(`
+    bwrap_role_template(staff, staff_r, staff_t)
+')
