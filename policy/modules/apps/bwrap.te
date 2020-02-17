@@ -1,0 +1,98 @@
+policy_module(bwrap, 1.0)
+
+########################################
+#
+# Declarations
+#
+
+attribute bwrap_domain;
+attribute_role bwrap_roles;
+
+type bwrap_exec_t;
+application_executable_file(bwrap_exec_t)
+
+########################################
+#
+# Local Policy
+#
+
+allow bwrap_domain self:capability { sys_admin setpcap setuid net_admin };
+allow bwrap_domain self:process { setcap sigkill };
+allow bwrap_domain self:unix_stream_socket { create read write };
+allow bwrap_domain self:udp_socket { create ioctl };
+allow bwrap_domain self:netlink_route_socket create_netlink_socket_perms;
+
+dev_read_rand(bwrap_domain)
+dev_read_urand(bwrap_domain)
+
+kernel_read_system_state(bwrap_domain)
+kernel_read_network_state(bwrap_domain)
+kernel_read_kernel_sysctls(bwrap_domain)
+kernel_search_network_sysctl(bwrap_domain)
+kernel_mount_proc(bwrap_domain)
+kernel_remount_proc(bwrap_domain)
+
+files_search_all(bwrap_domain)
+files_mounton_root(bwrap_domain)
+files_mounton_tmp(bwrap_domain)
+files_read_etc_files(bwrap_domain)
+files_read_var_lib_symlinks(bwrap_domain)
+
+fs_manage_tmpfs_dirs(bwrap_domain)
+fs_manage_tmpfs_files(bwrap_domain)
+fs_manage_tmpfs_symlinks(bwrap_domain)
+fs_mount_tmpfs(bwrap_domain)
+fs_remount_tmpfs(bwrap_domain)
+fs_unmount_tmpfs(bwrap_domain)
+fs_mounton_tmpfs(bwrap_domain)
+fs_mounton_tmpfs_files(bwrap_domain)
+fs_unmount_xattr_fs(bwrap_domain)
+fs_remount_xattr_fs(bwrap_domain)
+fs_read_nsfs_files(bwrap_domain)
+gen_require(`
+    type var_lib_t;
+')
+allow bwrap_domain var_lib_t:dir mounton;
+gen_require(`
+    type nsfs_t;
+')
+allow bwrap_domain nsfs_t:filesystem remount;
+
+term_mount_devpts(bwrap_domain)
+
+domain_use_interactive_fds(bwrap_domain)
+userdom_use_user_ptys(bwrap_domain)
+userdom_rw_user_tmpfs_files(bwrap_domain)
+userdom_manage_user_home_content_files(bwrap_domain)
+userdom_search_all_user_home_content(bwrap_domain)
+userdom_rw_user_tmp_files(bwrap_domain)
+
+sysnet_read_config(bwrap_domain)
+
+# TODO: cleanup
+# /usr/.ref
+gen_require(`
+    type var_lib_t;
+')
+allow bwrap_domain var_lib_t:file lock;
+gen_require(`
+    type device_t;
+    type sysfs_t;
+')
+allow bwrap_domain { device_t sysfs_t }:filesystem remount;
+gen_require(`
+    type devlog_t;
+    type var_lib_t;
+')
+allow bwrap_domain devlog_t:sock_file getattr;
+allow bwrap_domain var_lib_t:file mounton;
+
+gen_require(`
+    attribute user_home_content_type;
+    attribute user_runtime_content_type;
+    type xdm_tmp_t;
+')
+allow bwrap_domain { user_home_content_type user_runtime_content_type }:dir { search getattr mounton };
+allow bwrap_domain { user_home_content_type user_runtime_content_type }:file { getattr mounton };
+allow bwrap_domain { user_home_content_type user_runtime_content_type }:sock_file getattr;
+allow bwrap_domain xdm_tmp_t:sock_file getattr;

@@ -1,0 +1,42 @@
+## <summary></summary>
+
+## <summary></summary>
+## <desc>
+## </desc>
+## <param name="role_prefix">
+##  <summary></summary>
+## </param>
+## <param name="user_role">
+##  <summary></summary>
+## </param>
+## <param name="user_domain">
+##  <summary></summary>
+## </param>
+template(`bwrap_role_template',`
+    gen_require(`
+        attribute bwrap_domain;
+        attribute_role bwrap_roles;
+        type bwrap_exec_t;
+    ')
+
+    type $1_bwrap_t, bwrap_domain;
+    userdom_user_application_domain($1_bwrap_t, bwrap_exec_t)
+    role bwrap_roles types $1_bwrap_t;
+    roleattribute $2 bwrap_roles;
+
+    domtrans_pattern($3, bwrap_exec_t, $1_bwrap_t)
+
+    corecmd_bin_domtrans($1_bwrap_t, $3)
+
+    domtrans_pattern($1_bwrap_t, var_lib_t, $3)
+    gen_require(`
+        type var_lib_t;
+        class process2 { nnp_transition nosuid_transition };
+    ')
+    allow $3 var_lib_t:file entrypoint;
+    allow $1_bwrap_t $3:process2 { nnp_transition nosuid_transition };
+
+    allow $3 $1_bwrap_t:process signal_perms;
+
+    ps_process_pattern($3, $1_bwrap_t)
+')
