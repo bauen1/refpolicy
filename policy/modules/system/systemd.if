@@ -94,6 +94,16 @@ template(`systemd_role_template',`
 	')
 
 	optional_policy(`
+		gen_require(`
+			type pulseaudio_t;
+		')
+
+		systemd_user_domain(pulseaudio_t, pulseaudio_exec_t)
+		# for pulseaudio_client attribute
+		pulseaudio_domtrans($1_systemd_t)
+	')
+
+	optional_policy(`
 		# for socket activation
 		gpg_create_runtime_dir($1_systemd_t)
 		gpg_agent_create_runtime_sock_files($1_systemd_t)
