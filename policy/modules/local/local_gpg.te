@@ -1,0 +1,42 @@
+policy_module(local_gpg, 1.0)
+
+gen_require(`
+    type staff_systemd_t;
+    type user_systemd_t;
+    role staff_r;
+    role user_r;
+')
+systemd_gnupg_socket_activation_fix(staff_systemd_t)
+systemd_gnupg_socket_activation_fix(user_systemd_t)
+
+# dirmngr
+gen_require(`
+    type dirmngr_t;
+')
+allow dirmngr_t self:unix_stream_socket { listen accept };
+
+systemd_user_dirmngr(staff_systemd_t, staff_r)
+systemd_user_dirmngr(user_systemd_t, user_r)
+
+# gpg-agent
+systemd_user_gpg_agent(staff_systemd_t, staff_r)
+systemd_user_gpg_agent(user_systemd_t, user_r)
+
+# pinentry
+
+# might not be required
+gen_require(`
+    type gpg_pinentry_t;
+    type gpg_runtime_t;
+    type gpg_agent_tmp_t;
+    type gpg_t;
+    type session_dbusd_runtime_t;
+')
+allow gpg_pinentry_t gpg_runtime_t:dir search;
+allow gpg_pinentry_t session_dbusd_runtime_t:sock_file write;
+allow gpg_pinentry_t gpg_agent_tmp_t:sock_file getattr;
+allow gpg_pinentry_t gpg_t:dir search;
+allow gpg_pinentry_t gpg_t:file { getattr open read };
+
+systemd_user_gpg_pinentry(staff_systemd_t, staff_r)
+systemd_user_gpg_pinentry(user_systemd_t, user_r)

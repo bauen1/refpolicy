@@ -1,0 +1,98 @@
+## <summary>local fixes for systemd + gpg</summary>
+
+## <summary>
+##  Fixes for systemd socket activation on /run/user/$uid/gnupg
+## </summary>
+## <param name="systemd domain">
+##  <summary></summary>
+## </param>
+interface(`systemd_gnupg_socket_activation_fix', `
+    gen_require(`
+        type gpg_runtime_t;
+    ')
+
+    userdom_user_runtime_filetrans($1, gpg_runtime_t, dir, "gnupg")
+    allow $1 gpg_runtime_t:dir manage_dir_perms;
+')
+
+## <summary>Fixes for systemd --user and dirmngr_t</summary>
+## <param name="systemd domain">
+##  <summary></summary>
+## </param>
+## <param name="user role">
+##  <summary></summary>
+## </param>
+interface(`systemd_user_dirmngr',`
+    gen_require(`
+        type dirmngr_t, dirmngr_exec_t;
+        type dirmngr_tmp_t;
+    ')
+
+    dirmngr_role($2, $1)
+    allow $1 dirmngr_exec_t:file getattr;
+
+    # systemd socket activation
+    filetrans_pattern($1, gpg_runtime_t, dirmngr_tmp_t, sock_file, "S.dirmngr")
+    allow $1 dirmngr_tmp_t:sock_file { create write };
+    allow $1 dirmngr_t:unix_stream_socket { bind create listen setopt };
+    allow dirmngr_t $1:unix_stream_socket { read write getattr getopt accept };
+
+    # systemd status
+    allow $1 dirmngr_t:dir search;
+    allow $1 dirmngr_t:file { open read getattr };
+')
+
+## <summary>Fixes for systemd --user and gpg_agent_t</summary>
+## <param name="systemd domain">
+##  <summary></summary>
+## </param>
+## <param name="user role">
+##  <summary></summary>
+## </param>
+interface(`systemd_user_gpg_agent', `
+    gen_require(`
+        type gpg_agent_t, gpg_agent_exec_t;
+        type gpg_agent_tmp_t;
+        attribute_role gpg_agent_roles;
+    ')
+
+    roleattribute $2 gpg_agent_roles;
+    domtrans_pattern($1, gpg_agent_exec_t, gpg_agent_t)
+
+    # systemd socket activation
+    filetrans_pattern($1, gpg_runtime_t, gpg_agent_tmp_t, sock_file)
+    allow $1 gpg_agent_tmp_t:sock_file { getattr create write unlink };
+    allow gpg_agent_t $1:unix_stream_socket { connectto read write getattr ioctl accept getopt };
+
+    # probably related to socket activation
+    gen_require(`
+        type gpg_t;
+    ')
+    allow gpg_t $1:unix_stream_socket connectto;
+
+    # systemd status
+    allow $1 gpg_agent_t:dir search;
+    allow $1 gpg_agent_t:file { open read getattr ioctl };
+
+    # kill / stop / restart
+    allow $1 gpg_agent_t:process { sigkill signal };
+')
+
+## <summary>Fixes for systemd --user and gpg-pinentry</summary>
+## <param name="systemd domain">
+##  <summary></summary>
+## </param>
+## <param name="user role">
+##  <summary></summary>
+## </param>
+interface(`systemd_user_gpg_pinentry', `
+    gen_require(`
+        type gpg_pinentry_t, gpg_pinentry_exec_t;
+        attribute_role gpg_pinentry_roles;
+    ')
+
+    roleattribute $2 gpg_pinentry_roles;
+    can_exec($1, gpg_pinentry_exec_t)
+    domtrans_pattern($1, gpg_pinentry_exec_t, gpg_pinentry_t)
+    allow gpg_pinentry_t $1:unix_stream_socket { connectto read write };
+')

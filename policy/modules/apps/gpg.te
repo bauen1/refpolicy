@@ -318,6 +318,8 @@ optional_policy(`
 # Pinentry local policy
 #
 
+allow gpg_pinentry_t gpg_agent_tmp_t:sock_file { write };
+
 allow gpg_pinentry_t self:process { getcap getsched setsched signal };
 allow gpg_pinentry_t self:fifo_file rw_fifo_file_perms;
 allow gpg_pinentry_t self:shm create_shm_perms;
