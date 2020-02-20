@@ -1,0 +1,23 @@
+## <summary>fixes to make ssh work correctly</summary>
+
+## <summary>
+##  Apply fixes to a user and user_systemd domain.
+## </summary>
+## <param name="ssh agent domain">
+##  <summary></summary>
+## </param>
+## <param name="user systemd domain">
+##  <summary></summary>
+## </param>
+#
+interface(`ssh_agent_fixes', `
+    # probably socket activation
+    allow $1 $2:fd use;
+    allow $1 $2:unix_stream_socket rw_stream_socket_perms;
+
+    # FIXME: probably not required
+    allow $2 $1:dir search_dir_perms;
+    allow $2 $1:file read_file_perms;
+
+    allow $2 $1:process { signull sigkill };
+')

@@ -1,0 +1,18 @@
+# ssh-agent systemd --user compat
+policy_module(local_ssh,1.0)
+
+gen_require(`
+    type staff_ssh_agent_t, staff_systemd_t;
+    type user_ssh_agent_t, user_systemd_t;
+')
+
+ssh_agent_fixes(staff_ssh_agent_t, staff_systemd_t)
+ssh_agent_fixes(user_ssh_agent_t, user_systemd_t)
+
+# TODO: probably relabel the directory
+# ansible ssh multiplex sockets
+gen_require(`
+    type ssh_t, ssh_exec_t;
+')
+userdom_manage_user_home_content_sockets(ssh_t)
+can_exec(ssh_t, ssh_exec_t)
