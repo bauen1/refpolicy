@@ -1,0 +1,101 @@
+## <summary>
+##  Fixes for 'systemd --user'
+## </summary>
+
+########################################
+## <summary>
+##   apply systemd --user domain fixes
+## </summary>
+## <param name="user domain">
+##   <summary>
+##     # TODO
+##   </summary>
+## </param>
+## <param name="systemd user domain">
+##   <summary>
+##     systemd --user domain
+##   </summary>
+## </param>
+## <param name="role">
+##   <summary>
+##     systemd --user role
+##   </summary>
+## </param>
+#
+interface(`systemd_user_fixes',`
+    gen_require(`
+        type systemd_unit_t;
+        class netlink_kobject_uevent_socket { read };
+        class unix_stream_socket { connectto read write getattr ioctl };
+        class process { sigkill signal };
+        class service start;
+        class system { start status };
+    ')
+
+    allow $2 self:unix_stream_socket connectto;
+
+    # misc.
+    allow $2 $1:process { sigkill signal };
+
+    # FIXME: might not be required
+    allow $1 $2:fd use;
+
+    # FIXME: might be required
+    allow $1 $2:dir { getattr open read search };
+    allow $1 $2:lnk_file read;
+    allow $1 $2:file { getattr open read };
+
+    allow $1 $2:dbus send_msg;
+    allow $2 $1:dbus send_msg;
+
+    allow $1 $2:service start;
+    allow $1 $2:system { start status };
+
+    # allow systemd --user status to read cmdline
+    ps_process_pattern($2, $1)
+')
+
+## <summary></summary>
+## <param name="user systemd domain">
+##  <summary></summary>
+## </param>
+## <param name="user dbusd domain">
+##  <summary></summary>
+## </param>
+## <param name="user role">
+##  <summary></summary>
+## </param>
+interface(`systemd_user_dbusd',`
+    gen_require(`
+        type dbusd_exec_t;
+        class unix_stream_socket { bind connectto create listen setopt getattr getopt read write };
+        class dbus { acquire_svc send_msg };
+        class process { signal signull sigkill noatsecure rlimitinh siginh };
+        class sock_file { create write };
+        type session_dbusd_runtime_t;
+        class file { getattr open read };
+        class dir { search };
+    ')
+
+    role $3 types $2;
+    domtrans_pattern($1, dbusd_exec_t, $2)
+
+    # socket activation
+    allow $1 $2:unix_stream_socket { bind connectto create listen setopt };
+    allow $2 $1:unix_stream_socket { connectto accept getattr getopt read write };
+
+    # the fun part: correct context for /run/user/$uid/dbus
+    allow $1 session_dbusd_runtime_t:sock_file { create write };
+    userdom_user_runtime_filetrans($1, session_dbusd_runtime_t, sock_file, "bus")
+
+    # stop / kill
+    allow $1 $2:process { signal signull sigkill };
+    dontaudit $1 $2:process { noatsecure rlimitinh siginh };
+
+    # dbus chatter between "systemd --user" and "user dbus"
+    allow $1 $2:dbus { acquire_svc send_msg };
+    allow $2 $1:dbus { send_msg };
+
+    # allow systemd --user status to read cmdline
+    ps_process_pattern($1, $2)
+')
