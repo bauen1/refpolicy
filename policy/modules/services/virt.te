@@ -816,6 +816,7 @@ optional_policy(`
 
 optional_policy(`
 	systemd_write_inherited_logind_inhibit_pipes(virtd_t)
+	systemd_dbus_chat_machined(virtd_t)
 ')
 
 optional_policy(`
