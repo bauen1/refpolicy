@@ -4677,6 +4677,25 @@ interface(`dev_write_urand',`
 
 ########################################
 ## <summary>
+##  Unlink the pseudo random device (e.g., /dev/urandom).
+## </summary>
+## <param name="domain">
+##	<summary>
+##	Domain allowed access.
+##	</summary>
+## </param>
+#
+interface(`dev_unlink_urand', `
+	gen_require(`
+		type device_t, urandom_device_t;
+	')
+
+	allow $1 device_t:dir search_dir_perms;
+	allow $1 urandom_device_t:chr_file unlink;
+')
+
+########################################
+## <summary>
 ##	Getattr generic the USB devices.
 ## </summary>
 ## <param name="domain">
