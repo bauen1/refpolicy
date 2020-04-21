@@ -177,6 +177,8 @@ allow lvm_t self:netlink_kobject_uevent_socket create_socket_perms;
 allow lvm_t self:sem create_sem_perms;
 # gt: the following is for sockets in the AF_ALG namespace (userspace interface to the kernel Crypto API)
 allow lvm_t self:socket create_stream_socket_perms;
+# for systemd-cryptsetup
+allow lvm_t self:key { search write };
 
 allow lvm_t self:unix_stream_socket { connectto create_stream_socket_perms };
 allow lvm_t clvmd_t:unix_stream_socket { connectto rw_socket_perms };
@@ -310,6 +312,8 @@ init_read_script_state(lvm_t)
 init_read_script_tmp_files(lvm_t)
 # for systemd-cryptsetup to talk to /run/systemd/journal/socket
 init_stream_connect(lvm_t)
+# for systemd-cryptsetup
+allow lvm_t init_t:key search;
 
 logging_send_syslog_msg(lvm_t)
 
@@ -326,6 +330,9 @@ ifdef(`init_systemd',`
 	init_rw_stream_sockets(lvm_t)
 
 	fs_manage_hugetlbfs_dirs(lvm_t)
+
+	# for systemd-cryptsetup
+	systemd_use_passwd_agent(lvm_t)
 ')
 
 ifdef(`distro_redhat',`
