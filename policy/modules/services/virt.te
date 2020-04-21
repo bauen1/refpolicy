@@ -389,6 +389,7 @@ tunable_policy(`virt_use_usb',`
         class chr_file { open read write lock };
     ')
     allow virt_domain usb_device_t:chr_file { open read write lock };
+	allow virtd_t usb_device_t:chr_file { open read write lock };
 ')
 
 optional_policy(`
