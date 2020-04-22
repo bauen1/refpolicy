@@ -68,9 +68,16 @@ exempted_ubac_constraint(chr_file, ubacfile)
 exempted_ubac_constraint(blk_file, ubacfile)
 
 # SELinux object identity change constraint:
-constrain dir_file_class_set { create relabelto relabelfrom }
+constrain dir_file_class_set { create relabelto }
 (
 	u1 == u2
+	or t1 == can_change_object_identity
+);
+
+constrain dir_file_class_set relabelfrom
+(
+	u1 == u2
+	or u2 == system_u
 	or t1 == can_change_object_identity
 );
 
