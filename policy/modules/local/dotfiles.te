@@ -15,12 +15,3 @@ allow mpd_t xdg_config_t:lnk_file read_lnk_file_perms;
 # FIXME: too broad
 allow mpd_t user_home_t:dir manage_dir_perms;
 allow mpd_t user_home_t:file manage_file_perms;
-
-# ========== staff_screen_t ==========
-# ~/.tmux.conf -> ~/.dotfiles/tmux/tmux.conf
-gen_require(`
-    attribute screen_domain;
-    type user_home_t;
-')
-allow screen_domain user_home_t:lnk_file read_lnk_file_perms;
-allow screen_domain user_home_t:dir search_dir_perms;

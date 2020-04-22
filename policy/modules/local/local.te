@@ -50,3 +50,17 @@ gen_require(`
     type fsdaemon_var_lib_t;
 ')
 allow fsadm_t fsdaemon_var_lib_t:file read_file_perms;
+
+####################
+# tmux
+gen_require(`
+    attribute screen_domain;
+    type user_home_t;
+')
+
+# tmux-resurrect: restore pwd
+userdom_search_all_user_home_content(screen_domain)
+
+# tmux-resurrect: write save files
+allow screen_domain user_home_t:dir manage_dir_perms;
+allow screen_domain user_home_t:file manage_file_perms;
