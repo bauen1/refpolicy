@@ -1,0 +1,4 @@
+policy_module(local_2fa, 1.0)
+
+type auth_2fa_home_t;
+userdom_user_home_content(auth_2fa_home_t)

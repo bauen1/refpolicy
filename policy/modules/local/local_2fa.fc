@@ -1,0 +1,1 @@
+HOME_DIR/\.2fa(/.*)?	gen_context(system_u:object_r:auth_2fa_home_t,s0)

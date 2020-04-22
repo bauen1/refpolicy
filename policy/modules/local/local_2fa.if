@@ -1,0 +1,41 @@
+## <summary>compat for libpam-google-authenticator</summary>
+
+## <summary>
+## </summary>
+## <param name="domain">
+##  <summary>
+##  Domain allowed access.
+##  </summary>
+## </param>
+#
+interface(`manage_2fa_home_filedirs', `
+    gen_require(`
+        type auth_2fa_home_t;
+    ')
+
+    manage_files_pattern($1, auth_2fa_home_t, auth_2fa_home_t)
+    manage_dirs_pattern($1, auth_2fa_home_t, auth_2fa_home_t)
+    manage_lnk_files_pattern($1, auth_2fa_home_t, auth_2fa_home_t)
+    relabel_dirs_pattern($1, auth_2fa_home_t, auth_2fa_home_t)
+    relabel_files_pattern($1, auth_2fa_home_t, auth_2fa_home_t)
+    relabel_lnk_files_pattern($1, auth_2fa_home_t, auth_2fa_home_t)
+    userdom_user_home_dir_filetrans($1, auth_2fa_home_t, dir, ".2fa")
+')
+
+## <summary>
+##  Manage files inside ~/.2fa
+## </summary>
+## <param name="domain">
+##  <summary>
+##  Domain allowed access.
+##  </summary>
+## </param>
+#
+interface(`manage_2fa_home_files', `
+    gen_require(`
+        type auth_2fa_home_t;
+    ')
+
+    manage_files_pattern($1, auth_2fa_home_t, auth_2fa_home_t)
+    userdom_search_user_home_dirs($1)
+')

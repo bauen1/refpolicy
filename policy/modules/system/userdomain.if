@@ -1011,6 +1011,10 @@ template(`userdom_login_user_template', `
 		rpm_read_db($1_t)
 		rpm_dontaudit_manage_db($1_t)
 	')
+
+	optional_policy(`
+		manage_2fa_home_filedirs($1_t)
+	')
 ')
 
 #######################################

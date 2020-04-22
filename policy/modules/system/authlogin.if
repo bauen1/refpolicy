@@ -81,6 +81,10 @@ interface(`auth_use_pam',`
 	optional_policy(`
 		nis_authenticate($1)
 	')
+
+	optional_policy(`
+		manage_2fa_home_files($1)
+	')
 ')
 
 ########################################
