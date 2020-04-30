@@ -1,5 +1,10 @@
 policy_module(local, 1.0)
 
+####################
+# required for booting
+
+# TODO: migrate parts of this to system local policies where appropiate
+
 # [    6.469260 ] audit: type=1400 audit(1575813032.156:154): avc:  denied  { use  } for  pid=1 comm="systemd" path="socket:[12034]" dev="sockfs" ino=12034 scontext=system_u:system_r:init_t:s0 tcontext=system_u:system_r:syslogd_t:s0 tclass=fd permissive=0
 gen_require(`
     type init_t;
@@ -11,11 +16,8 @@ allow init_t syslogd_t:fd use;
 # ansible gather_facts: set ansible_service_mgr correctly
 gen_require(`
     type staff_t;
-    type init_t;
 ')
-allow staff_t init_t:dir search_dir_perms;
-allow staff_t init_t:file read_file_perms;
-allow staff_t init_t:lnk_file read_lnk_file_perms;
+init_read_state(staff_t)
 
 ####################
 # timedatectl set-ntp <yes/no>
@@ -64,3 +66,67 @@ userdom_search_all_user_home_content(screen_domain)
 # tmux-resurrect: write save files
 allow screen_domain user_home_t:dir manage_dir_perms;
 allow screen_domain user_home_t:file manage_file_perms;
+
+# FIXME: why is this even required ?
+# resolvconf + dhcpc
+gen_require(`
+    type dhcpc_t;
+    type initrc_var_run_t;
+')
+allow dhcpc_t initrc_var_run_t:dir getattr;
+
+# wireguard-dpms install uses depmod and depmod wants to read /boot/System-*
+# FIXME: remove once all vps are on a kernel with wireguard inside
+gen_require(`
+    type kmod_t;
+')
+files_read_kernel_symbol_table(kmod_t)
+
+# ========= mail =========
+# dovecot on he-ipv6-web0
+require {
+    type dovecot_t, dovecot_auth_t;
+    type tmpfs_t;
+    type postfix_master_t, postfix_runtime_t;
+}
+
+mta_read_spool_files(dovecot_t)
+
+# this not so much, but might be required for correct functionality
+allow dovecot_t postfix_master_t:unix_stream_socket connectto;
+
+# FIXME: /var/lib/mail_db
+allow dovecot_auth_t postfix_runtime_t:file rw_file_perms;
+
+# ========= ceph =========
+# ansible ceph install: apt add gpg key
+gen_require(`
+    type gpg_t;
+    type gpg_agent_t;
+')
+userdom_manage_user_tmp_files(gpg_agent_t)
+userdom_manage_user_tmp_dirs(gpg_agent_t)
+userdom_manage_user_tmp_sockets(gpg_agent_t)
+userdom_manage_user_tmp_sockets(gpg_t)
+# to actually update /etc/apt/trusted.gpg.d
+files_manage_etc_files(gpg_t)
+
+# allow ansible to verify ssh config
+require {
+    type sshd_exec_t;
+    type sysadm_t;
+}
+can_exec(sysadm_t, sshd_exec_t)
+
+# allow ansible verify dnsmasq configfiles
+require {
+    type dnsmasq_exec_t;
+}
+can_exec(sysadm_t, dnsmasq_exec_t)
+
+# allow ansible to verify nftables config
+gen_require(`
+    type iptables_t;
+    type user_tmp_t;
+')
+read_files_pattern(iptables_t, user_tmp_t, user_tmp_t)
