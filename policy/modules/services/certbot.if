@@ -25,14 +25,14 @@ interface(`certbot_domtrans',`
 ##      domain, and allow the specified role
 ##      the firstboot domain.
 ## </summary>
-## <param name="role">
-##      <summary>
-##      Role allowed access.
-##      </summary>
-## </param>
 ## <param name="domain">
 ##      <summary>
 ##      Domain allowed to transition.
+##      </summary>
+## </param>
+## <param name="role">
+##      <summary>
+##      Role allowed access.
 ##      </summary>
 ## </param>
 #
@@ -41,6 +41,6 @@ interface(`certbot_run',`
 		type certbot_t;
 	')
 
-	certbot_domtrans($2)
-	role $1 types certbot_t;
+	certbot_domtrans($1)
+	role $2 types certbot_t;
 ')

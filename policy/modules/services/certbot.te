@@ -38,9 +38,11 @@ allow certbot_t self:netlink_route_socket create_netlink_socket_perms;
 files_search_var_lib(certbot_t)
 manage_dirs_pattern(certbot_t, certbot_lib_t, certbot_lib_t)
 manage_files_pattern(certbot_t, certbot_lib_t, certbot_lib_t)
+manage_lnk_files_pattern(certbot_t, certbot_lib_t, certbot_lib_t)
 
 manage_files_pattern(certbot_t, certbot_tmp_t, certbot_tmp_t)
-files_tmp_filetrans(certbot_t, certbot_tmp_t, { file })
+manage_dirs_pattern(certbot_t, certbot_tmp_t, certbot_tmp_t)
+files_tmp_filetrans(certbot_t, certbot_tmp_t, { file dir })
 
 manage_files_pattern(certbot_t, certbot_tmpfs_t, certbot_tmpfs_t)
 fs_tmpfs_filetrans(certbot_t, certbot_tmpfs_t, { file })
@@ -53,9 +55,10 @@ allow certbot_t certbot_tmp_t:file { map execute };
 allow certbot_t certbot_tmpfs_t:file { map execute };
 allow certbot_t certbot_runtime_t:file { map execute };
 
-logging_search_logs(certbot_t)
-allow certbot_t certbot_log_t:dir manage_dir_perms;
-allow certbot_t certbot_log_t:file manage_file_perms;
+# not optimal
+manage_files_pattern(certbot_t, certbot_log_t, certbot_log_t)
+allow certbot_t certbot_log_t:dir { create_dir_perms search_dir_perms add_entry_dir_perms };
+logging_log_filetrans(certbot_t, certbot_log_t, dir)
 
 manage_files_pattern(certbot_t, certbot_runtime_t, certbot_runtime_t)
 files_pid_filetrans(certbot_t, certbot_runtime_t, file)
@@ -64,7 +67,6 @@ kernel_search_fs_sysctls(certbot_t)
 
 corecmd_exec_bin(certbot_t)
 corecmd_list_bin(certbot_t)
-corecmd_mmap_bin_files(certbot_t)
 
 corenet_tcp_bind_generic_node(certbot_t)
 corenet_tcp_connect_http_port(certbot_t)
