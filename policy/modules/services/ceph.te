@@ -94,7 +94,6 @@ storage_setattr_fixed_disk_dev(ceph_t)
 
 corenet_tcp_bind_all_unreserved_ports(ceph_t)
 corenet_tcp_bind_all_nodes(ceph_t)
-
 corenet_tcp_connect_all_unreserved_ports(ceph_t)
 
 init_read_state(ceph_t)
@@ -117,3 +116,15 @@ gen_require(`
     type device_t;
 ')
 allow ceph_t device_t:lnk_file setattr;
+
+# secmark
+# refer to https://docs.ceph.com/docs/master/rados/configuration/network-config-ref/ for ports
+type ceph_port_t;
+corenet_port(ceph_port_t)
+allow ceph_t ceph_port_t:tcp_socket { name_bind name_connect };
+
+type ceph_packet_t;
+corenet_packet(ceph_packet_t)
+corenet_server_packet(ceph_packet_t)
+corenet_client_packet(ceph_packet_t)
+allow ceph_t ceph_packet_t:packet { send recv };
