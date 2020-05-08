@@ -30,5 +30,14 @@ sysnet_manage_config(resolvconf_t)
 
 miscfiles_read_localization(resolvconf_t)
 
+# reload unbound service
+init_stream_connect(resolvconf_t)
+
+# FIXME: cleanup
+gen_require(`
+    type named_conf_t;
+')
+manage_files_pattern(resolvconf_t, named_conf_t, named_conf_t)
+
 # /run/resolvconf
 sysnet_pid_filetrans_config(resolvconf_t, dir, "resolvconf")
