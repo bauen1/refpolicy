@@ -18,6 +18,9 @@ files_config_file(bird_etc_t)
 type bird_log_t;
 logging_log_file(bird_log_t)
 
+type bird_lib_t;
+files_type(bird_lib_t)
+
 type bird_runtime_t alias bird_var_run_t;
 files_pid_file(bird_runtime_t)
 
@@ -37,6 +40,9 @@ allow bird_t bird_etc_t:dir list_dir_perms;
 
 allow bird_t bird_log_t:file { create_file_perms append_file_perms setattr_file_perms };
 logging_log_filetrans(bird_t, bird_log_t, file)
+
+read_files_pattern(bird_t, bird_lib_t, bird_lib_t)
+files_search_var_lib(bird_t)
 
 allow bird_t bird_runtime_t:sock_file manage_sock_file_perms;
 allow bird_t bird_runtime_t:dir manage_dir_perms;
