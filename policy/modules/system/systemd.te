@@ -343,6 +343,8 @@ dev_write_kmsg(systemd_generator_type)
 files_read_etc_files(systemd_generator_type)
 files_search_pids(systemd_generator_type)
 
+fs_read_efivarfs_files(systemd_generator_type)
+
 init_create_pid_files(systemd_generator_type)
 init_manage_pid_dirs(systemd_generator_type)
 init_manage_pid_symlinks(systemd_generator_type)
