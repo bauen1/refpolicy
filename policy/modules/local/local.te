@@ -1,1 +1,9 @@
 policy_module(local, 1.0)
+
+# allow systemd to determine if SecureBoot is enabled
+gen_require(`
+    type init_t;
+')
+fs_read_efivarfs_files(init_t)
+# request efivarfs module
+kernel_request_load_module(init_t)
