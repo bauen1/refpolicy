@@ -215,3 +215,5 @@ gen_require(`
 ')
 typeattribute containerd_t mcs_fifo_file_open_target_unconfined;
 typeattribute svirt_lxc_net_t mcs_fifo_file_open_source_unconfined;
+
+auth_use_nsswitch(containerd_t)
