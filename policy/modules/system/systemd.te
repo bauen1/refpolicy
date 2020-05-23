@@ -379,7 +379,7 @@ corecmd_getattr_bin_files(systemd_sysv_generator_t)
 
 init_list_unit_dirs(systemd_sysv_generator_t)
 init_read_generic_units_symlinks(systemd_sysv_generator_t)
-init_read_script_files(systemd_sysv_generator_t)
+init_read_all_script_files(systemd_sysv_generator_t)
 
 ######################################
 #
