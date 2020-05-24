@@ -1,0 +1,15 @@
+/usr/bin/lxc-attach	--	gen_context(system_u:object_r:lxc_exec_t,s0)
+/usr/bin/lxc-create	--	gen_context(system_u:object_r:lxc_exec_t,s0)
+/usr/bin/lxc-destroy	--	gen_context(system_u:object_r:lxc_exec_t,s0)
+/usr/bin/lxc-start	--	gen_context(system_u:object_r:lxc_exec_t,s0)
+/usr/bin/lxc-stop	--	gen_context(system_u:object_r:lxc_exec_t,s0)
+
+/var/cache/lxc(/.*)?	gen_context(system_u:object_r:lxc_cache_t,s0)
+
+/run/lxc(/.*)?	gen_context(system_u:object_r:lxc_runtime_t,s0)
+
+/var/lib/lxc(/.*)?	gen_context(system_u:object_r:lxc_var_lib_t,s0)
+
+# FIXME: not ideal ?
+/usr/share/lxcfs/lxc.mount.hook	--	gen_context(system_u:object_r:bin_t,s0)
+/usr/share/lxcfs/lxc.reboot.hook	--	gen_context(system_u:object_r:bin_t,s0)

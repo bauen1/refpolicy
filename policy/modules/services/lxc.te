@@ -1,0 +1,153 @@
+policy_module(lxc, 1.0)
+
+# Definitions
+
+type lxc_t;
+type lxc_exec_t;
+init_system_domain(lxc_t, lxc_exec_t)
+
+type lxc_cache_t;
+files_type(lxc_cache_t)
+
+type lxc_lock_t;
+files_lock_file(lxc_lock_t)
+
+type lxc_runtime_t;
+files_pid_file(lxc_runtime_t)
+
+type lxc_tmp_t;
+files_type(lxc_tmp_t)
+
+type lxc_tmpfs_t;
+files_tmpfs_file(lxc_tmpfs_t)
+
+type lxc_var_lib_t;
+files_type(lxc_var_lib_t)
+
+# Local policy
+
+allow lxc_t self:capability { sys_admin dac_override dac_read_search mknod setgid sys_chroot chown fsetid setuid net_admin setpcap };
+allow lxc_t self:process { setrlimit execmem getsched signal sigkill setsched };
+allow lxc_t self:fifo_file rw_inherited_fifo_file_perms;
+allow lxc_t self:tcp_socket create_socket_perms;
+allow lxc_t self:netlink_route_socket create_netlink_socket_perms;
+
+manage_dirs_pattern(lxc_t, lxc_cache_t, lxc_cache_t)
+manage_files_pattern(lxc_t, lxc_cache_t, lxc_cache_t)
+manage_lnk_files_pattern(lxc_t, lxc_cache_t, lxc_cache_t)
+manage_chr_files_pattern(lxc_t, lxc_cache_t, lxc_cache_t)
+can_exec(lxc_t, lxc_cache_t)
+allow lxc_t lxc_cache_t:dir mounton;
+allow lxc_t lxc_cache_t:dir_file_class_set { relabelfrom relabelto };
+files_var_filetrans(lxc_t, lxc_cache_t, dir, "lxc")
+
+manage_dirs_pattern(lxc_t, lxc_lock_t, lxc_lock_t)
+manage_files_pattern(lxc_t, lxc_lock_t, lxc_lock_t)
+files_lock_filetrans(lxc_t, lxc_lock_t, { file dir })
+
+manage_dirs_pattern(lxc_t, lxc_runtime_t, lxc_runtime_t)
+manage_files_pattern(lxc_t, lxc_runtime_t, lxc_runtime_t)
+files_pid_filetrans(lxc_t, lxc_runtime_t, dir, "lxc")
+
+manage_files_pattern(lxc_t, lxc_tmp_t, lxc_tmp_t)
+manage_dirs_pattern(lxc_t, lxc_tmp_t, lxc_tmp_t)
+files_tmp_filetrans(lxc_t, lxc_tmp_t, { dir file })
+
+allow lxc_t lxc_tmpfs_t:file mmap_rw_file_perms;
+manage_files_pattern(lxc_t, lxc_tmpfs_t, lxc_tmpfs_t)
+manage_lnk_files_pattern(lxc_t, lxc_tmpfs_t, lxc_tmpfs_t)
+manage_dirs_pattern(lxc_t, lxc_tmpfs_t, lxc_tmpfs_t)
+manage_chr_files_pattern(lxc_t, lxc_tmpfs_t, lxc_tmpfs_t)
+fs_tmpfs_filetrans(lxc_t, lxc_tmpfs_t, { file dir })
+
+manage_dirs_pattern(lxc_t, lxc_var_lib_t, lxc_var_lib_t)
+manage_files_pattern(lxc_t, lxc_var_lib_t, lxc_var_lib_t)
+manage_lnk_files_pattern(lxc_t, lxc_var_lib_t, lxc_var_lib_t)
+manage_chr_files_pattern(lxc_t, lxc_var_lib_t, lxc_var_lib_t)
+allow lxc_t lxc_var_lib_t:dir_file_class_set relabelfrom;
+files_var_lib_filetrans(lxc_t, lxc_var_lib_t, dir, "lxc")
+
+# Local policy: kernel
+domain_use_interactive_fds(lxc_t)
+
+corecmd_exec_bin(lxc_t)
+corecmd_exec_shell(lxc_t)
+
+corenet_tcp_connect_http_port(lxc_t)
+
+dev_read_sysfs(lxc_t)
+dev_read_urand(lxc_t)
+
+files_read_etc_files(lxc_t)
+files_read_usr_files(lxc_t)
+files_mounton_root(lxc_t)
+files_mounton_non_security(lxc_t)
+
+fs_getattr_all_fs(lxc_t)
+fs_read_nsfs_files(lxc_t)
+fs_manage_cgroup_files(lxc_t)
+fs_manage_cgroup_dirs(lxc_t)
+fs_mount_all_fs(lxc_t)
+fs_remount_all_fs(lxc_t)
+fs_unmount_all_fs(lxc_t)
+fs_getattr_all_fs(lxc_t)
+
+kernel_read_system_state(lxc_t)
+kernel_read_sysctl(lxc_t)
+kernel_read_crypto_sysctls(lxc_t)
+kernel_read_kernel_sysctls(lxc_t)
+kernel_read_net_sysctls(lxc_t)
+kernel_read_fs_sysctls(lxc_t)
+kernel_mounton_sysctl_dirs(lxc_t)
+kernel_mounton_sysctl_files(lxc_t)
+
+storage_getattr_fixed_disk_dev(lxc_t)
+
+term_use_ptmx(lxc_t)
+term_getattr_generic_ptys(lxc_t)
+term_use_generic_ptys(lxc_t)
+term_setattr_generic_ptys(lxc_t)
+
+# system
+userdom_use_user_ptys(lxc_t)
+
+init_read_state(lxc_t)
+
+logging_send_audit_msgs(lxc_t)
+
+miscfiles_read_localization(lxc_t)
+miscfiles_read_generic_certs(lxc_t)
+
+sysnet_dns_name_resolve(lxc_t)
+
+userdom_search_user_runtime_root(lxc_t)
+
+# services / admin / apps
+gpg_exec(lxc_t)
+dpkg_exec(lxc_t)
+dpkg_read_db(lxc_t)
+apt_read_db(lxc_t)
+mount_exec(lxc_t)
+rsync_exec(lxc_t)
+hostname_exec(lxc_t)
+
+# compatibility
+gen_require(`
+    type sysadm_t;
+    role sysadm_r;
+')
+
+role sysadm_r types lxc_t;
+domtrans_pattern(sysadm_t, lxc_exec_t, lxc_t)
+
+# FIXME:
+gen_require(`
+    type configfs_t;
+    type tracefs_t;
+    type sysctl_net_t;
+    type sysctl_fs_t;
+    type boot_t;
+    type mnt_t;
+    type fusefs_t;
+')
+allow lxc_t { configfs_t tracefs_t sysctl_net_t fusefs_t mnt_t boot_t }:dir { getattr search mounton };
