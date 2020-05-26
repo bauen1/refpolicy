@@ -26,8 +26,8 @@ files_type(lxc_var_lib_t)
 
 # Local policy
 
-allow lxc_t self:capability { sys_admin dac_override dac_read_search mknod setgid sys_chroot chown fsetid setuid net_admin setpcap };
-allow lxc_t self:process { setrlimit execmem getsched signal sigkill setsched };
+allow lxc_t self:capability { sys_admin dac_override dac_read_search mknod setgid sys_chroot chown fsetid setuid net_admin setpcap sys_resource };
+allow lxc_t self:process { setrlimit execmem getsched signal sigkill setsched getcap };
 allow lxc_t self:fifo_file rw_inherited_fifo_file_perms;
 allow lxc_t self:tcp_socket create_socket_perms;
 allow lxc_t self:netlink_route_socket create_netlink_socket_perms;
@@ -36,7 +36,7 @@ manage_dirs_pattern(lxc_t, lxc_cache_t, lxc_cache_t)
 manage_files_pattern(lxc_t, lxc_cache_t, lxc_cache_t)
 manage_lnk_files_pattern(lxc_t, lxc_cache_t, lxc_cache_t)
 manage_chr_files_pattern(lxc_t, lxc_cache_t, lxc_cache_t)
-can_exec(lxc_t, lxc_cache_t)
+# can_exec(lxc_t, lxc_cache_t)
 allow lxc_t lxc_cache_t:dir mounton;
 allow lxc_t lxc_cache_t:dir_file_class_set { relabelfrom relabelto };
 files_var_filetrans(lxc_t, lxc_cache_t, dir, "lxc")
