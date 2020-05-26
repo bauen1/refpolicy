@@ -69,4 +69,7 @@ miscfiles_read_localization(wireguard_t)
 # wg-quick runs /usr/bin/ip to configure the network
 sysnet_run_ifconfig(wireguard_t, wireguard_roles)
 
+# wg-setconf will try to resolve domain names
+sysnet_dns_name_resolve(wireguard_t)
+
 userdom_use_user_terminals(wireguard_t)
