@@ -467,6 +467,25 @@ interface(`logging_status_syslog',`
 
 ########################################
 ## <summary>
+##  Connect to syslog with a unix socket.
+## </summary>
+## <param name="domain">
+##  <summary>
+##  Domain allowed access.
+##  </summary>
+## </param>
+#
+interface(`logging_stream_connect_syslog', `
+	gen_require(`
+		type syslogd_t, syslogd_runtime_t;
+	')
+
+	stream_connect_pattern($1, syslogd_runtime_t, syslogd_runtime_t, syslogd_t)
+	files_search_pids($1)
+')
+
+########################################
+## <summary>
 ##	Set the attributes of syslog temporary files.
 ## </summary>
 ## <param name="domain">
