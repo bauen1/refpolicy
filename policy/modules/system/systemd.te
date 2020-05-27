@@ -353,6 +353,7 @@ systemd_log_parse_environment(systemd_fstab_generator_t)
 #
 
 files_list_usr(systemd_gpt_generator_t)
+files_list_boot(systemd_gpt_generator_t)
 fs_getattr_xattr_fs(systemd_gpt_generator_t)
 storage_raw_read_fixed_disk(systemd_gpt_generator_t)
 
