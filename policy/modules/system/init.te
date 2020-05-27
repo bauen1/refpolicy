@@ -285,6 +285,9 @@ ifdef(`init_systemd',`
 	manage_sock_files_pattern(init_t, init_runtime_t, init_runtime_t)
 	manage_dirs_pattern(init_t, init_runtime_t, init_runtime_t)
 
+	# /memfd:systemd-state
+	fs_tmpfs_filetrans(init_t, init_runtime_t, file)
+
 	manage_files_pattern(init_t, systemd_unit_t, systemdunit)
 
 	manage_dirs_pattern(init_t, systemd_unit_t, systemd_unit_t)
