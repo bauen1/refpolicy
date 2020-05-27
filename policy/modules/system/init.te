@@ -418,6 +418,7 @@ ifdef(`init_systemd',`
 
 	init_manage_all_unit_files(init_t)
 	init_read_script_state(init_t)
+	init_manage_var_lib_files(init_t)
 
 	miscfiles_watch_localization(init_t)
 
