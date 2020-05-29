@@ -39,7 +39,7 @@ logging_log_file(apt_var_log_t)
 # Local policy
 #
 
-allow apt_t self:capability { chown dac_override fowner fsetid kill setgid setuid };
+allow apt_t self:capability { chown dac_override dac_read_search fowner fsetid kill setgid setuid };
 allow apt_t self:process { signal setpgid fork };
 allow apt_t self:fd use;
 allow apt_t self:fifo_file rw_fifo_file_perms;
@@ -59,6 +59,7 @@ files_lock_filetrans(apt_t, apt_lock_t, { dir file })
 
 manage_dirs_pattern(apt_t, apt_tmp_t, apt_tmp_t)
 manage_files_pattern(apt_t, apt_tmp_t, apt_tmp_t)
+manage_lnk_files_pattern(apt_t, apt_tmp_t, apt_tmp_t)
 files_tmp_filetrans(apt_t, apt_tmp_t, { file dir })
 
 manage_dirs_pattern(apt_t, apt_tmpfs_t, apt_tmpfs_t)
@@ -72,6 +73,7 @@ manage_files_pattern(apt_t, apt_var_cache_t, apt_var_cache_t)
 manage_dirs_pattern(apt_t, apt_var_cache_t, apt_var_cache_t)
 files_var_filetrans(apt_t, apt_var_cache_t, dir)
 
+allow apt_t apt_var_lib_t:dir setattr;
 manage_files_pattern(apt_t, apt_var_lib_t, apt_var_lib_t)
 files_var_lib_filetrans(apt_t, apt_var_lib_t, dir)
 
