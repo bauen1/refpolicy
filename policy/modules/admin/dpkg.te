@@ -345,6 +345,81 @@ optional_policy(`
 ')
 
 optional_policy(`
+    # TODO: this can be replaced with
+    # kernel_load_module
+    # and unconfined access to unlabeled_t types
+    # and unrestricted access to sysctls
+    # and unrestricted access to some proc_types (excluding things like proc_kcore_t )
+    kernel_unconfined(dpkg_script_t)
+')
+
+optional_policy(`
+    corenet_unconfined(dpkg_script_t)
+')
+
+optional_policy(`
+    # TODO: there is no good reason to have this: we dont want dpkg scripts to access /dev/kmem etc...
+    dev_unconfined(dpkg_script_t)
+')
+
+optional_policy(`
+    # we probably need atleast a few of these:
+    domain_unconfined(dpkg_script_t)
+    domain_dontaudit_read_all_domains_state(dpkg_script_t)
+    domain_dontaudit_ptrace_all_domains(dpkg_script_t)
+')
+
+optional_policy(`
+    # probably no way around this
+    files_unconfined(dpkg_script_t)
+')
+
+optional_policy(`
+    # same for this
+    fs_unconfined(dpkg_script_t)
+')
+
+optional_policy(`
+    # this could likely be replaced with appropiate domtrans and reduced access
+    selinux_unconfined(dpkg_script_t)
+')
+
+optional_policy(`
+    # TODO: why is this a thing ?
+    # FIXME: etc_t units are usually a sign of some file being mislabeled ?
+    files_get_etc_unit_status(dpkg_script_t)
+    files_start_etc_service(dpkg_script_t)
+    files_stop_etc_service(dpkg_script_t)
+')
+
+optional_policy(`
+    # TODO: replace with more direct permissions and domtrans ?
+    # TODO: remove access to auth files from files_unconfined
+    auth_unconfined(dpkg_script_t)
+')
+
+optional_policy(`
+	# this stays
+    dbus_unconfined(dpkg_script_t)
+')
+
+optional_policy(`
+    # this is probably also unecessary ?
+    storage_unconfined(dpkg_script_t)
+')
+
+optional_policy(`
+    xserver_unconfined(dpkg_script_t)
+')
+
+optional_policy(`
+    seutil_domtrans_checkpolicy(dpkg_script_t)
+    seutil_domtrans_loadpolicy(dpkg_script_t)
+    seutil_domtrans_setfiles(dpkg_script_t)
+    seutil_domtrans_semanage(dpkg_script_t)
+')
+
+optional_policy(`
 	usermanage_run_groupadd(dpkg_script_t, dpkg_roles)
 	usermanage_run_useradd(dpkg_script_t, dpkg_roles)
 ')
