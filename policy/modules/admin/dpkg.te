@@ -344,3 +344,7 @@ optional_policy(`
 	usermanage_run_groupadd(dpkg_script_t, dpkg_roles)
 	usermanage_run_useradd(dpkg_script_t, dpkg_roles)
 ')
+
+optional_policy(`
+	systemd_run_sysusers(dpkg_script_t, dpkg_roles)
+')
