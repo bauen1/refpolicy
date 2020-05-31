@@ -337,6 +337,8 @@ fs_list_efivars(systemd_efi_generator_t)
 # fstab generator local policy
 #
 
+allow systemd_fstab_generator_t self:capability { dac_override dac_read_search };
+
 dev_write_sysfs_dirs(systemd_fstab_generator_t)
 
 files_search_all_mountpoints(systemd_fstab_generator_t)
