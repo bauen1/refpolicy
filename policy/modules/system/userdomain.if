@@ -3381,6 +3381,96 @@ interface(`userdom_relabelfrom_user_runtime_dirs',`
 
 ########################################
 ## <summary>
+##  manage character user runtime files.
+## </summary>
+## <param name="domain">
+##	<summary>
+##	Domain allowed access.
+##	</summary>
+## </param>
+#
+interface(`userdom_manage_user_runtime_chr_files', `
+	gen_require(`
+		type user_runtime_t;
+	')
+
+	manage_chr_files_pattern($1, user_runtime_t, user_runtime_t)
+')
+
+########################################
+## <summary>
+##  manage user runtime block device files.
+## </summary>
+## <param name="domain">
+##	<summary>
+##	Domain allowed access.
+##	</summary>
+## </param>
+#
+interface(`userdom_manage_user_runtime_blk_files', `
+	gen_require(`
+		type user_runtime_t;
+	')
+
+	manage_blk_files_pattern($1, user_runtime_t, user_runtime_t)
+')
+
+########################################
+## <summary>
+##  manage user runtime fifo files.
+## </summary>
+## <param name="domain">
+##	<summary>
+##	Domain allowed access.
+##	</summary>
+## </param>
+#
+interface(`userdom_manage_user_runtime_fifo_files', `
+	gen_require(`
+		type user_runtime_t;
+	')
+
+	manage_fifo_files_pattern($1, user_runtime_t, user_runtime_t)
+')
+
+########################################
+## <summary>
+##  manage user runtime files.
+## </summary>
+## <param name="domain">
+##	<summary>
+##	Domain allowed access.
+##	</summary>
+## </param>
+#
+interface(`userdom_manage_user_runtime_files', `
+	gen_require(`
+		type user_runtime_t;
+	')
+
+	manage_files_pattern($1, user_runtime_t, user_runtime_t)
+')
+
+########################################
+## <summary>
+##  manage user runtime sock files.
+## </summary>
+## <param name="domain">
+##	<summary>
+##	Domain allowed access.
+##	</summary>
+## </param>
+#
+interface(`userdom_manage_user_runtime_sock_files', `
+	gen_require(`
+		type user_runtime_t;
+	')
+
+	manage_sock_files_pattern($1, user_runtime_t, user_runtime_t)
+')
+
+########################################
+## <summary>
 ##	delete user runtime files
 ## </summary>
 ## <param name="domain">
