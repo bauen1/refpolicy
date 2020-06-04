@@ -404,6 +404,25 @@ interface(`systemd_signull_logind',`
 
 ########################################
 ## <summary>
+##  Create sockets under /run/systemd/userdb .
+## </summary>
+## <param name="domain">
+##	<summary>
+##	Domain allowed access.
+##	</summary>
+## </param>
+#
+interface(`systemd_create_userdb_sockets', `
+	gen_require(`
+		type systemd_userdb_runtime_t;
+	')
+
+	manage_sock_files_pattern($1, systemd_userdb_runtime_t, systemd_userdb_runtime_t)
+	init_pid_filetrans($1, systemd_userdb_runtime_t, dir, "userdb")
+')
+
+########################################
+## <summary>
 ##	Allow reading /run/systemd/machines
 ## </summary>
 ## <param name="domain">
