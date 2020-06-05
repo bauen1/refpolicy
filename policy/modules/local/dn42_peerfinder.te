@@ -1,0 +1,38 @@
+policy_module(dn42_peerfinder, 1.0)
+
+########################################
+#
+# Declarations
+#
+
+type dn42_peerfinder_t;
+type dn42_peerfinder_exec_t;
+init_system_domain(dn42_peerfinder_t, dn42_peerfinder_exec_t)
+
+########################################
+#
+# Local policy
+#
+
+allow dn42_peerfinder_t self:fifo_file rw_fifo_file_perms;
+allow dn42_peerfinder_t self:tcp_socket create_stream_socket_perms;
+# python cffi
+allow dn42_peerfinder_t self:process execmem;
+
+corecmd_exec_bin(dn42_peerfinder_t)
+
+# access the peerfinder sevrer
+corenet_tcp_bind_generic_node(dn42_peerfinder_t)
+corenet_tcp_connect_http_port(dn42_peerfinder_t)
+
+# FIXME: not necessary ?
+files_read_etc_files(dn42_peerfinder_t)
+
+miscfiles_read_generic_certs(dn42_peerfinder_t)
+miscfiles_read_localization(dn42_peerfinder_t)
+
+# we're capeable of handleing submitted domain names
+sysnet_dns_name_resolve(dn42_peerfinder_t)
+
+netutils_domtrans_ping(dn42_peerfinder_t)
+userdom_dontaudit_search_user_home_dirs(dn42_peerfinder_t)
