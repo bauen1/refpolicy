@@ -45,7 +45,7 @@ ifdef(`enable_rbacsep', `
     #######################################################
     # constrain file all_file_perms -read_file_perms
     #
-    # rbacsep exempted roles get access to everything that isn't specifically constrained
+    # rbacsep exempted roles get access to everything that isnt specifically constrained
     #
     # and all domains can write/execute/... to exempted roles (assuming they are permitted by TE)
     constrain file { write create setattr relabelfrom relabelto append map unlink link rename execute quotaon mounton audit_access execmod watch watch_mount watch_sb watch_with_perm watch_reads }
@@ -64,10 +64,10 @@ ifdef(`enable_rbacsep', `
 
     #######################################################
     # constrain file read_file_perms:
-    # rbacsep exempted roles get access to everything that isn't specifically constrained
+    # rbacsep exempted roles get access to everything that isnt specifically constrained
     #
     # every role gets access to rbacsep exempted role unless the type is specifically constrained,
-    # this way `sudo nano /etc/abc` as sysadm_r works, but processes or home files from sysadm_r won't
+    # this way "sudo nano /etc/abc" as sysadm_r works, but processes or home files from sysadm_r wont
     # be readable to every other role
     constrain file { getattr ioctl lock open read }
     (
