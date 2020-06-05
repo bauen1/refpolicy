@@ -54,11 +54,8 @@ ifdef(`enable_rbacsep', `
         or t1 == rbacsep_exempt_uncond_type_attribute
 
         or (
-            (
-                r1 == rbacsep_exempt_role_attribute
-                or r2 == rbacsep_exempt_role_attribute
-            )
-            and t2 != rbacsep_constrained_target_type_attribute
+            r1 == rbacsep_exempt_role_attribute
+            and t1 != rbacsep_constrained_subject_type_attribute
         )
     );
 
@@ -75,10 +72,12 @@ ifdef(`enable_rbacsep', `
         or t1 == rbacsep_exempt_uncond_type_attribute
 
         or (
-            (
-                r1 == rbacsep_exempt_role_attribute
-                or r2 == rbacsep_exempt_role_attribute
-            )
+            r1 == rbacsep_exempt_role_attribute
+            and t1 != rbacsep_constrained_subject_type_attribute
+        )
+
+        or (
+            r2 == rbacsep_exempt_role_attribute
             and t2 != rbacsep_constrained_target_type_attribute
         )
     );

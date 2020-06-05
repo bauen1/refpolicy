@@ -166,6 +166,25 @@ interface(`rbacsep_exempt_role', `
 
 ###########################################################
 ## <summary>
+##  Domain is always target constrained by rbacsep, even if
+##  the target role is not.
+## </summary>
+## <param name="domain">
+##  <summary>
+##  Domain allowed access.
+##  </summary>
+## </param>
+#
+interface(`rbacsep_subject_type_constrained', `
+    gen_require(`
+        attribute rbacsep_constrained_subject_type_attribute;
+    ')
+
+    typeattribute $1 rbacsep_constrained_subject_type_attribute;
+')
+
+###########################################################
+## <summary>
 ##  Domain is always constrained by rbacsep, even if the source
 ##  role is rbacsep exempted.
 ## </summary>

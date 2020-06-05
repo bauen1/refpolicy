@@ -35,7 +35,14 @@ attribute rbac_change_role_user_target_object_type_attribute;
 # very dangerous.
 attribute rbacsep_exempt_uncond_type_attribute;
 
+# this role can bypass rbacsep as long as the source domain
+# is not constrained
+# or if the target domain is not a constrained target domain
 attribute_role rbacsep_exempt_role_attribute;
 rbacsep_exempt_role(system_r)
 
+# always rbacsep constrained, even if source role is unconstrained
+attribute rbacsep_constrained_subject_type_attribute;
+
+# always rbacsep constrained as target, even if target role is unconstrained
 attribute rbacsep_constrained_target_type_attribute;
