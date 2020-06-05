@@ -126,3 +126,41 @@ interface(`rbac_change_role_user_target_object_type', `
 
     typeattribute $1 rbac_change_role_user_target_object_type_attribute;
 ')
+
+###########################################################
+## <summary>
+##  Role is rbac exempted, except for types explicitly marked
+##  as confined by rbacsep_target_type_constrained()
+## </summary>
+## <param name="role">
+##  <summary>
+##  Role allowed access.
+##  </summary>
+## </param>
+#
+interface(`rbacsep_exempt_role', `
+    gen_require(`
+        attribute_role rbacsep_exempt_role_attribute;
+    ')
+
+    roleattribute $1 rbacsep_exempt_role_attribute;
+')
+
+###########################################################
+## <summary>
+##  Domain is always constrained by rbacsep, even if the source
+##  role is rbacsep exempted.
+## </summary>
+## <param name="domain">
+##  <summary>
+##  Domain allowed access.
+##  </summary>
+## </param>
+#
+interface(`rbacsep_target_type_constrained', `
+    gen_require(`
+        attribute rbacsep_constrained_target_type_attribute;
+    ')
+
+    typeattribute $1 rbacsep_constrained_target_type_attribute;
+')

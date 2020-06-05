@@ -30,3 +30,8 @@ attribute rbac_change_role_user_target_object_type_attribute;
 #
 # Role Based Access Control Seperation
 #
+
+attribute_role rbacsep_exempt_role_attribute;
+rbacsep_exempt_role(system_r)
+
+attribute rbacsep_constrained_target_type_attribute;

@@ -24,7 +24,7 @@
 # name_list : name | name_list name
 #
 
-#ifdef(`enable_rbacsep', `
+ifdef(`enable_rbacsep', `
 #    constrain dir all_dir_perms
 #    (
 #        r1 == r2
@@ -38,4 +38,15 @@
 #        or r2 == rbacsep_target_exempt
 #        or r1 == rbacsep_source_exempt
 #    );
-#')
+
+
+    # all_file_perms -read_file_perms
+    constrain file { ioctl write create setattr lock relabelfrom relabelto append map unlink link rename execute quotaon mounton audit_access open execmod watch watch_mount watch_sb watch_with_perm watch_reads }
+    (
+        r1 == r2
+        or (
+            r1 == rbacsep_exempt_role_attribute
+            and t2 != rbacsep_constrained_target_type_attribute
+        )
+    );
+')
