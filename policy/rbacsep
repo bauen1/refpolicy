@@ -39,22 +39,28 @@ ifdef(`enable_rbacsep', `
 #        or r1 == rbacsep_source_exempt
 #    );
 
+    # rbacsep_constrained_target_type_attribute: all types that are shared between "users"
+    # e.g. user_t, user_home_content_type, ...
 
     #######################################################
     # constrain file all_file_perms -read_file_perms
     #
     # rbacsep exempted roles get access to everything that isn't specifically constrained
+    #
+    # and all domains can write/execute/... to exempted roles (assuming they are permitted by TE)
     constrain file { write create setattr relabelfrom relabelto append map unlink link rename execute quotaon mounton audit_access execmod watch watch_mount watch_sb watch_with_perm watch_reads }
     (
         r1 == r2
         or t1 == rbacsep_exempt_uncond_type_attribute
 
         or (
-            r1 == rbacsep_exempt_role_attribute
+            (
+                r1 == rbacsep_exempt_role_attribute
+                or r2 == rbacsep_exempt_role_attribute
+            )
             and t2 != rbacsep_constrained_target_type_attribute
         )
     );
-
 
     #######################################################
     # constrain file read_file_perms:
@@ -69,12 +75,10 @@ ifdef(`enable_rbacsep', `
         or t1 == rbacsep_exempt_uncond_type_attribute
 
         or (
-            r1 == rbacsep_exempt_role_attribute
-            and t2 != rbacsep_constrained_target_type_attribute
-        )
-
-        or (
-            r2 == rbacsep_exempt_role_attribute
+            (
+                r1 == rbacsep_exempt_role_attribute
+                or r2 == rbacsep_exempt_role_attribute
+            )
             and t2 != rbacsep_constrained_target_type_attribute
         )
     );
