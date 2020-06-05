@@ -31,6 +31,10 @@ attribute rbac_change_role_user_target_object_type_attribute;
 # Role Based Access Control Seperation
 #
 
+# this domain can completely bypass rbacsep
+# very dangerous.
+attribute rbacsep_exempt_uncond_type_attribute;
+
 attribute_role rbacsep_exempt_role_attribute;
 rbacsep_exempt_role(system_r)
 

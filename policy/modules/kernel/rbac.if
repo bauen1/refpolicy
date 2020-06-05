@@ -129,6 +129,24 @@ interface(`rbac_change_role_user_target_object_type', `
 
 ###########################################################
 ## <summary>
+##  Domain is rbacsep exempted unconditionally
+## </summary>
+## <param name="domain">
+##  <summary>
+##  Domain allowed access.
+##  </summary>
+## </param>
+#
+interface(`rbacsep_exempt_type_uncond', `
+    gen_require(`
+        attribute rbacsep_exempt_uncond_type_attribute;
+    ')
+
+    typeattribute $1 rbacsep_exempt_uncond_type_attribute;
+')
+
+###########################################################
+## <summary>
 ##  Role is rbac exempted, except for types explicitly marked
 ##  as confined by rbacsep_target_type_constrained()
 ## </summary>
