@@ -1487,6 +1487,12 @@ mount_watch_runtime_dirs(systemd_user_session_type)
 udev_read_pid_files(systemd_user_session_type)
 udev_list_pids(systemd_user_session_type)
 
+# TODO: we might want to grant more restrictive access here:
+# for ~/.config/systemd
+xdg_manage_config(systemd_user_session_type)
+# for ~/.local/share/systemd
+xdg_read_data_files(systemd_user_session_type)
+
 seutil_libselinux_linked(systemd_user_session_type)
 
 #########################################
