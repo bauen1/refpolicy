@@ -51,6 +51,18 @@ ifdef(`enable_rbacsep', `
             r1 == rbacsep_exempt_role_attribute
             and t2 != rbacsep_constrained_target_type_attribute
         )
+    );
+
+    constrain file read_file_perms
+    (
+        r1 == r2
+        or t1 == rbacsep_exempt_uncond_type_attribute
+
+        # rbacsep exempted roles get access to everything that isn't specifically constrained
+        or (
+            r1 == rbacsep_exempt_role_attribute
+            and t2 != rbacsep_constrained_target_type_attribute
+        )
 
         # every role gets access to rbacsep exempted role unless the type is specifically constrained,
         # this way `sudo nano /etc/abc` as sysadm_r works, but processes or home files from sysadm_r won't
