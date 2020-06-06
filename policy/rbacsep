@@ -88,6 +88,21 @@ ifdef(`enable_rbacsep', `
     rbacsep_object_write_constrains(dir, { rbacsep_file_write_operations add_name remove_name reparent rmdir })
 
     #######################################################
+    # constrain sock_file { all_sock_file_perms -rw_sock_file_perms }
+    #
+    rbacsep_object_write_constrains(sock_file, { create setattr relabelfrom relabelto map unlink link rename execute quotaon mounton audit_access execmod watch watch_mount watch_sb watch_with_perm watch_reads })
+
+    #######################################################
+    # constrain blk_file { all_blk_file_perms }
+    #
+    rbacsep_object_write_constrains(blk_file, { all_blk_file_perms })
+
+    #######################################################
+    # constrain chr_file { all_chr_file_perms }
+    #
+    rbacsep_object_write_constrains(chr_file, { all_chr_file_perms })
+
+    #######################################################
     # constrains on read operations:
     # rbacsep exempted roles get access to everything that isnt specifically constrained
     #
@@ -129,4 +144,9 @@ ifdef(`enable_rbacsep', `
     # constrain dir list_dir_perms
     #
     rbacsep_object_read_constrains(dir, { getattr ioctl lock open read search })
+
+    #######################################################
+    # constrain sock_file { rw_sock_file_perms }
+    #
+    rbacsep_object_read_constrains(sock_file, { getattr open read write append ioctl lock })
 ')
