@@ -1108,6 +1108,7 @@ template(`userdom_restricted_xwindows_user_template',`
 
 	optional_policy(`
 		dbus_role_template($1, $1_r, $1_t)
+		dbus_spec_session_bus_client($1, $1_t)
 		dbus_system_bus_client($1_t)
 
 		optional_policy(`

@@ -103,6 +103,7 @@ ifndef(`distro_redhat',`
 
 	optional_policy(`
 		dbus_role_template(staff, staff_r, staff_t)
+		dbus_spec_session_bus_client(staff, staff_t)
 
 		optional_policy(`
 			gnome_role_template(staff, staff_r, staff_t)
