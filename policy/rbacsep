@@ -65,25 +65,45 @@ ifdef(`enable_rbacsep', `
     );
 
     #######################################################
-    # constrain file read_file_perms:
+    # constrains on read operations:
     # rbacsep exempted roles get access to everything that isnt specifically constrained
     #
     # every role gets access to rbacsep exempted role unless the type is specifically constrained,
     # this way "sudo nano /etc/abc" as sysadm_r works, but processes or home files from sysadm_r wont
     # be readable to every other role
-    constrain file { getattr ioctl lock open read }
-    (
-        r1 == r2
-        or t1 == rbacsep_exempt_uncond_type_attribute
+    #
+    define(`rbacsep_object_read_constrains', `
+        constrain $1 $2
+        (
+            r1 == r2
+            or t1 == rbacsep_exempt_uncond_type_attribute
 
-        or (
-            r1 == rbacsep_exempt_role_attribute
-            and t1 != rbacsep_constrained_subject_type_attribute
-        )
+            or (
+                r1 == rbacsep_exempt_role_attribute
+                and t1 != rbacsep_constrained_subject_type_attribute
+            )
 
-        or (
-            r2 == rbacsep_exempt_role_attribute
-            and t2 != rbacsep_constrained_target_type_attribute
-        )
-    );
+            or (
+                r2 == rbacsep_exempt_role_attribute
+                and t2 != rbacsep_constrained_target_type_attribute
+            )
+
+            $3
+        );
+    ')
+
+    #######################################################
+    # constrain file read_file_perms
+    #
+    rbacsep_object_read_constrains(file, { getattr ioctl lock open read })
+
+    #######################################################
+    # constrain lnk_file read_lnk_file_perms
+    #
+    rbacsep_object_read_constrains(lnk_file, { getattr ioctl lock open read })
+
+    #######################################################
+    # constrain dir list_dir_perms
+    #
+    rbacsep_object_read_constrains(dir, { getattr ioctl lock open read search })
 ')
