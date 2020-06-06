@@ -58,6 +58,10 @@ template(`systemd_role_template',`
 	allow $3 systemd_user_unit_t:service { start stop status reload enable disable };
 	allow $3 $1_systemd_t:system { status start stop enable disable reload };
 
+	manage_dirs_pattern($3, systemd_user_unit_t, systemd_user_unit_t)
+	manage_files_pattern($3, systemd_user_unit_t, systemd_user_unit_t)
+	manage_lnk_files_pattern($3, systemd_user_unit_t, systemd_user_unit_t)
+
 	# This domain is per-role because of the below transitions.
 	# See the sytemd --user section of systemd.te for the
 	# remainder of the rules.
