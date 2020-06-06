@@ -102,6 +102,8 @@ ifdef(`enable_rbacsep', `
     #
     rbacsep_object_write_constrains(chr_file, { all_chr_file_perms })
 
+    rbacsep_object_write_constrains(key, all_key_perms)
+
     #######################################################
     # constrains on read operations:
     # rbacsep exempted roles get access to everything that isnt specifically constrained
