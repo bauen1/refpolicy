@@ -192,8 +192,6 @@ corenet_tcp_connect_all_ports(postfix_server_domain)
 
 allow postfix_user_domains self:capability { dac_read_search dac_override };
 
-domain_use_interactive_fds(postfix_user_domains)
-
 ########################################
 #
 # Master local policy
