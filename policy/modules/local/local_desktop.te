@@ -418,5 +418,7 @@ gen_require(`
 ')
 allow staff_t var_lib_t:file map;
 
-# xfce4-screensaver probably
+#############################
+# xfce4-screensaver
 allow staff_t console_device_t:chr_file { write };
+systemd_use_logind_fds(staff_t)
