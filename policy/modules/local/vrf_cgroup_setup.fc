@@ -1,0 +1,1 @@
+/usr/libexec/vrf-cgroup-setup	--	gen_context(system_u:object_r:vrf_cgroup_setup_exec_t,s0)

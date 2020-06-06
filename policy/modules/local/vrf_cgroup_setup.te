@@ -1,0 +1,30 @@
+policy_module(vrf_cgroup_setup, 1.0)
+
+###########################################################
+#
+# Declarations
+#
+
+type vrf_cgroup_setup_t;
+type vrf_cgroup_setup_exec_t;
+userdom_user_application_domain(vrf_cgroup_setup_t, vrf_cgroup_setup_exec_t)
+
+###########################################################
+#
+# Local policy
+#
+
+allow vrf_cgroup_setup_t self:capability { sys_admin net_admin };
+allow vrf_cgroup_setup_t self:bpf { prog_load prog_run };
+allow vrf_cgroup_setup_t self:unix_dgram_socket create_socket_perms;
+
+domain_use_interactive_fds(vrf_cgroup_setup_t)
+
+kernel_read_net_sysctls(vrf_cgroup_setup_t)
+kernel_read_network_state(vrf_cgroup_setup_t)
+
+fs_list_cgroup_dirs(vrf_cgroup_setup_t)
+
+userdom_use_user_ptys(vrf_cgroup_setup_t)
+
+sysnet_read_config(vrf_cgroup_setup_t)

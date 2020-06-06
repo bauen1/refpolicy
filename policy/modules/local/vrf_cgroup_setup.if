@@ -1,0 +1,44 @@
+## <summary>helper for entering vrfs</summary>
+
+###########################################################
+## <summary>
+## Execute vrf-cgroup-setup in the vrf_cgroup_setup_t domain.
+## </summary>
+## <param name="domain">
+##  <summary>
+##  Domain allowed access.
+##  </summary>
+## </param>
+#
+interface(`vrf_cgroup_setup_domtrans', `
+    gen_require(`
+        type vrf_cgroup_setup_t, vrf_cgroup_setup_exec_t;
+    ')
+
+    domtrans_pattern($1, vrf_cgroup_setup_exec_t, vrf_cgroup_setup_t)
+')
+
+###########################################################
+## <summary>
+##  Run vrf-cgroup-setup.
+## </summary>
+## <param name="domain">
+##  <summary>
+##  Domain allowed access.
+##  </summary>
+## </param>
+## <param name="role">
+##  <summary>
+##  Role allowed access.
+##  </summary>
+## </param>
+## <rolecap/>
+#
+interface(`vrf_cgroup_setup_run', `
+	gen_require(`
+        type vrf_cgroup_setup_t;
+    ')
+
+    vrf_cgroup_setup_domtrans($1)
+    role $2 types vrf_cgroup_setup_t;
+')

@@ -231,6 +231,10 @@ optional_policy(`
 	xserver_dbus_chat_xdm(unconfined_t)
 ')
 
+optional_policy(`
+	vrf_cgroup_setup_run(unconfined_t, unconfined_r)
+')
+
 ########################################
 #
 # Unconfined Execmem Local policy
