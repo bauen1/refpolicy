@@ -31,7 +31,6 @@ ifdef(`distro_gentoo',`
 /usr/lib/systemd/systemd --	gen_context(system_u:object_r:init_exec_t,s0)
 /usr/lib/systemd/systemd-shutdown	--	gen_context(system_u:object_r:init_exec_t,s0)
 /usr/lib/systemd/system-preset(/.*)? gen_context(system_u:object_r:systemd_unit_t,s0)
-/usr/lib/systemd/user-preset(/.*)? gen_context(system_u:object_r:systemd_unit_t,s0)
 /usr/lib/systemd/ntp-units\.d -d gen_context(system_u:object_r:systemd_unit_t,s0)
 /usr/lib/systemd/system(/.*)?	gen_context(system_u:object_r:systemd_unit_t,s0)
 /run/systemd/transient(/.*)?	gen_context(system_u:object_r:systemd_unit_t,s0)
