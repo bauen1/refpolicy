@@ -35,8 +35,8 @@ allow wireshark_t session_dbusd_runtime_t:sock_file write;
 allow wireshark_t staff_t:unix_stream_socket connectto;
 allow wireshark_t staff_systemd_t:unix_stream_socket connectto;
 
-allow wireshark_t sysctl_crypto_t:dir search;
-allow wireshark_t sysctl_crypto_t:file { getattr open read };
+kernel_read_crypto_sysctls(wireshark_t)
+
 allow wireshark_t user_runtime_t:dir { setattr write };
 
 #!!!! This avc can be allowed using the boolean 'allow_write_xshm'

@@ -11,7 +11,6 @@ gen_require(`
     type system_dbusd_t;
     type system_dbusd_runtime_t;
     type staff_t;
-    type user_t;
     type user_tmp_t;
     type user_systemd_t;
     type systemd_unit_t;
@@ -92,17 +91,7 @@ allow staff_dbusd_t xdg_config_t:dir { manage_dir_perms };
 allow staff_dbusd_t xdg_config_t:file { manage_file_perms };
 allow staff_dbusd_t xdg_data_t:dir { search };
 
-# more staff_dbusd_t misc. stuff
-allow staff_t staff_dbusd_t:unix_stream_socket rw_stream_socket_perms;
-allow user_t user_dbusd_t:unix_stream_socket rw_stream_socket_perms;
-
 # might be necessary
-allow session_bus_type init_t:dbus send_msg;
-allow staff_t init_t:dbus send_msg;
-allow staff_t initrc_t:dbus send_msg;
-
-# staff_t: might be required by user@.service (TODO: double check)
-allow staff_t init_t:fd use;
 
 # FIXME: might be unecessary but seems sensible
 allow devicekit_power_t initrc_t:dbus send_msg;
@@ -133,28 +122,9 @@ gen_require(`
 # allow building in /etc/selinux/refpolicy/src
 can_exec(sysadm_t, selinux_config_t)
 
-# allow ICMP ping
-allow staff_t self:icmp_socket create;
-allow staff_t self:rawip_socket { create getopt read setopt write };
-allow staff_t self:capability net_raw;
-
 # might want to allow this
 allow staff_t dri_device_t:chr_file { rw_chr_file_perms map };
 allow thunderbird_t dri_device_t:chr_file rw_chr_file_perms;
-
-# might be  required for dbus / pulseaudio
-allow staff_t systemd_logind_t:dir { getattr search read open };
-allow staff_t systemd_logind_t:file { getattr open read };
-
-#============ xserver_t ============
-# might be required ??
-gen_require(`
-    type xserver_t;
-')
-allow xserver_t self:process execmem;
-allow staff_t xserver_t:dir list_dir_perms;
-allow staff_t xserver_t:file read_file_perms;
-allow staff_t xserver_t:lnk_file read;
 
 #============= devicekit_disk_t ==============
 gen_require(`
@@ -171,10 +141,6 @@ gen_require(`
     type devicekit_disk_t;
     type devicekit_power_t;
 ')
-
-# probably not required
-allow staff_t init_t:unix_stream_socket { getattr ioctl read write append };
-allow user_t init_t:unix_stream_socket { getattr ioctl read write append };
 
 #============= local_login_t ==============
 gen_require(`
@@ -193,9 +159,6 @@ gen_require(`
     type auditd_etc_t;
 ')
 dontaudit auditctl_t auditd_etc_t:file map;
-
-# FIXME: probably shouldn't be allowed
-systemd_write_inherited_logind_inhibit_pipes(staff_t)
 
 # seems somewhat sensible
 gen_require(`
@@ -282,13 +245,6 @@ allow staff_systemd_t node_t:udp_socket node_bind;
 # 'ss'
 allow sysadm_t self:netlink_tcpdiag_socket create;
 
-gen_require(`
-    type xserver_tmpfs_t;
-')
-allow staff_t xserver_tmpfs_t:file map;
-allow staff_dbusd_t self:unix_stream_socket connectto;
-
-
 # seems reasonable
 gen_require(`
     type colord_t;
@@ -374,12 +330,6 @@ gen_require(`
 allow staff_t self:bluetooth_socket { bind create getopt ioctl read setopt write };
 allow system_dbusd_t initrc_t:bluetooth_socket { read write };
 
-# FIXME anime httpd ?
-gen_require(`
-    class service status;
-')
-allow staff_t systemd_unit_t:service status;
-
 # FIXME: not required for boot
 gen_require(`
     type alsa_t;
@@ -461,11 +411,6 @@ allow qemu_t staff_dbusd_t:unix_stream_socket connectto;
 allow qemu_t systemd_user_session_type:unix_stream_socket connectto;
 allow qemu_t xdg_data_t:file { getattr map open read };
 allow qemu_t usr_t:file map;
-
-# maybe required for ssh-agent launch script
-allow staff_t system_dbusd_t:dir { open read getattr search };
-allow staff_t system_dbusd_t:file { getattr open read };
-allow staff_t system_dbusd_t:lnk_file read;
 
 # xfce4 wants to map some sort of cache
 gen_require(`

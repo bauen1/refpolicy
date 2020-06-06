@@ -10,7 +10,6 @@
 interface(`systemd_user_dirmngr',`
     gen_require(`
         type dirmngr_t, dirmngr_exec_t;
-        type dirmngr_tmp_t;
     ')
 
     dirmngr_role($2, $1)
@@ -19,10 +18,6 @@ interface(`systemd_user_dirmngr',`
     # systemd socket activation
     allow $1 dirmngr_t:unix_stream_socket { bind create listen setopt };
     allow dirmngr_t $1:unix_stream_socket { read write getattr getopt accept };
-
-    # systemd status
-    allow $1 dirmngr_t:dir search;
-    allow $1 dirmngr_t:file { open read getattr };
 ')
 
 ## <summary>Fixes for systemd --user and gpg_agent_t</summary>
@@ -35,7 +30,6 @@ interface(`systemd_user_dirmngr',`
 interface(`systemd_user_gpg_agent', `
     gen_require(`
         type gpg_agent_t, gpg_agent_exec_t;
-        type gpg_agent_tmp_t;
         attribute_role gpg_agent_roles;
     ')
 
@@ -50,10 +44,6 @@ interface(`systemd_user_gpg_agent', `
         type gpg_t;
     ')
     allow gpg_t $1:unix_stream_socket connectto;
-
-    # systemd status
-    allow $1 gpg_agent_t:dir search;
-    allow $1 gpg_agent_t:file { open read getattr ioctl };
 
     # kill / stop / restart
     allow $1 gpg_agent_t:process { sigkill signal };

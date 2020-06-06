@@ -40,11 +40,6 @@ interface(`systemd_user_fixes',`
     # FIXME: might not be required
     allow $1 $2:fd use;
 
-    # FIXME: might be required
-    allow $1 $2:dir { getattr open read search };
-    allow $1 $2:lnk_file read;
-    allow $1 $2:file { getattr open read };
-
     allow $1 $2:dbus send_msg;
     allow $2 $1:dbus send_msg;
 

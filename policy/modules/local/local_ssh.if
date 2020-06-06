@@ -15,9 +15,5 @@ interface(`ssh_agent_fixes', `
     allow $1 $2:fd use;
     allow $1 $2:unix_stream_socket rw_stream_socket_perms;
 
-    # FIXME: probably not required
-    allow $2 $1:dir search_dir_perms;
-    allow $2 $1:file read_file_perms;
-
     allow $2 $1:process { signull sigkill };
 ')
