@@ -38,6 +38,10 @@ template(`userdom_base_user_template',`
 	domain_user_exemption_target($1_t)
 	ubac_constrained($1_t)
 	role $1_r types { $1_t user_devpts_t user_tty_device_t };
+	gen_require(`
+		attribute file_type;
+	')
+	role $1_r types file_type;
 	allow system_r $1_r;
 	rbac_change_role_user_target_role($1_r)
 	rbac_change_role_user_target_type($1_t)
@@ -352,7 +356,7 @@ interface(`userdom_manage_home_role',`
 	#
 
 	type_member $2 user_home_dir_t:dir user_home_dir_t;
-    role $1 types { user_home_dir_t user_home_t};
+    role $1 types { user_home_dir_t user_home_t user_cert_t };
 
 	# full control of the home directory
 	allow $2 user_home_t:file entrypoint;
