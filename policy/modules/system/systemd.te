@@ -1434,7 +1434,7 @@ allow systemd_user_session_type self:bpf { prog_load prog_run };
 allow systemd_user_session_type self:capability { dac_read_search sys_resource };
 dontaudit systemd_user_session_type self:capability dac_override;
 allow systemd_user_session_type self:fifo_file rw_fifo_file_perms;
-allow systemd_user_session_type self:process { setfscreate setsockcreate setcap getcap };
+allow systemd_user_session_type self:process { setfscreate setsockcreate setcap getcap getsched };
 allow systemd_user_session_type self:udp_socket create_socket_perms;
 allow systemd_user_session_type self:unix_stream_socket create_stream_socket_perms;
 allow systemd_user_session_type self:netlink_kobject_uevent_socket { bind create getattr read setopt };
@@ -1471,6 +1471,7 @@ fs_getattr_cgroup(systemd_user_session_type)
 fs_getattr_tmpfs(systemd_user_session_type)
 fs_rw_cgroup_files(systemd_user_session_type)
 fs_manage_cgroup_dirs(systemd_user_session_type)
+fs_watch_cgroup_files(systemd_user_session_type)
 
 # for /proc/sys/fs/nr_open
 kernel_read_fs_sysctls(systemd_user_session_type)
