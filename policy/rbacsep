@@ -139,6 +139,31 @@ ifdef(`enable_rbacsep', `
     rbacsep_netlink_all_constrains(netlink_socket)
 
     #######################################################
+    # constrains on file descriptor user:
+    #
+    constrain fd use
+    (
+        r1 == r2
+        or t1 == rbacsep_exempt_uncond_type_attribute
+
+        or (
+            r1 == rbacsep_exempt_role_attribute
+            and t1 != rbacsep_constrained_subject_type_attribute
+        )
+
+        or (
+            r2 == rbacsep_exempt_role_attribute
+            and t2 != rbacsep_constrained_subject_type_attribute
+        )
+
+        or (
+            t1 == rbacsep_fd_use_subject_type_attribute
+            and t2 == rbacsep_fd_use_target_type_attribute
+        )
+    );
+
+
+    #######################################################
     # constrains on read operations:
     # rbacsep exempted roles get access to everything that isnt specifically constrained
     #

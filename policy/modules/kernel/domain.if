@@ -392,6 +392,7 @@ interface(`domain_use_interactive_fds',`
 	')
 
 	allow $1 privfd:fd use;
+	rbacsep_fd_use_subject_type($1)
 ')
 
 ########################################

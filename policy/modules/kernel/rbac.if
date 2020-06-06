@@ -201,3 +201,41 @@ interface(`rbacsep_target_type_constrained', `
 
     typeattribute $1 rbacsep_constrained_target_type_attribute;
 ')
+
+###########################################################
+## <summary>
+##  Domain is allowed to use file descriptors owned by another role
+##  than his own.
+## </summary>
+## <param name="domain">
+##  <summary>
+##  Domain allowed access.
+##  </summary>
+## </param>
+#
+interface(`rbacsep_fd_use_subject_type', `
+    gen_require(`
+        attribute rbacsep_fd_use_subject_type_attribute;
+    ')
+
+    typeattribute $1 rbacsep_fd_use_subject_type_attribute;
+')
+
+###########################################################
+## <summary>
+##  File Descriptors by this domain can be used by callers of
+##  rbacsep_fd_use_subject_type() even if the role is different.
+## </summary>
+## <param name="domain">
+##  <summary>
+##  Domain allowed access.
+##  </summary>
+## </param>
+#
+interface(`rbacsep_fd_use_target_type', `
+    gen_require(`
+        attribute rbacsep_fd_use_target_type_attribute;
+    ')
+
+    typeattribute $1 rbacsep_fd_use_target_type_attribute;
+')

@@ -46,3 +46,7 @@ attribute rbacsep_constrained_subject_type_attribute;
 
 # always rbacsep constrained as target, even if target role is unconstrained
 attribute rbacsep_constrained_target_type_attribute;
+
+# special exceptions for "fd use"
+attribute rbacsep_fd_use_subject_type_attribute
+attribute rbacsep_fd_use_target_type_attribute

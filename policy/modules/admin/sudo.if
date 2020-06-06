@@ -45,6 +45,7 @@ template(`sudo_role_template',`
 	domain_interactive_fd($1_sudo_t)
 	domain_role_change_exemption($1_sudo_t)
     rbac_change_role_user_source_type($1_sudo_t)
+	rbacsep_fd_use_target_type($1_sudo_t)
 	role $2 types $1_sudo_t;
 
 	##############################
