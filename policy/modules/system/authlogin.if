@@ -145,6 +145,8 @@ interface(`auth_login_pgm_domain',`
 	domain_obj_id_change_exemption($1)
 	role system_r types $1;
 	rbac_change_role_user_source_type($1)
+	# for accessing authentication files under ~
+	rbacsep_exempt_type_uncond($1)
 
 	# Needed for pam_selinux_permit to cleanup properly
 	domain_read_all_domains_state($1)
