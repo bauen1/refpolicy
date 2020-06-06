@@ -26,6 +26,7 @@ template(`virt_domain_template',`
 	application_type($1_t)
 	qemu_entry_type($1_t)
 	domain_user_exemption_target($1_t)
+	domain_use_interactive_fds($1_t)
 	mls_rangetrans_target($1_t)
 	mcs_constrained($1_t)
 	role virt_domain_roles types $1_t;

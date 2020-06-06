@@ -10,6 +10,7 @@ attribute cpucontrol_domain;
 type cpucontrol_t, cpucontrol_domain;
 type cpucontrol_exec_t;
 init_system_domain(cpucontrol_t, cpucontrol_exec_t)
+domain_use_interactive_fds(cpucontrol_t)
 
 type cpucontrol_conf_t;
 files_config_file(cpucontrol_conf_t)
@@ -17,6 +18,7 @@ files_config_file(cpucontrol_conf_t)
 type cpuspeed_t, cpucontrol_domain;
 type cpuspeed_exec_t;
 init_system_domain(cpuspeed_t, cpuspeed_exec_t)
+domain_use_interactive_fds(cpuspeed_t)
 
 type cpuspeed_runtime_t alias cpuspeed_var_run_t;
 files_pid_file(cpuspeed_runtime_t)
@@ -30,8 +32,6 @@ dontaudit cpucontrol_domain self:capability sys_tty_config;
 allow cpucontrol_domain self:process signal_perms;
 
 kernel_read_kernel_sysctls(cpucontrol_domain)
-
-domain_use_interactive_fds(cpucontrol_domain)
 
 files_list_usr(cpucontrol_domain)
 

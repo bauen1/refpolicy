@@ -156,8 +156,6 @@ fs_getattr_xattr_fs(crontab_domain)
 fs_manage_cgroup_dirs(crontab_domain)
 fs_rw_cgroup_files(crontab_domain)
 
-domain_use_interactive_fds(crontab_domain)
-
 fs_dontaudit_rw_anon_inodefs_files(crontab_domain)
 
 auth_rw_var_auth(crontab_domain)
@@ -265,7 +263,6 @@ corecmd_list_bin(crond_t)
 dev_read_sysfs(crond_t)
 dev_read_urand(crond_t)
 
-domain_use_interactive_fds(crond_t)
 domain_subj_id_change_exemption(crond_t)
 domain_role_change_exemption(crond_t)
 

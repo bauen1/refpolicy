@@ -46,8 +46,6 @@ kernel_read_system_state(likewise_domains)
 dev_read_rand(likewise_domains)
 dev_read_urand(likewise_domains)
 
-domain_use_interactive_fds(likewise_domains)
-
 files_read_etc_files(likewise_domains)
 files_search_var_lib(likewise_domains)
 

@@ -35,6 +35,7 @@ template(`userhelper_role_template',`
 
 	type $1_consolehelper_t, consolehelper_type;
 	userdom_user_application_domain($1_consolehelper_t, consolehelper_exec_t)
+	domain_use_interactive_fds($1_consolehelper_t)
 
 	role consolehelper_roles types $1_consolehelper_t;
 	roleattribute $2 consolehelper_roles;

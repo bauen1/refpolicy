@@ -302,8 +302,6 @@ dev_rw_kvm(virt_domain)
 dev_rw_qemu(virt_domain)
 dev_rw_vhost(virt_domain)
 
-domain_use_interactive_fds(virt_domain)
-
 files_read_etc_files(virt_domain)
 files_read_mnt_symlinks(virt_domain)
 files_read_usr_files(virt_domain)

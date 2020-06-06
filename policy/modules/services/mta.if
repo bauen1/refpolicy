@@ -39,6 +39,7 @@ template(`mta_base_mail_template',`
 
 	type $1_mail_t, user_mail_domain;
 	application_domain($1_mail_t, sendmail_exec_t)
+	domain_use_interactive_fds($1_mail_t)
 
 	type $1_mail_tmp_t;
 	files_tmp_file($1_mail_tmp_t)

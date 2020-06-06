@@ -24,6 +24,7 @@ template(`likewise_domain_template',`
 	type $1_t;
 	type $1_exec_t;
 	init_daemon_domain($1_t, $1_exec_t)
+	domain_use_interactive_fds($1_t)
 
 	typeattribute $1_t likewise_domains;
 

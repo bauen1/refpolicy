@@ -102,8 +102,6 @@ corenet_tcp_sendrecv_generic_node(condor_domain)
 corenet_sendrecv_condor_client_packets(condor_domain)
 corenet_tcp_connect_condor_port(condor_domain)
 
-domain_use_interactive_fds(condor_domain)
-
 dev_read_rand(condor_domain)
 dev_read_sysfs(condor_domain)
 dev_read_urand(condor_domain)

@@ -34,8 +34,6 @@ allow consolehelper_type self:shm create_shm_perms;
 dontaudit consolehelper_type userhelper_conf_t:file audit_access;
 read_files_pattern(consolehelper_type, userhelper_conf_t, userhelper_conf_t)
 
-domain_use_interactive_fds(consolehelper_type)
-
 kernel_read_system_state(consolehelper_type)
 kernel_read_kernel_sysctls(consolehelper_type)
 
@@ -116,7 +114,6 @@ kernel_read_system_state(userhelper_type)
 
 corecmd_exec_shell(userhelper_type)
 
-domain_use_interactive_fds(userhelper_type)
 domain_sigchld_interactive_fds(userhelper_type)
 
 dev_read_urand(userhelper_type)

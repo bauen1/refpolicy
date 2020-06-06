@@ -56,8 +56,6 @@ corecmd_exec_bin(courier_domain)
 
 dev_read_sysfs(courier_domain)
 
-domain_use_interactive_fds(courier_domain)
-
 files_read_etc_files(courier_domain)
 files_read_etc_runtime_files(courier_domain)
 files_read_usr_files(courier_domain)

@@ -59,8 +59,6 @@ allow gnomedomain self:fifo_file rw_fifo_file_perms;
 
 dev_read_urand(gnomedomain)
 
-domain_use_interactive_fds(gnomedomain)
-
 files_read_etc_files(gnomedomain)
 
 miscfiles_read_localization(gnomedomain)

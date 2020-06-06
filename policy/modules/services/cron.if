@@ -23,6 +23,7 @@ template(`cron_common_crontab_template',`
 
 	type $1_t, crontab_domain;
 	userdom_user_application_domain($1_t, crontab_exec_t)
+	domain_use_interactive_fds($1_t)
 
 	type $1_tmp_t;
 	userdom_user_tmp_file($1_tmp_t)

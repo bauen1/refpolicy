@@ -45,6 +45,7 @@ template(`gnome_role_template',`
 	type $1_gkeyringd_t, gnomedomain, gkeyringd_domain;
 	userdom_user_application_domain($1_gkeyringd_t, gkeyringd_exec_t)
 	domain_user_exemption_target($1_gkeyringd_t)
+	domain_use_interactive_fds($1_gkeyringd_t)
 
 	role $2 types $1_gkeyringd_t;
 

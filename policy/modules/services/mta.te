@@ -91,8 +91,6 @@ corecmd_exec_bin(user_mail_domain)
 
 dev_read_urand(user_mail_domain)
 
-domain_use_interactive_fds(user_mail_domain)
-
 files_read_etc_runtime_files(user_mail_domain)
 files_read_usr_files(user_mail_domain)
 files_search_spool(user_mail_domain)
