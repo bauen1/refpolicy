@@ -8,6 +8,7 @@ policy_module(dirmngr, 1.6.2)
 type dirmngr_t;
 type dirmngr_exec_t;
 init_daemon_domain(dirmngr_t, dirmngr_exec_t)
+systemd_user_domain(dirmngr_t, dirmngr_exec_t)
 
 type dirmngr_conf_t;
 files_config_file(dirmngr_conf_t)

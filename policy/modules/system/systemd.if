@@ -76,6 +76,79 @@ template(`systemd_role_template',`
 
 ######################################
 ## <summary>
+##  Allow the domain to be started and managed
+##  by systemd --user .
+## </summary>
+## <param name="role_prefix">
+##  <summary>
+##  The prefix of the user role (e.g., user
+##  is the prefix of user_r).
+##  </summary>
+## </param>
+## <param name="domain">
+##  <summary>
+##  Type to be used as a domain.
+##  </summary>
+## </param>
+## <param name="entry_point">
+##  <summary>
+##  Type of the program to be used as an entry point to this domain.
+##  </summary>
+## </param>
+#
+interface(`systemd_user_spec_domain', `
+	gen_require(`
+		type $1_systemd_t;
+	')
+
+	domtrans_pattern($1_systemd_t, $3, $2)
+
+	# stop / kill / reload
+	allow $1_systemd_t $1:process signal_perms;
+
+	# socket activation
+    # TODO: implement
+
+	# systemctl --user status unit
+    ps_process_pattern($1_systemd_t, $2)
+')
+
+######################################
+## <summary>
+##  Allow the domain to be started and managed
+##  by systemd --user .
+## </summary>
+## <param name="domain">
+##  <summary>
+##  Type to be used as a domain.
+##  </summary>
+## </param>
+## <param name="entry_point">
+##  <summary>
+##  Type of the program to be used as an entry point to this domain.
+##  </summary>
+## </param>
+#
+interface(`systemd_user_domain', `
+	gen_require(`
+		attribute systemd_user_session_type;
+	')
+
+	domtrans_pattern(systemd_user_session_type, $2, $1)
+
+	# stop / kill / reload
+	allow systemd_user_session_type $1:process signal_perms;
+
+	# socket activation
+	allow $1 systemd_user_session_type:unix_stream_socket { getattr read write ioctl };
+	allow systemd_user_session_type $1:unix_stream_socket create_stream_socket_perms;
+
+	# systemctl --user status unit
+    ps_process_pattern(systemd_user_session_type, $1)
+')
+
+######################################
+## <summary>
 ##   Make the specified type usable as a
 ##   systemd generator
 ## </summary>
