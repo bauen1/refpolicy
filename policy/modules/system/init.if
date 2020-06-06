@@ -3403,6 +3403,25 @@ interface(`init_reload_all_units',`
 
 ########################################
 ## <summary>
+##  Getattr on all systemd unit files.
+## </summary>
+## <param name="domain">
+##  <summary>
+##  Domain allowed access.
+##  </summary>
+## </param>
+#
+interface(`init_getattr_all_unit_files', `
+	gen_require(`
+		attribute systemdunit;
+	')
+
+	search_dirs_pattern($1, systemdunit, systemdunit)
+	allow $1 systemdunit:file getattr;
+')
+
+########################################
+## <summary>
 ##	Manage systemd unit dirs and the files in them
 ## </summary>
 ## <param name="domain">
