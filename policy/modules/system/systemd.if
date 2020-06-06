@@ -69,6 +69,9 @@ template(`systemd_role_template',`
 	ps_process_pattern($1_systemd_t, $3)
 	allow $3 $1_systemd_t:unix_stream_socket rw_stream_socket_perms;
 
+	allow $3 $1_systemd_t:dbus send_msg;
+	allow $1_systemd_t $3:dbus send_msg;
+
 	# Allow using file descriptors for user environment generators
 	allow $3 $1_systemd_t:fd use;
 
@@ -80,6 +83,7 @@ template(`systemd_role_template',`
 	dbus_system_bus_client($1_systemd_t)
 
 	optional_policy(`
+		dbus_spec_session_bus_client($1, $1_systemd_t)
 		systemd_user_dirmngr($1_systemd_t, $2)
 		systemd_user_gpg_agent($1_systemd_t, $2)
 		systemd_user_gpg_pinentry($1_systemd, $2)
