@@ -50,3 +50,6 @@ attribute rbacsep_constrained_target_type_attribute;
 # special exceptions for "fd use"
 attribute rbacsep_fd_use_subject_type_attribute;
 attribute rbacsep_fd_use_target_type_attribute;
+
+# exemption on all key operations for user domains
+attribute rbacsep_key_exempt_subject_type_attribute;

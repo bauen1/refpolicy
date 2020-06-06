@@ -105,10 +105,10 @@ ifdef(`enable_rbacsep', `
     # FIXME: implement better
     # XXX: we currently exempt everything that calls userdom_create_all_users_keys
     rbacsep_object_write_constrains(key, all_key_perms,
-        or t1 == xdm_t
-        or t1 == local_login_t
-        or t1 == ssh_server
-        or t1 == sudodomain
+        or (
+            t1 == rbacsep_key_exempt_subject_type_attribute
+            and t2 == rbac_change_role_user_target_type_attribute
+        )
     )
 
     rbacsep_object_write_constrains(fifo_file, all_fifo_file_perms)

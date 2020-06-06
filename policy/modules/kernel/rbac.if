@@ -239,3 +239,21 @@ interface(`rbacsep_fd_use_target_type', `
 
     typeattribute $1 rbacsep_fd_use_target_type_attribute;
 ')
+
+###########################################################
+## <summary>
+##  Bypass RBACSEP for key operations against user domains.
+## </summary>
+## <param name="domain">
+##  <summary>
+##  Domain allowed access.
+##  </summary>
+## </param>
+#
+interface(`rbacsep_key_unconstrained_on_userdomains', `
+    gen_require(`
+        attribute rbacsep_key_exempt_subject_type_attribute;
+    ')
+
+    typeattribute $1 rbacsep_key_exempt_subject_type_attribute;
+')

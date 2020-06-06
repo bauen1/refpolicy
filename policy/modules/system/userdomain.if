@@ -4609,6 +4609,7 @@ interface(`userdom_read_all_users_keys',`
 	')
 
 	allow $1 userdomain:key read;
+	rbacsep_key_unconstrained_on_userdomains($1)
 ')
 
 ########################################
@@ -4627,6 +4628,7 @@ interface(`userdom_write_all_users_keys',`
 	')
 
 	allow $1 userdomain:key write;
+	rbacsep_key_unconstrained_on_userdomains($1)
 ')
 
 ########################################
@@ -4645,6 +4647,7 @@ interface(`userdom_rw_all_users_keys',`
 	')
 
 	allow $1 userdomain:key { read view write };
+	rbacsep_key_unconstrained_on_userdomains($1)
 ')
 
 ########################################
@@ -4663,6 +4666,7 @@ interface(`userdom_create_all_users_keys',`
 	')
 
 	allow $1 userdomain:key create;
+	rbacsep_key_unconstrained_on_userdomains($1)
 ')
 
 ########################################
