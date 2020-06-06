@@ -57,6 +57,11 @@ ifdef(`enable_rbacsep', `
             r1 == rbacsep_exempt_role_attribute
             and t1 != rbacsep_constrained_subject_type_attribute
         )
+
+        or (
+            r2 == rbacsep_exempt_role_attribute
+            and t2 != rbacsep_constrained_target_type_attribute
+        )
     );
 
     #######################################################
