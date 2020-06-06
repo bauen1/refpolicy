@@ -1,20 +1,5 @@
 ## <summary>local fixes for systemd + gpg</summary>
 
-## <summary>
-##  Fixes for systemd socket activation on /run/user/$uid/gnupg
-## </summary>
-## <param name="systemd domain">
-##  <summary></summary>
-## </param>
-interface(`systemd_gnupg_socket_activation_fix', `
-    gen_require(`
-        type gpg_runtime_t;
-    ')
-
-    userdom_user_runtime_filetrans($1, gpg_runtime_t, dir, "gnupg")
-    allow $1 gpg_runtime_t:dir manage_dir_perms;
-')
-
 ## <summary>Fixes for systemd --user and dirmngr_t</summary>
 ## <param name="systemd domain">
 ##  <summary></summary>
@@ -32,8 +17,6 @@ interface(`systemd_user_dirmngr',`
     allow $1 dirmngr_exec_t:file getattr;
 
     # systemd socket activation
-    filetrans_pattern($1, gpg_runtime_t, dirmngr_tmp_t, sock_file, "S.dirmngr")
-    allow $1 dirmngr_tmp_t:sock_file { create write };
     allow $1 dirmngr_t:unix_stream_socket { bind create listen setopt };
     allow dirmngr_t $1:unix_stream_socket { read write getattr getopt accept };
 
@@ -60,8 +43,6 @@ interface(`systemd_user_gpg_agent', `
     domtrans_pattern($1, gpg_agent_exec_t, gpg_agent_t)
 
     # systemd socket activation
-    filetrans_pattern($1, gpg_runtime_t, gpg_agent_tmp_t, sock_file)
-    allow $1 gpg_agent_tmp_t:sock_file { getattr create write unlink };
     allow gpg_agent_t $1:unix_stream_socket { connectto read write getattr ioctl accept getopt };
 
     # probably related to socket activation

@@ -392,3 +392,22 @@ optional_policy(`
 optional_policy(`
 	xserver_user_x_domain_template(gpg_pinentry, gpg_pinentry_t, gpg_pinentry_tmpfs_t)
 ')
+
+#############################
+# systemd --user:
+#
+gen_require(`
+    attribute systemd_user_session_type;
+')
+userdom_user_runtime_filetrans(systemd_user_session_type, gpg_runtime_t, dir, "gnupg")
+allow systemd_user_session_type gpg_runtime_t:dir manage_dir_perms;
+
+gen_require(`
+    attribute systemd_user_session_type;
+')
+gpg_runtime_filetrans(systemd_user_session_type, gpg_agent_tmp_t, sock_file, "S.gpg-agent")
+gpg_runtime_filetrans(systemd_user_session_type, gpg_agent_tmp_t, sock_file, "S.gpg-agent.browser")
+gpg_runtime_filetrans(systemd_user_session_type, gpg_agent_tmp_t, sock_file, "S.gpg-agent.ssh")
+gpg_runtime_filetrans(systemd_user_session_type, gpg_agent_tmp_t, sock_file, "S.gpg-agent.extra")
+allow systemd_user_session_type gpg_agent_tmp_t:sock_file manage_sock_file_perms;
+allow systemd_user_session_type gpg_agent_t:unix_stream_socket create_stream_socket_perms;

@@ -78,6 +78,12 @@ template(`systemd_role_template',`
 	dbus_system_bus_client($1_systemd_t)
 
 	optional_policy(`
+		systemd_user_dirmngr($1_systemd_t, $2)
+		systemd_user_gpg_agent($1_systemd_t, $2)
+		systemd_user_gpg_pinentry($1_systemd, $2)
+	')
+
+	optional_policy(`
 		# for socket activation
 		gpg_create_runtime_dir($1_systemd_t)
 		gpg_agent_create_runtime_sock_files($1_systemd_t)

@@ -93,3 +93,12 @@ optional_policy(`
 	gpg_secret_filetrans(dirmngr_t, dirmngr_home_t, dir)
 	gpg_stream_connect_agent(dirmngr_t)
 ')
+
+#############################
+# systemd --user
+#
+gen_require(`
+    attribute systemd_user_session_type;
+')
+gpg_runtime_filetrans(systemd_user_session_type, dirmngr_tmp_t, sock_file, "S.dirmngr")
+allow systemd_user_session_type dirmngr_tmp_t:sock_file manage_sock_file_perms;
