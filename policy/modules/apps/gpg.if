@@ -239,6 +239,26 @@ interface(`gpg_search_agent_tmp_dirs',`
 
 ########################################
 ## <summary>
+##  Create /run/user/uid/gnupg with the
+##  correct context.
+## </summary>
+## <param name="domain">
+##  <summary>
+##  Domain allowed access.
+##  </summary>
+## </param>
+#
+interface(`gpg_create_runtime_dir', `
+	gen_require(`
+		type gpg_runtime_t;
+	')
+
+	userdom_user_runtime_filetrans($1, gpg_runtime_t, dir, "gnupg")
+	allow $1 gpg_runtime_t:dir { create_dir_perms delete_dir_perms };
+')
+
+########################################
+## <summary>
 ##	filetrans in gpg_agent_tmp_t dirs
 ## </summary>
 ## <param name="domain">

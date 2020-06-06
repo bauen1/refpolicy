@@ -76,6 +76,11 @@ template(`systemd_role_template',`
 	can_exec($3, { systemd_run_exec_t systemd_analyze_exec_t })
 
 	dbus_system_bus_client($1_systemd_t)
+
+	optional_policy(`
+		# for socket activation
+		gpg_create_runtime_dir($1_systemd_t)
+	')
 ')
 
 ######################################
