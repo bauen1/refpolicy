@@ -1,6 +1,7 @@
 /etc/\.updated				--	gen_context(system_u:object_r:systemd_update_run_t,s0)
 
 /etc/systemd/dont-synthesize-nobody	--	gen_context(system_u:object_r:systemd_conf_t,s0)
+/etc/systemd/user(/.*)?		--	gen_context(system_u:object_r:systemd_user_unit_t,s0)
 /etc/udev/hwdb\.bin			--	gen_context(system_u:object_r:systemd_hwdb_t,s0)
 
 /run/log/journal(/.*)?				gen_context(system_u:object_r:systemd_journal_t,s0)
@@ -45,6 +46,8 @@
 /usr/lib/systemd/systemd-update-done	--	gen_context(system_u:object_r:systemd_update_done_exec_t,s0)
 /usr/lib/systemd/systemd-user-runtime-dir	--	gen_context(system_u:object_r:systemd_user_runtime_dir_exec_t,s0)
 /usr/lib/systemd/systemd-user-sessions	--	gen_context(system_u:object_r:systemd_sessions_exec_t,s0)
+/usr/lib/systemd/user(/.*)?				gen_context(system_u:object_r:systemd_user_unit_t,s0)
+/usr/lib/systemd/user-preset(/.*)? 		gen_context(system_u:object_r:systemd_user_unit_t,s0)
 
 # Systemd unit files
 /usr/lib/systemd/system/[^/]*halt.*	--	gen_context(system_u:object_r:power_unit_t,s0)
@@ -83,6 +86,10 @@
 
 /run/tmpfiles\.d	-d	gen_context(system_u:object_r:systemd_tmpfiles_conf_t,s0)
 /run/tmpfiles\.d/.*		<<none>>
+
+/run/user/%{USERID}/systemd(/.*)?			gen_context(system_u:object_r:systemd_user_runtime_t,s0)
+/run/user/%{USERID}/systemd/transient		gen_context(system_u:object_r:systemd_user_unit_t,s0)
+/run/user/%{USERID}/systemd/notify(/.*)?	gen_context(system_u:object_r:systemd_user_runtime_notify_t,s0)
 
 /var/log/journal(/.*)?		gen_context(system_u:object_r:systemd_journal_t,s0)
 
