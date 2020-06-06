@@ -207,6 +207,7 @@ interface(`dbus_connect_spec_session_bus',`
 #
 interface(`dbus_all_session_bus_client',`
 	gen_require(`
+		type session_dbusd_runtime_t;
 		attribute session_bus_type, dbusd_session_bus_client;
 		class dbus send_msg;
 	')
@@ -218,6 +219,10 @@ interface(`dbus_all_session_bus_client',`
 
 	allow $1 session_bus_type:unix_stream_socket connectto;
 	allow $1 session_bus_type:fd use;
+
+	# /run/user/uid/bus
+	stream_connect_pattern($1, session_dbusd_runtime_t, session_dbusd_runtime_t, session_bus_type)
+	userdom_search_user_runtime($1)
 ')
 
 #######################################
@@ -241,6 +246,7 @@ interface(`dbus_spec_session_bus_client',`
 	gen_require(`
 		attribute dbusd_session_bus_client;
 		type $1_dbusd_t;
+		type session_dbusd_runtime_t;
 		class dbus send_msg;
 	')
 
@@ -251,6 +257,10 @@ interface(`dbus_spec_session_bus_client',`
 
 	allow $2 $1_dbusd_t:unix_stream_socket connectto;
 	allow $2 $1_dbusd_t:fd use;
+
+	# /run/user/uid/bus
+	stream_connect_pattern($2, session_dbusd_runtime_t, session_dbusd_runtime_t, $1_dbusd_t)
+	userdom_search_user_runtime($2)
 ')
 
 #######################################
