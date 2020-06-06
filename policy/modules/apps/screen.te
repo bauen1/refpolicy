@@ -72,7 +72,6 @@ dev_dontaudit_getattr_all_chr_files(screen_domain)
 dev_dontaudit_getattr_all_blk_files(screen_domain)
 dev_read_urand(screen_domain)
 
-domain_use_interactive_fds(screen_domain)
 domain_sigchld_interactive_fds(screen_domain)
 domain_read_all_domains_state(screen_domain)
 
