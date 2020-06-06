@@ -53,6 +53,8 @@ template(`systemd_role_template',`
 
 	allow $3 systemd_user_runtime_notify_t:sock_file { manage_sock_file_perms relabel_sock_file_perms };
 
+	allow $3 $1_systemd_t:unix_stream_socket rw_stream_socket_perms;
+
 	allow $3 systemd_user_unit_t:service { start stop status reload enable disable };
 	allow $3 $1_systemd_t:system { status start stop enable disable reload };
 
