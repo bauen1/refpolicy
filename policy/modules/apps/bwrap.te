@@ -96,3 +96,7 @@ allow bwrap_domain { user_home_content_type user_runtime_content_type }:dir { se
 allow bwrap_domain { user_home_content_type user_runtime_content_type }:file { getattr mounton };
 allow bwrap_domain { user_home_content_type user_runtime_content_type }:sock_file getattr;
 allow bwrap_domain xdm_tmp_t:sock_file getattr;
+
+optional_policy(`
+	xserver_write_inherited_xsession_log(bwrap_domain)
+')

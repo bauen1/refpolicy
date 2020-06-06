@@ -51,3 +51,7 @@ gen_require(`
     type initrc_var_run_t;
 ')
 allow pkexec_domain initrc_var_run_t:file { open read lock };
+
+optional_policy(`
+	xserver_write_inherited_xsession_log(pkexec_domain)
+')

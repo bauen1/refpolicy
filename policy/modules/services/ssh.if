@@ -441,6 +441,7 @@ template(`ssh_role_template',`
 		xserver_use_xdm_fds($1_ssh_agent_t)
 		xserver_rw_xdm_pipes($1_ssh_agent_t)
 		xserver_sigchld_xdm($1_ssh_agent_t)
+		xserver_write_inherited_xsession_log($1_ssh_agent_t)
 	')
 ')
 

@@ -311,6 +311,7 @@ optional_policy(`
 optional_policy(`
 	xserver_sigchld_xdm(gpg_agent_t)
 	xserver_read_user_xauth(gpg_agent_t)
+	xserver_write_inherited_xsession_log(gpg_agent_t)
 ')
 
 ##############################

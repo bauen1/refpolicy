@@ -4,20 +4,12 @@ policy_module(local_xsession_log, 1.0)
 # allow various daemons to log to ~/.xsession-errors
 
 gen_require(`
-    type gpg_agent_t;
-    attribute ssh_agent_type;
     type utempter_t;
     type iceauth_t;
     type user_home_t;
-    attribute bwrap_domain;
-    attribute pkexec_domain;
 ')
-xserver_write_inherited_xsession_log(gpg_agent_t)
-xserver_write_inherited_xsession_log(ssh_agent_type)
 xserver_write_inherited_xsession_log(utempter_t)
 xserver_write_inherited_xsession_log(iceauth_t)
-xserver_write_inherited_xsession_log(bwrap_domain)
-xserver_write_inherited_xsession_log(pkexec_domain)
 
 # log to ~/.xfce4-sessesion-verbose
 allow iceauth_t user_home_t:file write;
