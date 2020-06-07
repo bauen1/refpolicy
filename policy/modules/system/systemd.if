@@ -59,9 +59,11 @@ template(`systemd_role_template',`
 	# This domain is per-role because of the below transitions.
 	# See the sytemd --user section of systemd.te for the
 	# remainder of the rules.
+	# see systemd_user_domain() for details
 	allow $1_systemd_t $3:process { setsched rlimitinh };
 	corecmd_shell_domtrans($1_systemd_t, $3)
 	corecmd_bin_domtrans($1_systemd_t, $3)
+	allow $3 $1_systemd_t:unix_stream_socket rw_stream_socket_perms;
 
 	# Allow using file descriptors for user environment generators
 	allow $3 $1_systemd_t:fd use;
@@ -151,7 +153,7 @@ interface(`systemd_user_domain', `
 	allow systemd_user_session_type $1:process signal_perms;
 
 	# socket activation
-	allow $1 systemd_user_session_type:unix_stream_socket { getattr read write ioctl };
+	allow $1 systemd_user_session_type:unix_stream_socket rw_stream_socket_perms;
 	allow systemd_user_session_type $1:unix_stream_socket create_stream_socket_perms;
 
 	# systemctl --user status unit
