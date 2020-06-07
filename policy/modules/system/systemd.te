@@ -1513,6 +1513,7 @@ allow systemd_user_runtime_dir_t self:capability { fowner chown sys_admin dac_re
 allow systemd_user_runtime_dir_t self:process setfscreate;
 
 domain_obj_id_change_exemption(systemd_user_runtime_dir_t)
+rbac_obj_role_change_exemption_uncond(systemd_user_runtime_dir_t)
 
 files_read_etc_files(systemd_user_runtime_dir_t)
 
