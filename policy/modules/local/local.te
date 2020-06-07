@@ -3,15 +3,6 @@ policy_module(local, 1.0)
 ####################
 # required for booting
 
-# TODO: migrate parts of this to system local policies where appropiate
-
-# [    6.469260 ] audit: type=1400 audit(1575813032.156:154): avc:  denied  { use  } for  pid=1 comm="systemd" path="socket:[12034]" dev="sockfs" ino=12034 scontext=system_u:system_r:init_t:s0 tcontext=system_u:system_r:syslogd_t:s0 tclass=fd permissive=0
-gen_require(`
-    type init_t;
-    type syslogd_t;
-')
-allow init_t syslogd_t:fd use;
-
 ####################
 # ansible gather_facts: set ansible_service_mgr correctly
 gen_require(`
@@ -27,15 +18,6 @@ gen_require(`
 init_get_generic_units_status(ntpd_t)
 init_start_generic_units(ntpd_t)
 init_stop_generic_units(ntpd_t)
-
-####################
-# ansible: use sudo from an ssh session without tty
-# FIXME: why isn't this allowed by default ?
-gen_require(`
-    attribute sudodomain;
-    type sshd_t;
-')
-allow sudodomain sshd_t:fifo_file rw_inherited_fifo_file_perms;
 
 ####################
 # linux 5.4
@@ -84,11 +66,11 @@ files_read_kernel_symbol_table(kmod_t)
 
 # ========= mail =========
 # dovecot on he-ipv6-web0
-require {
+gen_require(`
     type dovecot_t, dovecot_auth_t;
     type tmpfs_t;
     type postfix_master_t, postfix_runtime_t;
-}
+')
 
 mta_read_spool_files(dovecot_t)
 
@@ -112,16 +94,16 @@ userdom_manage_user_tmp_sockets(gpg_t)
 files_manage_etc_files(gpg_t)
 
 # allow ansible to verify ssh config
-require {
-    type sshd_exec_t;
+gen_require(`
     type sysadm_t;
-}
-can_exec(sysadm_t, sshd_exec_t)
+')
+ssh_exec_sshd(sysadm_t)
 
 # allow ansible verify dnsmasq configfiles
-require {
+gen_require(`
+    type sysadm_t;
     type dnsmasq_exec_t;
-}
+')
 can_exec(sysadm_t, dnsmasq_exec_t)
 
 # allow ansible to verify nftables config
