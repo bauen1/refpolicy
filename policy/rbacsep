@@ -73,6 +73,12 @@ ifdef(`enable_rbacsep', `
     ')
 
     #######################################################
+    #
+    define(`rbacsep_object_constrain_all', `
+        rbacsep_object_write_constrains($1, all_$1_perms, $2)
+    ')
+
+    #######################################################
     # constrain file { all_file_perms -read_file_perms }
     #
     rbacsep_object_write_constrains(file, { rbacsep_file_write_operations execute_no_trans entrypoint })
@@ -102,8 +108,6 @@ ifdef(`enable_rbacsep', `
     #
     rbacsep_object_write_constrains(chr_file, { all_chr_file_perms })
 
-    # FIXME: implement better
-    # XXX: we currently exempt everything that calls userdom_create_all_users_keys
     rbacsep_object_write_constrains(key, all_key_perms,
         or (
             t1 == rbacsep_key_exempt_subject_type_attribute
@@ -111,40 +115,58 @@ ifdef(`enable_rbacsep', `
         )
     )
 
-    rbacsep_object_write_constrains(fifo_file, all_fifo_file_perms)
-
-    # TODO: constrain fd use
-
-    rbacsep_object_write_constrains(node, all_node_perms)
-    rbacsep_object_write_constrains(netif, all_netif_perms)
+    rbacsep_object_constrain_all(fifo_file)
+    rbacsep_object_constrain_all(node)
+    rbacsep_object_constrain_all(netif)
+    rbacsep_object_constrain_all(association)
+    rbacsep_object_constrain_all(peer)
 
     #######################################################
+    # DBUS
     #
+    rbacsep_object_write_constrains(dbus, all_dbus_perms)
 
-    # netlink family
-    define(`rbacsep_netlink_all_constrains', `
-        rbacsep_object_write_constrains($1, all_$1_perms)
-    ')
+    #######################################################
+    # SysV IPC
+    #
+    rbacsep_object_constrain_all(sem)
+    rbacsep_object_constrain_all(msg)
+    rbacsep_object_constrain_all(msgq)
+    rbacsep_object_constrain_all(shm)
+    rbacsep_object_constrain_all(ipc)
 
-    rbacsep_netlink_all_constrains(netlink_route_socket)
-    rbacsep_netlink_all_constrains(obsolete_netlink_firewall_socket)
-    rbacsep_netlink_all_constrains(netlink_tcpdiag_socket)
-    rbacsep_netlink_all_constrains(netlink_nflog_socket)
-    rbacsep_netlink_all_constrains(netlink_xfrm_socket)
-    rbacsep_netlink_all_constrains(netlink_selinux_socket)
-    rbacsep_netlink_all_constrains(netlink_audit_socket)
-    rbacsep_netlink_all_constrains(obsolete_netlink_ip6fw_socket)
-    rbacsep_netlink_all_constrains(netlink_dnrt_socket)
-    rbacsep_netlink_all_constrains(netlink_kobject_uevent_socket)
-    rbacsep_netlink_all_constrains(netlink_iscsi_socket)
-    rbacsep_netlink_all_constrains(netlink_fib_lookup_socket)
-    rbacsep_netlink_all_constrains(netlink_connector_socket)
-    rbacsep_netlink_all_constrains(netlink_netfilter_socket)
-    rbacsep_netlink_all_constrains(netlink_generic_socket)
-    rbacsep_netlink_all_constrains(netlink_scsitransport_socket)
-    rbacsep_netlink_all_constrains(netlink_rdma_socket)
-    rbacsep_netlink_all_constrains(netlink_crypto_socket)
-    rbacsep_netlink_all_constrains(netlink_socket)
+    #######################################################
+    # Sockets
+    #
+    rbacsep_object_constrain_all(socket)
+    rbacsep_object_constrain_all(tcp_socket)
+    rbacsep_object_constrain_all(sctp_socket)
+    rbacsep_object_constrain_all(udp_socket)
+    rbacsep_object_constrain_all(rawip_socket)
+    rbacsep_object_constrain_all(netlink_socket)
+    rbacsep_object_constrain_all(packet_socket)
+    rbacsep_object_constrain_all(key_socket)
+    rbacsep_object_constrain_all(unix_stream_socket)
+    rbacsep_object_constrain_all(unix_dgram_socket)
+    rbacsep_object_constrain_all(netlink_route_socket)
+    rbacsep_object_constrain_all(netlink_tcpdiag_socket)
+    rbacsep_object_constrain_all(netlink_nflog_socket)
+    rbacsep_object_constrain_all(netlink_xfrm_socket)
+    rbacsep_object_constrain_all(netlink_selinux_socket)
+    rbacsep_object_constrain_all(netlink_audit_socket)
+    rbacsep_object_constrain_all(netlink_dnrt_socket)
+    rbacsep_object_constrain_all(netlink_kobject_uevent_socket)
+    rbacsep_object_constrain_all(appletalk_socket)
+    rbacsep_object_constrain_all(dccp_socket)
+    rbacsep_object_constrain_all(tun_socket)
+    rbacsep_object_constrain_all(netlink_iscsi_socket)
+    rbacsep_object_constrain_all(netlink_fib_lookup_socket)
+    rbacsep_object_constrain_all(netlink_connector_socket)
+    rbacsep_object_constrain_all(netlink_netfilter_socket)
+    rbacsep_object_constrain_all(netlink_generic_socket)
+    rbacsep_object_constrain_all(netlink_scsitransport_socket)
+    rbacsep_object_constrain_all(netlink_rdma_socket)
+    rbacsep_object_constrain_all(netlink_crypto_socket)
 
     #######################################################
     # constrains on file descriptor user:
