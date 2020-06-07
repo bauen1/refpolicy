@@ -1,2 +1,0 @@
-# helper used by systemd to launch ssh-agent (and do some dbus stuff)
-/usr/lib/openssh/agent-launch                     gen_context(system_u:object_r:bin_t,s0)
