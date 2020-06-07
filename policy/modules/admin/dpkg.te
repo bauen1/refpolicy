@@ -15,6 +15,7 @@ domain_obj_id_change_exemption(dpkg_t)
 domain_role_change_exemption(dpkg_t)
 domain_system_change_exemption(dpkg_t)
 domain_interactive_fd(dpkg_t)
+rbac_exemption_uncond(dpkg_t)
 role dpkg_roles types dpkg_t;
 
 type dpkg_lock_t;
@@ -38,6 +39,7 @@ corecmd_bin_entry_type(dpkg_script_t)
 domain_obj_id_change_exemption(dpkg_script_t)
 domain_system_change_exemption(dpkg_script_t)
 domain_interactive_fd(dpkg_script_t)
+rbac_exemption_uncond(dpkg_script_t)
 role dpkg_roles types dpkg_script_t;
 
 type dpkg_script_tmp_t;

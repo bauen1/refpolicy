@@ -1281,6 +1281,7 @@ template(`userdom_admin_user_template',`
 	userdom_common_user_template($1)
 
 	domain_obj_id_change_exemption($1_t)
+	rbac_obj_role_change_exempt_uncond_type_attribute($1_t)
 	rbacsep_exempt_role($1_r)
 
 	typeattribute $1_t admindomain;
