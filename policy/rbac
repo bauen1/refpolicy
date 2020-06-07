@@ -17,6 +17,7 @@ ifdef(`enable_rbac', `
 
     rbac_object_constrain(dir_file_class_set, { create relabelfrom relabelto })
     rbac_object_constrain(socket_class_set, { create relabelfrom relabelto })
+    rbac_object_constrain(packet, { relabelto })
 
     undefine(`rbac_object_constrain')
 
