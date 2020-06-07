@@ -134,3 +134,23 @@ interface(`dirmngr_admin',`
 	files_search_var_lib($1)
 	admin_pattern($1, dirmngr_var_lib_t)
 ')
+
+########################################
+## <summary>
+##  Allow the domain to create the
+##  /run/user/uid/gnupg/S.dirmngr socket.
+## </summary>
+## <param name="domain">
+##	<summary>
+##	Domain allowed access.
+##	</summary>
+## </param>
+#
+interface(`dirmngr_create_runtime_sock_file', `
+	gen_require(`
+		type dirmngr_tmp_t;
+	')
+
+	gpg_runtime_filetrans($1, dirmngr_tmp_t, sock_file, "S.dirmngr")
+	allow $1 dirmngr_tmp_t:sock_file manage_sock_file_perms;
+')
