@@ -11,5 +11,5 @@
 /var/lib/lxc(/.*)?	gen_context(system_u:object_r:lxc_var_lib_t,s0)
 
 # FIXME: not ideal ?
-/usr/share/lxcfs/lxc.mount.hook	--	gen_context(system_u:object_r:bin_t,s0)
-/usr/share/lxcfs/lxc.reboot.hook	--	gen_context(system_u:object_r:bin_t,s0)
+/usr/share/lxcfs/lxc\.mount\.hook	--	gen_context(system_u:object_r:bin_t,s0)
+/usr/share/lxcfs/lxc\.reboot\.hook	--	gen_context(system_u:object_r:bin_t,s0)
