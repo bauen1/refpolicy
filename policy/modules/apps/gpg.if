@@ -259,6 +259,30 @@ interface(`gpg_create_runtime_dir', `
 
 ########################################
 ## <summary>
+##  Create sockets under /run/user/uid/gnupg
+##  with the correct contetxt.
+## </summary>
+## <param name="domain">
+##  <summary>
+##  Domain allowed access.
+##  </summary>
+## </param>
+#
+interface(`gpg_agent_create_runtime_sock_files',`
+	gen_require(`
+		type gpg_runtime_t;
+		type gpg_agent_tmp_t;
+	')
+
+	filetrans_pattern($1, gpg_runtime_t, gpg_agent_tmp_t, sock_file, "S.gpg-agent")
+	filetrans_pattern($1, gpg_runtime_t, gpg_agent_tmp_t, sock_file, "S.gpg-agent.browser")
+	filetrans_pattern($1, gpg_runtime_t, gpg_agent_tmp_t, sock_file, "S.gpg-agent.extra")
+	filetrans_pattern($1, gpg_runtime_t, gpg_agent_tmp_t, sock_file, "S.gpg-agent.ssh")
+	allow $1 gpg_agent_tmp_t:sock_file manage_sock_file_perms;
+')
+
+########################################
+## <summary>
 ##	filetrans in gpg_agent_tmp_t dirs
 ## </summary>
 ## <param name="domain">

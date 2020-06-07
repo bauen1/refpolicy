@@ -76,6 +76,7 @@ template(`systemd_role_template',`
 	optional_policy(`
 		# for socket activation
 		gpg_create_runtime_dir($1_systemd_t)
+		gpg_agent_create_runtime_sock_files($1_systemd_t)
 	')
 ')
 
