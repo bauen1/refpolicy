@@ -1,14 +1,5 @@
 policy_module(local_gpg, 1.0)
 
-gen_require(`
-    type staff_systemd_t;
-    type user_systemd_t;
-    role staff_r;
-    role user_r;
-')
-systemd_gnupg_socket_activation_fix(staff_systemd_t)
-systemd_gnupg_socket_activation_fix(user_systemd_t)
-
 # dirmngr
 gen_require(`
     type dirmngr_t;
