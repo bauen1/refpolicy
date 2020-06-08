@@ -425,3 +425,6 @@ systemd_use_logind_fds(staff_t)
 
 # xfce4 notifications
 logging_send_syslog_msg(staff_t)
+
+# xfce4-power-manager
+systemd_write_inherited_logind_inhibit_pipes(staff_t)
