@@ -85,6 +85,18 @@ template(`systemd_role_template',`
 		')
 	')
 
+	optional_policy(`
+		gen_require(`
+			type $1_dbusd_t, dbusd_exec_t;
+			type session_dbusd_runtime_t;
+		')
+
+		systemd_user_spec_domain($1, $1_dbusd_t, dbusd_exec_t)
+		userdom_user_runtime_filetrans($1_systemd_t, session_dbusd_runtime_t, sock_file, "bus")
+		dbus_connect_spec_session_bus($1, $1_systemd_t)
+		allow $1_dbusd_t systemd_user_unit_t:service { start stop status reload enable disable };
+		allow $1_dbusd_t $1_systemd_t:system { status start stop enable disable reload };
+	')
 ')
 
 ######################################
@@ -117,13 +129,14 @@ interface(`systemd_user_spec_domain', `
 	domtrans_pattern($1_systemd_t, $3, $2)
 
 	# stop / kill / reload
-	allow $1_systemd_t $1:process signal_perms;
+	allow $1_systemd_t $2:process signal_perms;
 
 	# socket activation
-    # TODO: implement
+	allow $2 $1_systemd_t:unix_stream_socket rw_stream_socket_perms;
+	allow $1_systemd_t $2:unix_stream_socket create_stream_socket_perms;
 
 	# systemctl --user status unit
-    ps_process_pattern($1_systemd_t, $2)
+	ps_process_pattern($1_systemd_t, $2)
 ')
 
 ######################################
