@@ -63,6 +63,8 @@ template(`systemd_role_template',`
 	allow $1_systemd_t $3:process { setsched rlimitinh };
 	corecmd_shell_domtrans($1_systemd_t, $3)
 	corecmd_bin_domtrans($1_systemd_t, $3)
+	allow $1_systemd_t $3:process2 { nnp_transition nosuid_transition };
+	ps_process_pattern($1_systemd_t, $3)
 	allow $3 $1_systemd_t:unix_stream_socket rw_stream_socket_perms;
 
 	# Allow using file descriptors for user environment generators
@@ -127,6 +129,7 @@ interface(`systemd_user_spec_domain', `
 	')
 
 	domtrans_pattern($1_systemd_t, $3, $2)
+	allow $1_systemd_t $2:process2 { nnp_transition nosuid_transition };
 
 	# stop / kill / reload
 	allow $1_systemd_t $2:process signal_perms;
@@ -161,6 +164,7 @@ interface(`systemd_user_domain', `
 	')
 
 	domtrans_pattern(systemd_user_session_type, $2, $1)
+	allow systemd_user_session_type $1:process2 { nnp_transition nosuid_transition };
 
 	# stop / kill / reload
 	allow systemd_user_session_type $1:process signal_perms;
