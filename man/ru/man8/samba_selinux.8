@@ -20,7 +20,7 @@ chcon -t samba_share_t /var/eng
 .TP
 /etc/selinux/POLICYTYPE/contexts/files/file_contexts.local
 .br
-/var/eng(/.*)? system_u:object_r:samba_share_t
+/var/eng(/.*)? system_u:system_r:samba_share_t
 
 .SH СОВМЕСТНОЕ ВЛАДЕНИЕ ФАЙЛАМИ
 Если вы хотите организовать между несколькими доменами (Apache, FTP, rsync, Samba) совместный

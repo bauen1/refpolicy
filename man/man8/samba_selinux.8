@@ -20,7 +20,7 @@ semanage fcontext -a -t samba_share_t "/var/eng(/.*)?"
 .TP
 This command adds the following entry to /etc/selinux/POLICYTYPE/contexts/files/file_contexts.local:
 .TP
-/var/eng(/.*)? system_u:object_r:samba_share_t:s0
+/var/eng(/.*)? system_u:system_r:samba_share_t:s0
 .TP
 Run the restorecon command to apply the changes:
 .TP

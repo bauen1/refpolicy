@@ -25,7 +25,7 @@ chcon -t public_content_t /var/rsync
 при обновлении контекстов, вы должны добавить записи в файл file_contexts.local.
 .EX
 /etc/selinux/POLICYTYPE/contexts/files/file_contexts.local
-/var/rsync(/.*)? system_u:object_r:public_content_t
+/var/rsync(/.*)? system_u:system_r:public_content_t
 .EE
 
 .SH СОВМЕСТНОЕ ВЛАДЕНИЕ ФАЙЛАМИ

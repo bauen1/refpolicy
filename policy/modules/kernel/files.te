@@ -121,7 +121,7 @@ type root_t;
 files_mountpoint(root_t)
 files_poly_parent(root_t)
 kernel_rootfs_mountpoint(root_t)
-genfscon rootfs / gen_context(system_u:object_r:root_t,s0)
+genfscon rootfs / gen_context(system_u:system_r:root_t,s0)
 
 #
 # src_t is the type of files in the system src directories.
@@ -134,7 +134,7 @@ files_mountpoint(src_t)
 #
 type system_map_t;
 files_type(system_map_t)
-genfscon proc /kallsyms gen_context(system_u:object_r:system_map_t,s0)
+genfscon proc /kallsyms gen_context(system_u:system_r:system_map_t,s0)
 
 optional_policy(`
 	init_mountpoint(system_map_t)

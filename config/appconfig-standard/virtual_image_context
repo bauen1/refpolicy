@@ -1,2 +1,2 @@
-system_u:object_r:svirt_image_t
-system_u:object_r:virt_content_t
+system_u:system_r:svirt_image_t
+system_u:system_r:virt_content_t

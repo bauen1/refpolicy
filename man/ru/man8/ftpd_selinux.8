@@ -26,8 +26,8 @@ setsebool -P allow_ftpd_anon_write=1
 .TP
 /etc/selinux/POLICYTYPE/contexts/files/file_contexts.local
 .br
-/var/ftp(/.*)? system_u:object_r:public_content_t
-/var/ftp/incoming(/.*)? system_u:object_r:public_content_rw_t
+/var/ftp(/.*)? system_u:system_r:public_content_t
+/var/ftp/incoming(/.*)? system_u:system_r:public_content_rw_t
 
 .SH ПЕРЕКЛЮЧАТЕЛИ (BOOLEANS)
 Политика SELinux для демона ftp настроена исходя из принципа наименьших привелегий. Таким

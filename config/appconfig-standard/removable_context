@@ -1,1 +1,1 @@
-system_u:object_r:removable_t
+system_u:system_r:removable_t

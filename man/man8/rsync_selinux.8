@@ -28,7 +28,7 @@ semanage fcontext -a -t public_content_t "/var/rsync(/.*)?"
 .TP
 This command adds the following entry to /etc/selinux/POLICYTYPE/contexts/files/file_contexts.local:
 .TP
-/var/rsync(/.*)? system_u:object_r:publix_content_t:s0
+/var/rsync(/.*)? system_u:system_r:publix_content_t:s0
 .TP
 Run the restorecon command to apply the changes:
 .TP
