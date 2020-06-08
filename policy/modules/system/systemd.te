@@ -84,6 +84,10 @@ type systemd_lvm2_generator_t;
 type systemd_lvm2_generator_exec_t;
 systemd_unit_generator(systemd_lvm2_generator_t, systemd_lvm2_generator_exec_t)
 
+type systemd_selinux_autorelabel_generator_t;
+type systemd_selinux_autorelabel_generator_exec_t;
+systemd_unit_generator(systemd_selinux_autorelabel_generator_t, systemd_selinux_autorelabel_generator_exec_t)
+
 type systemd_sysv_generator_t;
 type systemd_sysv_generator_exec_t;
 systemd_unit_generator(systemd_sysv_generator_t, systemd_sysv_generator_exec_t)
@@ -220,6 +224,18 @@ init_unit_file(systemd_rfkill_unit_t)
 type systemd_rfkill_var_lib_t;
 files_type(systemd_rfkill_var_lib_t)
 
+type systemd_selinux_autorelabel_t;
+type systemd_selinux_autorelabel_exec_t;
+init_system_domain(systemd_selinux_autorelabel_t, systemd_selinux_autorelabel_exec_t)
+
+ifdef(`enable_mcs', `
+	init_ranged_system_domain(systemd_selinux_autorelabel_t, systemd_selinux_autorelabel_exec_t, mcs_systemhigh)
+')
+
+ifdef(`enable_mls', `
+	init_ranged_system_domain(systemd_selinux_autorelabel_t, systemd_selinux_autorelabel_exec_t, mls_systemhigh)
+')
+
 type systemd_sessions_t;
 type systemd_sessions_exec_t;
 init_system_domain(systemd_sessions_t, systemd_sessions_exec_t)
@@ -314,6 +330,8 @@ fs_register_binary_executable_type(systemd_binfmt_t)
 # generic generator local policy
 #
 
+allow systemd_generator_type self:process setfscreate;
+
 corecmd_search_bin(systemd_generator_type)
 
 dev_read_sysfs(systemd_generator_type)
@@ -335,6 +353,10 @@ init_write_pid_files(systemd_generator_type)
 kernel_use_fds(systemd_generator_type)
 kernel_read_system_state(systemd_generator_type)
 kernel_read_kernel_sysctls(systemd_generator_type)
+
+miscfiles_read_localization(systemd_generator_type)
+
+seutil_libselinux_linked(systemd_generator_type)
 
 #######################################
 #
@@ -386,6 +408,17 @@ optional_policy(`
 	lvm_read_config(systemd_lvm2_generator_t)
 	miscfiles_read_localization(systemd_lvm2_generator_t)
 ')
+
+#######################################
+#
+# selinux-autorelabel-generator.sh local policy
+#
+
+corecmd_exec_bin(systemd_selinux_autorelabel_generator_t)
+corecmd_exec_shell(systemd_selinux_autorelabel_generator_t)
+
+# for /.autorelabel
+files_read_etc_runtime_files(systemd_selinux_autorelabel_generator_t)
 
 #######################################
 #
@@ -1154,6 +1187,44 @@ optional_policy(`
 	dbus_system_bus_client(systemd_resolved_t)
 	dbus_watch_system_bus_runtime_dirs(systemd_resolved_t)
 	dbus_watch_system_bus_runtime_named_sockets(systemd_resolved_t)
+')
+
+#########################################
+#
+# systemd selinux-autorelabel local policy
+#
+
+allow systemd_selinux_autorelabel_t self:fifo_file rw_fifo_file_perms;
+allow systemd_selinux_autorelabel_t self:process getsched;
+
+corecmd_exec_bin(systemd_selinux_autorelabel_t)
+corecmd_exec_shell(systemd_selinux_autorelabel_t)
+
+files_read_etc_files(systemd_selinux_autorelabel_t)
+files_purge_tmp(systemd_selinux_autorelabel_t)
+# for /.autorelabel
+files_read_etc_runtime_files(systemd_selinux_autorelabel_t)
+files_delete_boot_flag(systemd_selinux_autorelabel_t)
+
+kernel_read_system_state(systemd_selinux_autorelabel_t)
+
+term_use_console(systemd_selinux_autorelabel_t)
+
+init_use_fds(systemd_selinux_autorelabel_t)
+# for triggering reboot
+init_stream_connect(systemd_selinux_autorelabel_t)
+init_reboot_system(systemd_selinux_autorelabel_t)
+init_read_state(systemd_selinux_autorelabel_t)
+
+miscfiles_read_localization(systemd_selinux_autorelabel_t)
+
+seutil_read_config(systemd_selinux_autorelabel_t)
+seutil_domtrans_setfiles(systemd_selinux_autorelabel_t)
+# for genhomedircon
+seutil_domtrans_semanage(systemd_selinux_autorelabel_t)
+
+optional_policy(`
+	quota_domtrans(systemd_selinux_autorelabel_t)
 ')
 
 #########################################
