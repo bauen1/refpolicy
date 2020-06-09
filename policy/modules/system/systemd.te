@@ -1371,6 +1371,7 @@ allow systemd_user_session_type self:netlink_kobject_uevent_socket { bind create
 allow systemd_user_session_type systemd_user_unit_t:file manage_file_perms;
 allow systemd_user_session_type systemd_user_unit_t:dir manage_dir_perms;
 allow systemd_user_session_type systemd_user_unit_t:lnk_file manage_lnk_file_perms;
+filetrans_pattern(systemd_user_session_type, systemd_user_runtime_t, systemd_user_unit_t, dir, "transient")
 
 allow systemd_user_session_type systemd_user_runtime_t:dir manage_dir_perms;
 allow systemd_user_session_type systemd_user_runtime_t:lnk_file manage_lnk_file_perms;
