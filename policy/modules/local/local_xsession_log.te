@@ -1,15 +1,8 @@
 policy_module(local_xsession_log, 1.0)
 
-#============ xsession_log_t ============
-# allow various daemons to log to ~/.xsession-errors
-
 gen_require(`
-    type utempter_t;
-    type iceauth_t;
     type user_home_t;
 ')
-xserver_write_inherited_xsession_log(utempter_t)
-xserver_write_inherited_xsession_log(iceauth_t)
 
 # log to ~/.xfce4-sessesion-verbose
 allow iceauth_t user_home_t:file write;
