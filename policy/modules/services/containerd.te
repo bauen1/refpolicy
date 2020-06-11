@@ -40,7 +40,7 @@ allow containerd_t self:key { search view setattr };
 allow containerd_t self:process { getsched setsched signull signal sigkill setpgid setkeycreate getcap setcap setexec };
 allow containerd_t self:tcp_socket create_stream_socket_perms;
 allow containerd_t self:udp_socket create_socket_perms;
-allow containerd_t self:unix_dgram_socket create_socket_perms;
+allow containerd_t self:unix_dgram_socket { create_socket_perms sendto };
 allow containerd_t self:unix_stream_socket { create_stream_socket_perms connectto };
 allow containerd_t self:netlink_netfilter_socket create_socket_perms;
 allow containerd_t self:netlink_route_socket create_netlink_socket_perms;
