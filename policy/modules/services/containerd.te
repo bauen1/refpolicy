@@ -34,7 +34,7 @@ ifdef(`enable_mls', `
 # Local policy
 #
 
-allow containerd_t self:capability { chown dac_override dac_read_search fowner fsetid net_admin setgid setpcap setuid sys_admin sys_chroot sys_resource };
+allow containerd_t self:capability { chown dac_override dac_read_search fowner fsetid net_admin setgid setpcap setuid sys_admin sys_chroot sys_resource sys_ptrace kill };
 allow containerd_t self:fifo_file manage_fifo_file_perms;
 allow containerd_t self:key { search view setattr };
 allow containerd_t self:process { getsched setsched signull signal sigkill setpgid setkeycreate getcap setcap setexec };
