@@ -39,6 +39,7 @@ files_search_var_lib(certbot_t)
 manage_dirs_pattern(certbot_t, certbot_lib_t, certbot_lib_t)
 manage_files_pattern(certbot_t, certbot_lib_t, certbot_lib_t)
 manage_lnk_files_pattern(certbot_t, certbot_lib_t, certbot_lib_t)
+files_var_lib_filetrans(certbot_t, certbot_lib_t, dir, "letsencrypt")
 
 manage_files_pattern(certbot_t, certbot_tmp_t, certbot_tmp_t)
 manage_dirs_pattern(certbot_t, certbot_tmp_t, certbot_tmp_t)
