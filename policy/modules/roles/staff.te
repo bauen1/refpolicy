@@ -1,5 +1,6 @@
 policy_module(staff, 2.11.0)
 
+
 ########################################
 #
 # Declarations
@@ -27,9 +28,9 @@ gen_require(`
 #userdom_base_user_template(staff)
 
 gen_require(`
-    type user_t;
-    type user_devpts_t, user_tty_device_t;
-    attribute file_type;
+	type user_t;
+	type user_devpts_t, user_tty_device_t;
+	attribute file_type;
 ')
 role staff_r types { user_t user_devpts_t user_tty_device_t file_type };
 
@@ -54,17 +55,17 @@ auth_run_utempter(user_t, staff_r)
 seutil_run_newrole(user_t, staff_r)
 
 optional_policy(`
-    #systemd_role_template(user, staff_r, user_t)
-    gen_require(`
-        type user_systemd_t;
-        type systemd_user_runtime_t;
-        type systemd_user_runtime_notify_t;
-    ')
-    role staff_r types { user_systemd_t systemd_user_runtime_t systemd_user_runtime_notify_t };
+	#systemd_role_template(user, staff_r, user_t)
+	gen_require(`
+		type user_systemd_t;
+		type systemd_user_runtime_t;
+		type systemd_user_runtime_notify_t;
+	')
+	role staff_r types { user_systemd_t systemd_user_runtime_t systemd_user_runtime_notify_t };
 ')
 
 optional_policy(`
-    usernetctl_run(user_t, staff_r)
+	usernetctl_run(user_t, staff_r)
 ')
 
 #
@@ -99,20 +100,20 @@ optional_policy(`
 
 optional_policy(`
 	#ssh_role_template(staff, staff_r, user_t)
-    gen_require(`
-        type ssh_t;
-        type user_ssh_agent_t;
-    ')
-    role staff_r types { ssh_t user_ssh_agent_t };
+	gen_require(`
+		type ssh_t;
+		type user_ssh_agent_t;
+	')
+	role staff_r types { ssh_t user_ssh_agent_t };
 ')
 
 optional_policy(`
 	#sudo_role_template(staff, staff_r, user_t)
-    gen_require(`
-        type user_sudo_t;
-    ')
-    role staff_r types user_sudo_t;
-    auth_run_chk_passwd(user_sudo_t, staff_r)
+	gen_require(`
+		type user_sudo_t;
+	')
+	role staff_r types user_sudo_t;
+	auth_run_chk_passwd(user_sudo_t, staff_r)
 ')
 
 optional_policy(`
@@ -159,35 +160,35 @@ ifndef(`distro_redhat',`
 
 	optional_policy(`
 		#dbus_role_template(staff, staff_r, user_t)
-        gen_require(`
-            type user_dbusd_t;
-        ')
-        role staff_r types user_dbusd_t;
+		gen_require(`
+			type user_dbusd_t;
+		')
+		role staff_r types user_dbusd_t;
 
 		optional_policy(`
 			#gnome_role_template(staff, staff_r, user_t)
-            gen_require(`
-                attribute_role gconfd_roles;
-                type user_gkeyringd_t;
-            ')
-            roleattribute staff_r gconfd_roles;
-            role staff_r types user_gkeyringd_t;
+			gen_require(`
+				attribute_role gconfd_roles;
+				type user_gkeyringd_t;
+			')
+			roleattribute staff_r gconfd_roles;
+			role staff_r types user_gkeyringd_t;
 		')
 
 		optional_policy(`
 			#telepathy_role_template(staff, staff_r, user_t)
-            gen_require(`
-                attribute telepathy_domain;
-            ')
-            role staff_r types telepathy_domain;
+			gen_require(`
+				attribute telepathy_domain;
+			')
+			role staff_r types telepathy_domain;
 		')
 
 		optional_policy(`
 			#wm_role_template(staff, staff_r, user_t)
-            gen_require(`
-                type user_wm_t;
-            ')
-            role staff_r types user_wm_t;
+			gen_require(`
+				type user_wm_t;
+			')
+			role staff_r types user_wm_t;
 		')
 	')
 
@@ -265,10 +266,10 @@ ifndef(`distro_redhat',`
 
 	optional_policy(`
 		#screen_role_template(staff, staff_r, user_t)
-        gen_require(`
-            attribute_role screen_roles;
-        ')
-        roleattribute staff_r screen_roles;
+		gen_require(`
+			attribute_role screen_roles;
+		')
+		roleattribute staff_r screen_roles;
 	')
 
 	optional_policy(`
@@ -277,10 +278,10 @@ ifndef(`distro_redhat',`
 
 	optional_policy(`
 		#su_role_template(staff, staff_r, user_t)
-        gen_require(`
-            type user_su_t;
-        ')
-        role staff_r types user_su_t;
+		gen_require(`
+			type user_su_t;
+		')
+		role staff_r types user_su_t;
 	')
 
 	optional_policy(`
@@ -297,11 +298,11 @@ ifndef(`distro_redhat',`
 
 	optional_policy(`
 		#userhelper_role_template(staff, staff_r, user_t)
-        gen_require(`
-            attribute_role userhelper_roles, consolehelper_roles;
-        ')
-        roleattribute staff_r userhelper_roles;
-        roleattribute staff_r consolehelper_roles;
+		gen_require(`
+			attribute_role userhelper_roles, consolehelper_roles;
+		')
+		roleattribute staff_r userhelper_roles;
+		roleattribute staff_r consolehelper_roles;
 	')
 
 	optional_policy(`
