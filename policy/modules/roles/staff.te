@@ -238,7 +238,12 @@ ifndef(`distro_redhat',`
 	')
 
 	optional_policy(`
-		gift_role(staff_r, user_t)
+		#gift_role(staff_r, user_t)
+		gen_require(`
+			attribute_role gift_roles, giftd_roles;
+		')
+		roleattribute staff_r gift_roles;
+		roleattribute staff_r giftd_roles;
 	')
 
 	optional_policy(`
