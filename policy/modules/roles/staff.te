@@ -39,7 +39,11 @@ allow system_r staff_r;
 rbac_change_role_user_target_role(staff_r)
 
 #
-userdom_manage_home_role(staff_r, user_t)
+# userdom_manage_home_role(staff_r, user_t)
+gen_require(`
+    type user_home_dir_t, user_home_t, user_cert_t;
+')
+role staff_r types { user_home_dir_t user_home_t user_cert_t };
 
 userdom_manage_tmp_role(staff_r, user_t)
 userdom_manage_tmpfs_role(staff_r, user_t)
