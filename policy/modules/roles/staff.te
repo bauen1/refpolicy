@@ -247,11 +247,22 @@ ifndef(`distro_redhat',`
 	')
 
 	optional_policy(`
-		gpg_role(staff_r, user_t)
+		#gpg_role(staff_r, user_t)
+		gen_require(`
+			attribute_role gpg_roles, gpg_agent_roles, gpg_helper_roles, gpg_pinentry_roles;
+		')
+		roleattribute staff_r gpg_roles;
+		roleattribute staff_r gpg_agent_roles;
+		roleattribute staff_r gpg_helper_roles;
+		roleattribute staff_r gpg_pinentry_roles;
 	')
 
 	optional_policy(`
-		irc_role(staff_r, user_t)
+		#irc_role(staff_r, user_t)
+		gen_require(`
+			attribute_role irc_roles;
+		')
+		roleattribute staff_r irc_roles;
 	')
 
 	optional_policy(`
