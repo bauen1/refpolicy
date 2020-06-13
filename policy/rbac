@@ -34,6 +34,7 @@ ifdef(`enable_rbac', `
 # 1. Role is equal
 # 2. Source domain is unconditionally exempt.
 # 3. Source is a "login domain" trying to switch to a user role and user domain
+# 4. Source is a cron daemon trying to switch to a cron job domain (and role)
 
 define(`rbac_transition_constrain', `
     constrain $1 $2
@@ -45,6 +46,7 @@ define(`rbac_transition_constrain', `
             and r2 == rbac_change_role_user_target_role_attribute
             and t2 == rbac_change_role_user_target_type_attribute
         )
+        or ( t1 == cron_source_domain and t2 == cron_job_domain )
     );
 ')
 
