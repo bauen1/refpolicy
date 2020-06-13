@@ -226,7 +226,11 @@ ifndef(`distro_redhat',`
 	')
 
 	optional_policy(`
-		evolution_role(staff_r, user_t)
+		#evolution_role(staff_r, user_t)
+		gen_require(`
+			attribute_role evolution_roles;
+		')
+		roleattribute staff_r evolution_roles;
 	')
 
 	optional_policy(`
