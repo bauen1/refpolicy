@@ -23,6 +23,7 @@ attribute unreserved_port_type;
 
 attribute corenet_unconfined_type;
 
+role system_r types netif_type;
 role system_r types port_type;
 
 type ppp_device_t;
