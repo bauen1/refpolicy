@@ -103,10 +103,10 @@ def analyze_fc_file(fc_path):
                     retval = False
                 else:
                     context_label, context_mls = matches.groups()
-                    if not context_label.startswith('system_u:object_r:'):
-                        print(f"{prefix}SELinux context does not begin with 'system_u:object_r:' for {path}: {context}")  # noqa
+                    if not context_label.startswith('system_u:system_r:'):
+                        print(f"{prefix}SELinux context does not begin with 'system_u:system_r:' for {path}: {context}")  # noqa
                         retval = False
-                    elif not re.match(r'^system_u:object_r:[0-9A-Za-z_]+$', context_label):
+                    elif not re.match(r'^system_u:system_r:[0-9A-Za-z_]+$', context_label):
                         print(f"{prefix}SELinux context type uses unexpected characters for {path}: {context}")  # noqa
                         retval = False
                     elif context_mls not in MLS_LEVELS:
