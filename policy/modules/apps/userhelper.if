@@ -47,6 +47,7 @@ template(`userhelper_role_template',`
 	domain_obj_id_change_exemption($1_userhelper_t)
 	domain_interactive_fd($1_userhelper_t)
 	domain_subj_id_change_exemption($1_userhelper_t)
+	rbac_change_role_user_source_type($1_userhelper_t)
 
 	role userhelper_roles types $1_userhelper_t;
 	roleattribute $2 userhelper_roles;

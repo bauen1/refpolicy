@@ -1373,6 +1373,7 @@ optional_policy(`
 
 optional_policy(`
 	domain_role_change_exemption(initrc_t)
+	rbac_change_role_user_source_type(initrc_t)
 
 	unconfined_domain(initrc_t)
 

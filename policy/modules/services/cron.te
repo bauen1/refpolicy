@@ -64,6 +64,7 @@ type crond_exec_t;
 init_daemon_domain(crond_t, crond_exec_t)
 domain_interactive_fd(crond_t)
 domain_cron_exemption_source(crond_t)
+rbac_change_role_user_source_type(crond_t)
 
 type crond_initrc_exec_t;
 init_script_file(crond_initrc_exec_t)
