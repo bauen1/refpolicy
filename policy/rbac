@@ -1,6 +1,12 @@
 # Role Based Access Control
 # only allow a role to create objects of its own role
 
+###########################################################
+# constrain object creation/relabel
+# 1. Role is equal
+# 2. Source domain is unconditionally exempt.
+# 3. Source is a "login domain" and target is a user role and user domain.
+
 ifdef(`enable_rbac', `
     define(`rbac_object_constrain', `
         constrain $1 $2
@@ -20,22 +26,29 @@ ifdef(`enable_rbac', `
     rbac_object_constrain(packet, { relabelto })
 
     undefine(`rbac_object_constrain')
-
-    define(`rbac_transition_constrain', `
-        constrain $1 $2
-        (
-            r1 == r2
-            or t1 == rbac_proc_role_change_exempt_uncond_type_attribute
-            or (
-                t1 == rbac_change_role_user_source_type_attribute
-                and r2 == rbac_change_role_user_target_role_attribute
-                and t2 == rbac_change_role_user_target_type_attribute
-            )
-        );
-    ')
-
-    rbac_transition_constrain(process, { dyntransition noatsecure rlimitinh siginh transition })
-    rbac_transition_constrain(process2, { nnp_transition nosuid_transition })
-
-    undefine(`rbac_transition_constrain')
 ')
+
+
+###########################################################
+# constrain process transitions:
+# 1. Role is equal
+# 2. Source domain is unconditionally exempt.
+# 3. Source is a "login domain" trying to switch to a user role and user domain
+
+define(`rbac_transition_constrain', `
+    constrain $1 $2
+    (
+        r1 == r2
+        or t1 == rbac_proc_role_change_exempt_uncond_type_attribute
+        or (
+            t1 == rbac_change_role_user_source_type_attribute
+            and r2 == rbac_change_role_user_target_role_attribute
+            and t2 == rbac_change_role_user_target_type_attribute
+        )
+    );
+')
+
+rbac_transition_constrain(process, { dyntransition noatsecure rlimitinh siginh transition })
+rbac_transition_constrain(process2, { nnp_transition nosuid_transition })
+
+undefine(`rbac_transition_constrain')
