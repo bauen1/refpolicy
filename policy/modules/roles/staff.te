@@ -45,8 +45,17 @@ gen_require(`
 ')
 role staff_r types { user_home_dir_t user_home_t user_cert_t };
 
-userdom_manage_tmp_role(staff_r, user_t)
-userdom_manage_tmpfs_role(staff_r, user_t)
+#userdom_manage_tmp_role(staff_r, user_t)
+gen_require(`
+    type user_tmp_t;
+')
+role staff_r types user_tmp_t;
+
+#userdom_manage_tmpfs_role(staff_r, user_t)
+gen_require(`
+    type user_tmpfs_t;
+')
+role staff_r types user_tmpfs_t;
 
 ########################################
 #
@@ -75,7 +84,11 @@ optional_policy(`
 #
 
 optional_policy(`
-	apache_role(staff_r, user_t)
+	#apache_role(staff_r, user_t)
+	gen_require(`
+		type httpd_user_script_t;
+	')
+	role staff_r types httpd_user_script_t;
 ')
 
 optional_policy(`
@@ -87,7 +100,11 @@ optional_policy(`
 ')
 
 optional_policy(`
-	git_role(staff_r, user_t)
+	#git_role(staff_r, user_t)
+	gen_require(`
+		attribute_role git_session_roles;
+	')
+	roleattribute staff_r git_session_roles;
 ')
 
 optional_policy(`
@@ -95,7 +112,11 @@ optional_policy(`
 ')
 
 optional_policy(`
-	postgresql_role(staff_r, user_t)
+	#postgresql_role(staff_r, user_t)
+	gen_require(`
+		type sepgsql_trusted_proc_t, sepgsql_ranged_proc_t;
+	')
+	role staff_r types { sepgsql_trusted_proc_t sepgsql_ranged_proc_t };
 ')
 
 optional_policy(`
@@ -138,7 +159,11 @@ optional_policy(`
 ')
 
 optional_policy(`
-	xserver_role(staff_r, user_t)
+	#xserver_role(staff_r, user_t)
+	gen_require(`
+		type xserver_t, xauth_t, iceauth_t;
+	')
+	role staff_r types { xserver_t xauth_t iceauth_t };
 ')
 
 ifndef(`distro_redhat',`
