@@ -1556,4 +1556,6 @@ interface(`domain_unconfined',`
 	typeattribute $1 can_change_object_identity;
 	typeattribute $1 set_curr_context;
 	typeattribute $1 process_uncond_exempt;
+	rbac_exemption_uncond($1)
+	rbacsep_exempt_type_uncond($1)
 ')
