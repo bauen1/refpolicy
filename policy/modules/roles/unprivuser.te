@@ -8,16 +8,19 @@ policy_module(unprivuser, 2.10.0)
 # Declarations
 #
 
-#role user_r;
+attribute_role unprivuser_role;
+
+role user_r;
+roleattribute user_r unprivuser_role;
 
 userdom_unpriv_user_template(user)
 
 optional_policy(`
-	apache_role(user_r, user_t)
+	apache_role(unprivuser_role, user_t)
 ')
 
 optional_policy(`
-	git_role(user_r, user_t)
+	git_role(unprivuser_role, user_t)
 ')
 
 optional_policy(`
@@ -25,183 +28,183 @@ optional_policy(`
 ')
 
 optional_policy(`
-	screen_role_template(user, user_r, user_t)
+	screen_role_template(user, unprivuser_role, user_t)
 ')
 
 optional_policy(`
-	vlock_run(user_t, user_r)
+	vlock_run(user_t, unprivuser_role)
 ')
 
 optional_policy(`
-	xscreensaver_role(user_r, user_t)
+	xscreensaver_role(unprivuser_role, user_t)
 ')
 
 optional_policy(`
-	xserver_role(user_r, user_t)
+	xserver_role(unprivuser_role, user_t)
 ')
 
 ifndef(`distro_redhat',`
 	optional_policy(`
-		auth_role(user_r, user_t)
+		auth_role(unprivuser_role, user_t)
 	')
 
 	optional_policy(`
-		bluetooth_role(user_r, user_t)
+		bluetooth_role(unprivuser_role, user_t)
 	')
 
 	optional_policy(`
-		cdrecord_role(user_r, user_t)
+		cdrecord_role(unprivuser_role, user_t)
 	')
 
 	optional_policy(`
-		chromium_role(user_r, user_t)
+		chromium_role(unprivuser_role, user_t)
 	')
 
 	optional_policy(`
-		cron_role(user_r, user_t)
+		cron_role(unprivuser_role, user_t)
 	')
 
 	optional_policy(`
-		dbus_role_template(user, user_r, user_t)
+		dbus_role_template(user, unprivuser_role, user_t)
 
 		optional_policy(`
-			gnome_role_template(user, user_r, user_t)
+			gnome_role_template(user, unprivuser_role, user_t)
 		')
 
 		optional_policy(`
-			telepathy_role_template(user, user_r, user_t)
+			telepathy_role_template(user, unprivuser_role, user_t)
 		')
 
 		optional_policy(`
-			wm_role_template(user, user_r, user_t)
+			wm_role_template(user, unprivuser_role, user_t)
 		')
 	')
 
 	optional_policy(`
-		dirmngr_role(user_r, user_t)
+		dirmngr_role(unprivuser_role, user_t)
 	')
 
 	optional_policy(`
-		evolution_role(user_r, user_t)
+		evolution_role(unprivuser_role, user_t)
 	')
 
 	optional_policy(`
-		games_role(user_r, user_t)
+		games_role(unprivuser_role, user_t)
 	')
 
 	optional_policy(`
-		gift_role(user_r, user_t)
+		gift_role(unprivuser_role, user_t)
 	')
 
 	optional_policy(`
-		gpg_role(user_r, user_t)
+		gpg_role(unprivuser_role, user_t)
 	')
 
 	optional_policy(`
-		hadoop_role(user_r, user_t)
+		hadoop_role(unprivuser_role, user_t)
 	')
 
 	optional_policy(`
-		irc_role(user_r, user_t)
+		irc_role(unprivuser_role, user_t)
 	')
 
 	optional_policy(`
-		java_role(user_r, user_t)
+		java_role(unprivuser_role, user_t)
 	')
 
 	optional_policy(`
-		libmtp_role(user_r, user_t)
+		libmtp_role(unprivuser_role, user_t)
 	')
 
 	optional_policy(`
-		lockdev_role(user_r, user_t)
+		lockdev_role(unprivuser_role, user_t)
 	')
 
 	optional_policy(`
-		lpd_role(user_r, user_t)
+		lpd_role(unprivuser_role, user_t)
 	')
 
 	optional_policy(`
-		mozilla_role(user_r, user_t)
+		mozilla_role(unprivuser_role, user_t)
 	')
 
 	optional_policy(`
-		mplayer_role(user_r, user_t)
+		mplayer_role(unprivuser_role, user_t)
 	')
 
 	optional_policy(`
-		mta_role(user_r, user_t)
+		mta_role(unprivuser_role, user_t)
 	')
 
 	optional_policy(`
-		ooffice_role(user_r, user_t)
+		ooffice_role(unprivuser_role, user_t)
 	')
 
 	optional_policy(`
-		postgresql_role(user_r, user_t)
+		postgresql_role(unprivuser_role, user_t)
 	')
 
 	optional_policy(`
-		pulseaudio_role(user_r, user_t)
+		pulseaudio_role(unprivuser_role, user_t)
 	')
 
 	optional_policy(`
-		pyzor_role(user_r, user_t)
+		pyzor_role(unprivuser_role, user_t)
 	')
 
 	optional_policy(`
-		razor_role(user_r, user_t)
+		razor_role(unprivuser_role, user_t)
 	')
 
 	optional_policy(`
-		rssh_role(user_r, user_t)
+		rssh_role(unprivuser_role, user_t)
 	')
 
 	optional_policy(`
-		sigrok_run(user_r, user_t)
+		sigrok_run(unprivuser_role, user_t)
 	')
 
 	optional_policy(`
-		spamassassin_role(user_r, user_t)
+		spamassassin_role(unprivuser_role, user_t)
 	')
 
 	optional_policy(`
-		ssh_role_template(user, user_r, user_t)
+		ssh_role_template(user, unprivuser_role, user_t)
 	')
 
 	optional_policy(`
-		su_role_template(user, user_r, user_t)
+		su_role_template(user, unprivuser_role, user_t)
 	')
 
 	optional_policy(`
-		sudo_role_template(user, user_r, user_t)
+		sudo_role_template(user, unprivuser_role, user_t)
 	')
 
 	optional_policy(`
-		syncthing_role(user_r, user_t)
+		syncthing_role(unprivuser_role, user_t)
 	')
 
 	optional_policy(`
-		thunderbird_role(user_r, user_t)
+		thunderbird_role(unprivuser_role, user_t)
 	')
 
 	optional_policy(`
-		tvtime_role(user_r, user_t)
+		tvtime_role(unprivuser_role, user_t)
 	')
 
 	optional_policy(`
-		uml_role(user_r, user_t)
+		uml_role(unprivuser_role, user_t)
 	')
 
 	optional_policy(`
-		userhelper_role_template(user, user_r, user_t)
+		userhelper_role_template(user, unprivuser_role, user_t)
 	')
 
 	optional_policy(`
-		vmware_role(user_r, user_t)
+		vmware_role(unprivuser_role, user_t)
 	')
 
 	optional_policy(`
-		wireshark_role(user_r, user_t)
+		wireshark_role(unprivuser_role, user_t)
 	')
 ')
