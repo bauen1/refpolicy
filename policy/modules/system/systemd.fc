@@ -25,6 +25,7 @@
 /usr/lib/systemd/user-environment-generators/.*					--	gen_context(system_u:object_r:systemd_generator_exec_t,s0)
 /usr/lib/systemd/user-generators/.*								--	gen_context(system_u:object_r:systemd_generator_exec_t,s0)
 
+/usr/lib/systemd/selinux-autorelabel	--	gen_context(system_u:object_r:systemd_selinux_autorelabel_exec_t,s0)
 /usr/lib/systemd/systemd-activate	--	gen_context(system_u:object_r:systemd_activate_exec_t,s0)
 /usr/lib/systemd/systemd-backlight	--	gen_context(system_u:object_r:systemd_backlight_exec_t,s0)
 /usr/lib/systemd/systemd-binfmt		--	gen_context(system_u:object_r:systemd_binfmt_exec_t,s0)
