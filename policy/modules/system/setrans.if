@@ -41,6 +41,29 @@ interface(`setrans_translate_context',`
 
 ######################################
 ## <summary>
+##  Allow the domain to start / stop the setrans service
+## </summary>
+## <param name="domain">
+##  <summary>
+##  Domain allowed access.
+##  </summary>
+## </param>
+## <param name="role">
+##  <summary>
+##  Role allowed access.
+##  </summary>
+## </param>
+#
+interface(`setrans_manage_service', `
+	gen_require(`
+		type setrans_t, setrans_initrc_exec_t, setrans_unit_t;
+	')
+
+	init_startstop_service($1, $2, setrans_t, setrans_initrc_exec_t, setrans_unit_t)
+')
+
+######################################
+## <summary>
 ##	All of the rules required to
 ##	administrate an setrans environment.
 ## </summary>
@@ -64,7 +87,7 @@ interface(`setrans_admin',`
 	allow $1 setrans_t:process { ptrace signal_perms };
 	ps_process_pattern($1, setrans_t)
 
-	init_startstop_service($1, $2, setrans_t, setrans_initrc_exec_t, setrans_unit_t)
+	setrans_manage_service($1, $2)
 
 	files_search_pids($1)
 	admin_pattern($1, setrans_runtime_t)
