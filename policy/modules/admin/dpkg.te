@@ -13,7 +13,6 @@ type dpkg_exec_t;
 init_system_domain(dpkg_t, dpkg_exec_t)
 domain_obj_id_change_exemption(dpkg_t)
 domain_role_change_exemption(dpkg_t)
-domain_system_change_exemption(dpkg_t)
 domain_interactive_fd(dpkg_t)
 role dpkg_roles types dpkg_t;
 
@@ -36,7 +35,6 @@ domain_entry_file(dpkg_script_t, dpkg_var_lib_t)
 corecmd_shell_entry_type(dpkg_script_t)
 corecmd_bin_entry_type(dpkg_script_t)
 domain_obj_id_change_exemption(dpkg_script_t)
-domain_system_change_exemption(dpkg_script_t)
 domain_interactive_fd(dpkg_script_t)
 role dpkg_roles types dpkg_script_t;
 
